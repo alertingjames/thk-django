@@ -1,0 +1,681 @@
+{% extends 'rigwell/base_rig_user_home.html' %}
+{% block title %}THK User Home{% endblock %}
+{% block body %}
+
+<br>
+<br>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<meta charset="utf-8">
+
+<style>
+
+html, body{
+  background: linear-gradient(0deg,rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('/static/images/accountbg.jpg') no-repeat center center fixed;
+  background-size:cover;
+}
+
+#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20%;
+  right: 15px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: rgba(0,0,0,0.3);
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 50%;
+}
+
+#myBtn:hover {
+  background-color: orange;
+}
+
+#admin{
+    display:none;
+}
+
+.info p {
+  text-align:center;
+  color: #999;
+  text-transform:none;
+  font-weight:600;
+  font-size:15px;
+  margin-top:2px
+}
+
+.info i {
+  color:#F6AA93;
+}
+
+#edit {
+  border-radius: 15px;
+  max-width:550px;
+  width:auto;
+  margin:auto;
+  background-color:rgba(255,255,255,0.1);
+  /*background-image: url("/static/images/pattern0.jpg");*/
+  /*background-size:cover;*/
+  overflow: hidden;
+  box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+#edit:hover {
+  box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.3);
+  background-color:rgba(255,255,255,0.2);
+  /*background-image: url("/static/images/pattern0.jpg");*/
+  /*background-size:cover;*/
+}
+
+p span {
+  color: #F00;
+}
+
+p {
+  margin: 0px;
+  font-weight: 200;
+  line-height: 2;
+}
+
+form h1 {
+  font-size: 21px;
+  background: #327a81 none repeat scroll 0% 0%;
+  color: rgb(255, 255, 255);
+  padding: 19px 22px;
+  border-radius: 5px 5px 0px 0px;
+  margin: auto;
+  text-shadow: none;
+  text-align:left
+}
+
+h1 {
+  text-align:center;
+  color: #666;
+  text-shadow: 1px 1px 0px #FFF;
+  margin:50px 0px 0px 0px
+}
+
+input {
+  border-radius: 5px;
+  border: 1px solid #eee;
+  margin-bottom: 10px;
+  width: 100%;
+  height: 42px;
+  float: left;
+  padding: 0px 15px;
+  opacity: 0.8;
+  color:blue;
+}
+
+.form-group {
+  overflow: hidden;
+  width:100%;
+}
+
+.contentform {
+  padding: 10px 10px;
+}
+
+.useraddress:hover{
+    color:white;
+}
+
+.useremail:hover{
+    color:white;
+}
+
+.centered-and-cropped { object-fit: cover }
+
+.cohort-panel-button{
+    width:55px; height:55px; float:left; padding:8px; border-radius:5px;
+}
+
+.panel-button{
+    width:70px; height:70px; float:left; padding:13px; border-radius:5px; box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.8); display:none;
+}
+
+#backgroundOverlay{
+    background-color:rgba(0,0,0,0.6);
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    display:none;
+}
+
+.bouton-update{
+  background-color: #008CBA;
+  color: #FFF;
+  text-align: center;
+  width: 100%;
+  border:0;
+  padding: 12px 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+select {
+  width: 100%;
+  height: 25px;
+  border:0px;
+  outline:none;
+  color:black;
+  text-align-last:center;
+}
+
+label input {
+  display: none;/* <-- hide the default checkbox */
+}
+label span {/* <-- style the artificial checkbox */
+  height: 25px;
+  width: 25px;
+  text-align:center;
+  /*padding-bottom:5px;*/
+  display: inline-block;
+  position: relative;
+  border:0;
+  border-radius:3px;
+}
+[type=checkbox]:checked + span:before {/* <-- style its checked state..with a ticked icon */
+  content: '\2714';
+  position: absolute;
+  top:-10px;
+  font-size:32px;
+  left: 2px;
+}
+
+[type=checkbox]:checked + span:after {/* <-- style its checked state..with a ticked icon */
+  content: '\2714';
+  position: absolute;
+  top:-10px;
+  left: 2px;
+  font-size:32px;
+  color:yellow;
+}
+
+#snackbar {
+    visibility: hidden;
+    min-width: 200px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 12px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+
+#snackbar.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+</style>
+
+<script>
+	history.pushState(null, null, location.href);
+    history.back();
+    history.forward();
+    window.onpopstate = function () { history.go(1); };
+</script>
+
+{% if note %}
+<script>alert("{{note}}");</script>
+{% endif %}
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../lib/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<div id="title" style="font-size:25px; font-weight:800; color: #F7D479; text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7); text-align:center;
+	position:fixed; left:50%; float:middle; transform:translate(-50%, -50%); width:350px; z-index:100; top:92px; display:none;">THK Home</div>
+
+
+{% if datas %}
+<div style="width:100%; height:auto;">
+    {% csrf_token %}
+    <div style="font-size:25px; font-weight:800;
+        color: #F7D479; text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7); text-align:center; width:100%; margin-top:40px;">THK Home<br>
+    </div>
+    <div class="container-fluid">
+        <div class="row" id="riglist">
+            {% for data in datas %}
+            <div class="col-sm-3" style="padding-bottom:30px;" id="{{data.rig.id}}">
+                <div style="width:100%;">
+                    <div id="edit" style="margin-top:30px;">
+                        <div class="contentform">
+                            <div style="width:100%;" class="parent">
+                                <div class="form-group">
+                                    <div style="color: white; margin-left:10px; font-weight:600; font-size:20px; width:100%;">
+                                        {{data.rig.name}}
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display:flex;">
+                                    <select name="well_id" required id="well_id" style="flex-grow:1; color:black;" onchange="setValue(this)">
+                                        {% if data.wells %}
+                                            {% for well in data.wells %}
+                                                <option value="{{well.well.id}}">{{well.well.name}} ({{well.well.well_start_time}} ~ {{well.well.well_end_time}})</option>
+                                            {% endfor %}
+                                        {% else %}
+                                            <option value="">--No well added--</option>
+                                        {% endif %}
+                                    </select>
+                                    <a href="javascript:void(0)" onclick="javascript:openWellDetailPage(this);">
+                                        <div style="width:80px; height:auto; padding:3px; margin-bottom:5px; float:left; text-align:center; border-radius:4px;
+                                            font-size:14px; color:white; margin-left:5px; background-color:rgba(0,0,0,0.2);">Browse...</div>
+                                    </a>
+                                    <script>
+                                        function setValue(obj){
+                                            var value = obj.value;
+                                            if(value.length > 0){
+                                                // alert(getWellCountryData(value));
+                                                var selector = ".parent";
+                                                var parent = findParentBySelector(obj, selector);
+                                                var lis = parent.querySelectorAll("li");
+                                                var countryName = getWellCountryData(value);
+                                                if(countryName.length > 0){
+                                                    lis[0].innerHTML = countryName;
+                                                }else{
+                                                    lis[0].innerHTML = "Country: ---";
+                                                }
+                                                var lastActivityName = getWellLastActivityData(value);
+                                                if(lastActivityName.length > 0){
+                                                    lis[1].innerHTML = lastActivityName;
+                                                }else{
+                                                    lis[1].innerHTML = "Activities: 0";
+                                                }
+                                            }
+                                        }
+                                    </script>
+                    			</div>
+
+                    			<div class="form-group" style="background-color:rgba(0,0,0,0.2);">
+
+                        			{% if data.rig.picture_url %}
+                                        <a href="{{data.rig.picture_url}}" target="_blank"><img src="{{data.rig.picture_url}}" style="max-width:100%; height:250px;"></a>
+                                    {% else %}
+                                        <div style="width:100%; height:250px; text-align:center; color:gray; font-size:14px; padding-top:100px; background-color:#eee;">No image loaded...</div>
+                                    {% endif %}
+
+                                </div>
+
+                                <div class="form-group">
+                                    <ul style="color:white; margin-left:10px;">
+                                        <li id="country"></li>
+                                        <li id="last_activity"></li>
+                                        <li>{{data.rig.contractor}}, {{data.rig.type}}</li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+{% if datas %}
+    <div id="well_country_list">
+        {% for data in datas %}
+            {% for well in data.wells %}
+            <input id="{{well.well.id}}" value="{{well.well.country}}" hidden>
+            <div>
+                {% if well.activities %}
+                    {% for activity in well.activities %}
+                    <input id="{{well.well.id}}" value="{{activity.name}}" hidden>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<script>
+    var wclist = document.getElementById("well_country_list");
+    var wclis = wclist.querySelectorAll( "#well_country_list > input" );
+    var wcs = [];
+    for(var i=0; i<wclis.length; i++){
+       wcs.push(wclis[i]);
+    }
+
+    function getWellCountryData(wellid){
+        if(wcs.length == 0 || wellid == null){
+            return "";
+        }
+        for(var i=0; i<wcs.length; i++){
+            if(wcs[i].id == wellid){
+                return wcs[i].value;
+            }else{
+                if(i == wcs.length - 1){
+                    return "";
+                }
+            }
+        }
+        return "";
+    }
+
+    var walis = wclist.querySelectorAll( "#well_country_list > div > input" );
+    var was = [];
+    for(var i=0; i<walis.length; i++){
+       was.push(walis[i]);
+    }
+
+    function getWellLastActivityData(wellid){
+        if(was.length == 0 || wellid == null){
+            return "";
+        }
+        for(var i=0; i<was.length; i++){
+            if(was[i].id == wellid){
+                return was[i].value;
+            }else{
+                if(i == was.length - 1){
+                    return "";
+                }
+            }
+        }
+        return "";
+    }
+
+    function collectionHas(a, b) { //helper function (see below)
+        for(var i = 0, len = a.length; i < len; i ++) {
+            if(a[i] == b) return true;
+        }
+        return false;
+    }
+
+    function findParentBySelector(elm, selector) {
+        var all = document.querySelectorAll(selector);
+        var cur = elm.parentNode;
+        while(cur && !collectionHas(all, cur)) { //keep going up until you find a match
+            cur = cur.parentNode; //go up
+        }
+        return cur; //will return null if not found
+    }
+
+    var riglist = document.getElementById("riglist");
+    var parents = riglist.getElementsByClassName("parent");
+    for(var i=0; i<parents.length; i++){
+        var sel = parents[i].querySelector("select");
+        var lis = parents[i].querySelectorAll("li");
+        var countryName = getWellCountryData(sel.value);
+        if(countryName.length > 0){
+            lis[0].innerHTML = countryName;
+        }else{
+            lis[0].innerHTML = "Country: ---";
+        }
+        var lastActivityName = getWellLastActivityData(sel.value);
+        if(lastActivityName.length > 0){
+            lis[1].innerHTML = lastActivityName;
+        }else{
+            lis[1].innerHTML = "Activities: 0";
+        }
+    }
+
+    function openWellDetailPage(obj){
+        var selector = ".parent";
+        var parent = findParentBySelector(obj, selector);
+        var sel = parent.querySelector("select");
+        if(sel.value.length == 0){
+            alert('Please select a well.');
+            return;
+        }
+        window.open('/ruwelldetail?well_id=' + sel.value, '_blank');
+    }
+
+</script>
+
+<div id="backgroundOverlay" onclick="javascript:dismissLayouts();">
+</div>
+
+<div id="snackbar">Submited</div>
+
+<input type="hidden" id="me_email" value="{{me.email}}">
+<input type="hidden" id="me_id" value="{{me.pk}}">
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+<button onclick="topFunction()" id="myBtn" title="Go to top"><i class="glyphicon glyphicon-menu-up" style="color:white; font-size:14px;"></i></button>
+
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+        document.getElementById("myBtn").style.display = "block";
+        document.getElementById("title").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+        document.getElementById("title").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+$(document).ready(function() {
+   $(document).ready(function() {
+        $('.row #date').each(function(i) {
+            this.innerHTML = getDate(parseInt(this.innerHTML));
+        });
+   });
+});
+
+
+{% if rig %}
+    ScrollTo({{rig.id}});
+{% endif %}
+
+function ScrollTo(name) {
+  //init thread
+  ScrollToResolver(document.getElementById(name));
+}
+
+function ScrollToResolver(elem) {
+  var jump = parseInt(elem.getBoundingClientRect().top * .2);
+  document.body.scrollTop += jump - 50;
+  document.documentElement.scrollTop += jump - 50;
+  //lastjump detects anchor unreachable, also manual scrolling to cancel animation if scroll > jump
+  if (!elem.lastjump || elem.lastjump > Math.abs(jump)) {
+    elem.lastjump = Math.abs(jump);
+    setTimeout(function() {
+      ScrollToResolver(elem);
+    }, "50");
+  } else {
+    elem.lastjump = null;
+  }
+}
+
+
+function getDate(ms){
+    var months = ['January', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var date = new Date(ms);
+    var seconds = date.getSeconds();
+    var minutes = date.getMinutes();
+    var hours = date.getHours();
+
+    var year = date.getFullYear();
+    var month = date.getMonth(); // beware: January = 0; February = 1, etc.
+    var day = date.getDate();
+
+    var dateStr = months[month] + ' ' + day + ', ' + year;
+    return dateStr;
+}
+
+function showToast(text) {
+    var x = document.getElementById("snackbar");
+    x.innerHTML = text;
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+
+function getCookie(name) {
+    console.log('getCookie');
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                    }
+            }
+    }
+    console.log('cookie:' + cookieValue);
+    return cookieValue;
+}
+
+function post(path, params, method) {
+   method = method || "post"; // Set method to post by default if not specified.
+
+   // The rest of this code assumes you are not using a library.
+   // It can be made less wordy if you use one.
+   var form = document.createElement("form");
+   form.setAttribute("method", method);
+   form.setAttribute("action", path);
+
+   for(var key in params) {
+      if(params.hasOwnProperty(key)) {
+          var hiddenField = document.createElement("input");
+          hiddenField.setAttribute("type", "hidden");
+          hiddenField.setAttribute("name", key);
+          hiddenField.setAttribute("value", params[key]);
+
+          form.appendChild(hiddenField);
+      }
+   }
+
+   var hiddenField1 = document.createElement("input");
+   hiddenField1.setAttribute("type", "hidden");
+   hiddenField1.setAttribute("name", 'csrfmiddlewaretoken');
+   hiddenField1.setAttribute("value", getCookie('csrftoken'));
+   form.appendChild(hiddenField1);
+
+   document.body.appendChild(form);
+   form.submit();
+}
+
+</script>
+
+{%else %}
+        <center>
+            <br>
+            <br>
+            <br>
+        <h3 class="my_items col-sm-offset-1" style="color:#ccc; margin: 30px;">No data found ...</h3>
+    </center>
+
+{% endif %}
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

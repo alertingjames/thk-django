@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Contact Us | AllWeedJobs</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="/static/meajobs/images/icon.jpg" type="image/jpg">
+
+    <link rel="stylesheet" href="/static/meajobs/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="/static/meajobs/css/animate.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/static/meajobs/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/static/meajobs/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/aos.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="/static/meajobs/css/jquery.timepicker.css">
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <link rel="stylesheet" href="/static/meajobs/css/flaticon.css">
+    <link rel="stylesheet" href="/static/meajobs/css/icomoon.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/style.css">
+    <link rel="stylesheet" href="/static/meajobs/css/style2.css">
+
+  </head>
+  <body>
+
+	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container-fluid px-md-4	">
+	      <a class="navbar-brand" href="/rigwell/"><img src="/static/meajobs/images/logo.jpg" style="height:60px; border-radius:5px; margin-right:15px;">AllWeedJobs</a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item"><a href="/rigwell/browsejobs" class="nav-link">Browse Jobs</a></li>
+	          <li class="nav-item"><a href="/rigwell/candidates" class="nav-link">Canditates</a></li>
+	          <li class="nav-item active"><a href="#" class="nav-link">Contact</a></li>
+	          {% if isloggedin == 'yes' %}
+	          <li class="nav-item"><a href="/rigwell/contact" class="nav-link"><span class="far fa-comment-alt"></span></a></li>
+	          <li class="nav-item"><a href="/rigwell/contact" class="nav-link"><span class="fas fa-bell"></span></a></li>
+	          <li class="nav-item dropdown dropdown-bubble" aria-expanded="false">
+                <a id="dLabel" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-user"></span></a>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
+                    <center><div class="prof-email text-black">info.myprofile@myemail.com</div></center>
+                    <div style="height:1.5px; background:#f1f1f1; margin-bottom:5px;"></div>
+                    <li class="menu px-3 w-100"><a href="#" class="text-black">Profile<span class="fa fa-user-circle"></span></a></li>
+                    <li class="menu px-3 w-100"><a href="#" class="text-black">My Jobs<span class="fa fa-heart"></span></a></li>
+                    <li class="menu px-3 w-100"><a href="#" class="text-black">My Reviews<span class="fas fa-pen-square"></span></a></li>
+                    <li class="menu px-3 w-100"><a href="#" class="text-black">Account<span class="fa fa-cog"></span></a></li>
+                    <div style="height:1.5px; background:#f1f1f1; margin-bottom:5px;"></div>
+                    <li class="menu px-3 w-100"><a href="/rigwell/awj-logout" class="text-black">Logout<span class="fas fa-sign-out-alt"></span></a></li>
+                </ul>
+              </li>
+	          {% else %}
+	          <li class="nav-item cta mr-md-1"><a href="/rigwell/signuppage" class="nav-link">Sign Up</a></li>
+	          <li class="nav-item cta cta-colored"><a href="/rigwell/loginpage" class="nav-link">Log In</a></li>
+	          {% endif %}
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+
+    <div class="hero-wrap hero-wrap-2" style="background-image: url('/static/meajobs/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-end justify-content-start">
+          <div class="col-md-12 ftco-animate text-center mb-5">
+          	<p class="breadcrumbs mb-0"><span class="mr-3"><a href="/rigwell/">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Contact</span></p>
+            <h1 class="mb-3 bread">Contact us</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+	<section class="ftco-section contact-section" style="background:#f7f7f9;">
+      <div class="container">
+        <div class="row d-flex mb-5 contact-info">
+            <div class="col-md-12 mb-4">
+                <h2 class="h3">Contact Information</h2>
+            </div>
+            <div class="w-100"></div>
+            <div class="col-md-3">
+                <p><span>Address:</span> 198 West 21th Street, Suite 721 New York NY 10016</p>
+            </div>
+            <div class="col-md-3">
+                <p><span>Phone:</span> <a href="tel://1234567920">+ 1235 2355 98</a></p>
+            </div>
+            <div class="col-md-3">
+                <p><span>Email:</span> <a href="mailto:info@yoursite.com">info@yoursite.com</a></p>
+            </div>
+            <div class="col-md-3">
+                <p><span>Website</span> <a href="#">yoursite.com</a></p>
+            </div>
+        </div>
+        <div class="row block-9">
+          <div class="col-md-6 order-md-last d-flex">
+            <form action="#" class="bg-white p-5 contact-form">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Your Name">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Your Email">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Subject">
+              </div>
+              <div class="form-group">
+                <textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
+              </div>
+              <div class="form-group">
+                <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
+              </div>
+            </form>
+
+          </div>
+
+          <div class="col-md-6 d-flex">
+          	<div id="map" class="bg-white"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="ftco-footer ftco-bg-dark ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+        	<div class="col-md">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">About</h2>
+              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+              <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-3">
+                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Employers</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="pb-1 d-block">Browse Candidates</a></li>
+                <li><a href="#" class="pb-1 d-block">Post a Job</a></li>
+                <li><a href="#" class="pb-1 d-block">Employer Listing</a></li>
+                <li><a href="#" class="pb-1 d-block">Resume Page</a></li>
+                <li><a href="#" class="pb-1 d-block">Dashboard</a></li>
+                <li><a href="#" class="pb-1 d-block">Job Packages</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Candidate</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="pb-1 d-block">Browse Jobs</a></li>
+                <li><a href="#" class="pb-1 d-block">Submit Resume</a></li>
+                <li><a href="#" class="pb-1 d-block">Dashboard</a></li>
+                <li><a href="#" class="pb-1 d-block">Browse Categories</a></li>
+                <!--<li><a href="#" class="pb-1 d-block">My Bookmarks</a></li>-->
+                <li><a href="#" class="pb-1 d-block">Candidate Listing</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Account</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="pb-1 d-block">My Account</a></li>
+                <li><a href="#" class="pb-1 d-block">Sign In</a></li>
+                <li><a href="#" class="pb-1 d-block">Create Account</a></li>
+                <li><a href="#" class="pb-1 d-block">Checkout</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon icon-map-marker" style="color:white;"></span><span class="text" style="color:white;">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+	                <li><span class="icon icon-phone" style="color:white;"></span><span class="text" style="color:white;">+2 392 3929 210</span></li>
+	                <li><span class="icon icon-envelope" style="color:white; font-size:14px;"></span><span class="text" style="color:white;">info@yourdomain.com</span></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+
+
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="/static/meajobs/js/jquery.min.js"></script>
+  <script src="/static/meajobs/js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="/static/meajobs/js/popper.min.js"></script>
+  <script src="/static/meajobs/js/bootstrap.min.js"></script>
+  <script src="/static/meajobs/js/jquery.easing.1.3.js"></script>
+  <script src="/static/meajobs/js/jquery.waypoints.min.js"></script>
+  <script src="/static/meajobs/js/jquery.stellar.min.js"></script>
+  <script src="/static/meajobs/js/owl.carousel.min.js"></script>
+  <script src="/static/meajobs/js/jquery.magnific-popup.min.js"></script>
+  <script src="/static/meajobs/js/aos.js"></script>
+  <script src="/static/meajobs/js/jquery.animateNumber.min.js"></script>
+  <script src="/static/meajobs/js/scrollax.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="/static/meajobs/js/google-map.js"></script>
+  <script src="/static/meajobs/js/main.js"></script>
+
+  </body>
+</html>

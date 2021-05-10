@@ -1,0 +1,328 @@
+{% extends 'rigwell/base_rig_admin_home.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block body %}
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<br>
+<br>
+<br>
+<br>
+
+<style>
+
+html, body{
+  background: linear-gradient(0deg,rgba(252,252,252,0.5),rgba(252,252,252,0.5)), url("/static/images/accountbg.jpg") no-repeat center center fixed;
+  background-size:cover;
+}
+
+#upload_form{
+    border-radius: 10px;
+    max-width:450px;
+    width:100%;
+    padding:10px;
+    text-align:center;
+    margin: 2% auto;
+    /*box-shadow: 15px 15px 0 rgba(0, 0, 0, 0.2);*/
+    background:linear-gradient(0deg,rgba(200,250,250,0.5),rgba(200,200,250,0.5));
+    background-size:100%,100%;
+    overflow: hidden;
+}
+
+label.button {
+  display: inline-block;
+  /* Styles to make it look like a button */
+  padding: 0.5em;
+  border: 2px solid #666;
+  border-color: #EEE #CCC #CCC #EEE;
+  border-radius:8px;
+  font-size:16px;
+  color:white;
+  width:250px;
+  height:45px;
+  text-align:middle;
+  background-color: green;
+}
+
+#myProgress {
+  width: 100%;
+  background-color: white;
+  position:fixed;
+  top:100px;
+  display: none;
+}
+
+#myBar {
+  width: 1%;
+  height: 10px;
+  background-color: #4CAF50;
+}
+
+#snackbar {
+    visibility: hidden;
+    min-width: 200px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 12px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+
+#snackbar.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+#percentLayout {
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:999;
+    visibility:hidden;
+}
+
+</style>
+
+<div style="font-size:14px; font-weight:600; color: #04a2be; text-align:center; width:100%;">Rig: {{rig.name}}</div>
+<div style="font-size:14px; font-weight:600; color: #04a2be; text-align:center; width:100%;">Well: {{well.name}}</div>
+<div style="font-size:14px; font-weight:600; color: #04a2be; text-align:center; width:100%; margin-top:3px;">Activity: {{act.name}}</div>
+<div style="font-size:25px; font-weight:600; color: #04a2be; text-align:center; width:100%;">
+    {% if item == 'All Items' %}Time SDL, TD Extended, TD TIH, TD Drlg, TD POH{% else %}{{item}}{% endif %}
+</div>
+
+<div id="myProgress">
+  <div id="myBar"></div>
+</div>
+
+<script>
+    var file_loaded = false;
+</script>
+
+<div id="upload_form" align="center" style="margin-top:60px;">
+
+    <h4 align="center" style="color:white; font-weight:600; margin-top:20px;"><img src="/static/images/excelicon.png" style="width:40px; height:40px; margin-right:20px;">{{header}}</h4>
+
+    <div style="color:green; font-size:14px;">{{act.name}}</div>
+
+    {% if note %}
+        <p style="color: red; font-size:18px;">
+            Error of reading file!   Invalid File...<br><br>
+            <a href="/raimportexcel" style="font-size:16px;">Please click here and select a valid Excel file!</a>
+        </p>
+    {% endif %}
+    <!--{% if note %}-->
+    {% if form.errors %}
+        <p style="color: red;">
+            Please correct the error{{ form.errors|pluralize }} below.
+        </p>
+    {% endif %}
+    <!--{% endif %}-->
+
+    <form action="{% url 'rig_admin_import_excel_data' %}" enctype="multipart/form-data"  method="post" style="margin-top:20px;" id="uploadform">
+        {% csrf_token %}
+        <label class="button" style="text-align:center;">Select Excel File
+            <table style="display:none;" onchange="javascript:document.getElementById('indicator').style.opacity='1'; file_loaded = true;">
+                {{ form.as_table }}
+            </table>
+        </label>
+        <div style="color:blue; font-size:14px; opacity:0;" id="indicator">A file's been loaded</div>
+        <center><img src="/static/images/progressbar.gif" style="width:40px; height:40px; display:none;" id="gif"></center>
+        {% if not note %}
+        <center>
+            <button type="button" class="btn btn-success" style="margin-bottom:20px; background-color:green;" onclick="javascript:send();"> Submit
+            </button>
+
+            <script>
+                var processingPercent = 0;
+                var myTimer;
+
+                function send(){
+
+                    if(!file_loaded){
+                        alert("Please load the Excel document ...");
+                        return;
+                    }
+
+                    processingPercent = 0;
+
+                    var form = document.getElementById('uploadform');
+                    var formData = new FormData(form);
+                    formData.append('csrfmiddlewaretoken', '{% csrf_token %}');
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                        console.log('Ready State: ' + this.readyState + ', Status: ' + this.status)
+                        if (this.readyState == 4 && this.status == 200) {
+                            var result = xhr.response;
+                            console.log('Result: ' + result);
+                            if(result == 'no_sheet'){
+                                showToast('The Excel document doesn\'t include a sheet with the selected name.');
+                            }else{
+                                showToast('Successfully done!');
+                            }
+                            processingPercent = 0;
+                            clearInterval(myTimer);
+                            document.getElementById('myProgress').style.display = 'none';
+                            document.getElementById('indicator').style.opacity='0';
+                            file_loaded = false;
+                            document.getElementById('indicator').innerHTML = 'A file\'s been loaded';
+                            document.getElementById('gif').style.display = 'none';
+                            document.getElementById('link').style.visibility = 'visible';
+                            document.getElementById('percentLayout').style.visibility = 'hidden';
+                            document.getElementById('percentView').innerHTML = '0';
+                        }
+                    };
+                    xhr.upload.addEventListener("progress", function(evt){
+                      if (evt.lengthComputable) {
+                        console.log("add upload event-listener" + evt.loaded + "/" + evt.total);
+                        progressing(evt.loaded*100/evt.total)
+                        if(evt.loaded/evt.total >= 1){
+                            document.getElementById('gif').style.display = 'block';
+                            document.getElementById('indicator').innerHTML = 'Processing...';
+                            document.getElementById('myProgress').style.display = 'none';
+                            document.getElementById('percentLayout').style.visibility = 'visible';
+                            myTimer = setInterval(updateProcessingPercent, 1000);
+                        }
+                      }
+                    }, false);
+                    xhr.onloadstart = function (e) {
+                        console.log("start")
+                        document.getElementById('myProgress').style.display = 'block';
+                    };
+                    xhr.onloadend = function (e) {
+                        console.log("end")
+                    };
+                    xhr.open('POST', form.getAttribute('action'), true);
+                    xhr.send(formData);
+                }
+
+                function updateProcessingPercent(){
+                    var xhr = new XMLHttpRequest();
+                    xhr.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            processingPercent = xhr.response;
+                            console.log('Processing Percent: ' + processingPercent + '%');
+
+                            if(processingPercent >= 99.5) {
+                                document.getElementById('percentView').innerHTML = '100';
+                            }else{
+                                document.getElementById('percentView').innerHTML = Number(processingPercent).toFixed(2);
+                            }
+
+                            if(processingPercent >= 99.5) {
+                                processingPercent = 0;
+                                clearInterval(myTimer);
+                                setTimeout(function(){
+                                    showToast('Successfully done!');
+                                    document.getElementById('myProgress').style.display = 'none';
+                                    document.getElementById('indicator').style.opacity='0';
+                                    file_loaded = false;
+                                    document.getElementById('indicator').innerHTML = 'A file\'s been loaded';
+                                    document.getElementById('gif').style.display = 'none';
+                                    document.getElementById('link').style.visibility = 'visible';
+                                    document.getElementById('percentLayout').style.visibility = 'hidden';
+                                    document.getElementById('percentView').innerHTML = '0';
+                                }, 3000);
+                            }
+                        }
+                    };
+                    xhr.open('GET', '/raexltotalrows', true);
+                    xhr.send('');
+                }
+
+            </script>
+
+        </center>
+        {% endif %}
+    </form>
+</div>
+
+<div id="snackbar">Submited</div>
+
+<div style="position:absolute; bottom:5%; width:100%; text-align:center;">
+    <a href="/raviewactivitydata" id="link" style="font-size:30px; font-family:verdana; font-weight:600; color:green; text-decoration:underline; visibility:hidden;">View Activity Data</a>
+</div>
+
+<div id="percentLayout">
+    <div style="width:100%; height:auto; text-align:center; position:absolute; bottom:10%;">
+        <div style="font-size:50px; font-weight:600; color:green; display:inline-block;">
+            <label id="percentView" style="font-size:100px; font-weight:800; color:red; margin-right:10px;">0.00</label>%
+            <div style="font-size:20px; font-family:verdana; color:#04a2be;">Uploaded</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function progressing(width) {
+        var elem = document.getElementById("myBar");
+        elem.style.width = width + "%";
+    }
+
+    function showToast(text) {
+        var x = document.getElementById("snackbar");
+        x.innerHTML = text;
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $( function() {
+    $( "#upload_form" ).draggable();
+  } );
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}RIGSCHEDULE{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Satisfy' rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/static/style.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="shortcut icon" href="/static/images/rs/rslogo.png" type="image/jpg">
+
+<style>
+
+html, body{
+  background: url("/static/images/rs/userbg.png") no-repeat center center fixed;
+  background-size:cover;
+}
+
+@font-face {
+   font-family: sansation;
+   src: url(/static/fonts/rs/Sansation_Regular.ttf);
+}
+
+@font-face {
+   font-family: sansation_bold;
+   src: url(/static/fonts/rs/Sansation_Bold.ttf);
+   font-weight: bold;
+}
+
+@font-face {
+   font-family: sansation_bold_italic;
+   src: url(/static/fonts/rs/Sansation_Bold_Italic.ttf);
+}
+
+@font-face {
+   font-family: sansation_light;
+   src: url(/static/fonts/rs/Sansation_Light.ttf);
+   font-weight: bold;
+}
+
+@font-face {
+   font-family: sansation_italic;
+   src: url(/static/fonts/rs/Sansation_Italic.ttf);
+   font-weight: bold;
+}
+
+#upBtn {
+  display: none;
+  position: fixed;
+  bottom: 20%;
+  right: 15px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: rgba(0,0,0,0.3);
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 50%;
+}
+
+#upBtn:hover {
+  background-color: orange;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-width:2px;
+    border-color:black;
+}
+
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js">
+</script>
+
+</head>
+
+<body>
+
+{% block body %}
+{% endblock %}
+
+</body>
+
+</html>
+

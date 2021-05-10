@@ -1,0 +1,230 @@
+.job-overview li, .sidelink li {
+    position: relative;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dee2e6;
+    list-style: none; }
+    .job-overview li:last-child, .sidelink li:last-child {
+        margin-bottom: 0;
+        border-bottom: none;
+        padding-bottom: 0; }
+        .job-overview li a, .sidelink li a {
+            display: block;
+            color: #1a1a1a;
+            pointer-events: none;}
+            .job-overview li a span, .sidelink li a span {
+                position: absolute;
+                right: 0;
+                top: 0;
+                color: black; }
+          .job-overview li.active a, .sidelink li.active a {
+                color: #000000;
+                font-style: italic; }
+
+
+.salaries li, .sidelink li {
+  position: relative;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #dee2e6;
+  list-style: none; }
+  .salaries li:last-child, .sidelink li:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0; }
+  .salaries li, .sidelink li {
+    display: block;
+    font-size:18px;
+    color: #000000; }
+    .salaries li span, .sidelink li span {
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: gray;
+      font-size:14px;}
+      .salaries li span strong {
+          color:black;
+          font-size:20px;
+          font-weight:550;
+          margin-right:5px;
+      }
+  .salaries li.active a, .sidelink li.active a {
+    color: #000000;
+    font-style: italic; }
+
+
+.dropdown-menu { top:40px; min-width:250px; padding:15px 5px 15px 5px; }
+.menu { padding-top:8px; padding-bottom:8px; position:relative; }
+.menu a { color:black; font-size:18px; }
+.menu:hover { background-color:#eee; }
+.prof-email { font-size:16px; padding:0px 10px 10px 10px; }
+.menu a span { position:absolute; right:0; top:25%; margin-right:15px; }
+
+@media (min-width: 991.98px) {
+        .dropdown-bubble .dropdown-menu { margin-top: 1em;  }
+        .dropdown-bubble .dropdown-menu:before,
+        .dropdown-bubble .dropdown-menu:after{
+            content: ' ';
+            display: block;
+            border-style: solid;
+            border-width: 0 .5em .8em .5em;
+            border-color: transparent;
+            position: absolute;
+            right: 1em;
+        }
+        .dropdown-bubble .dropdown-menu:before {
+            top: -.8em;
+            border-bottom-color: rgba(0,0,0,0.5);
+        }
+        .dropdown-bubble .dropdown-menu:after {
+            top: -.7em;
+            border-bottom-color: #fff;
+        }
+    }
+
+.max-2lines {
+    display: block;/* or inline-block */
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    max-height: 3.6em;
+    line-height: 1.8em;
+}
+
+.max-5lines {
+    display: block;/* or inline-block */
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    max-height: 9.0em;
+    line-height: 1.8em;
+}
+
+.btn-apply {
+    padding:10px;
+    font-size:16px;
+    color:#0052cc;
+    font-weight:800;
+    margin-top:10px;
+    border:0;
+    border-radius:10px 0px 0px 10px;
+    background-image: linear-gradient(to right, #80b3ff, white);
+}
+
+.asearch-field {
+    background-color:#3399ff;
+    color:white;
+    border-radius:5px;
+    border:0;
+    width:100%;
+    font-size:14px;
+    padding: 0.5em 3.5em 0.5em 1em;
+
+    margin: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-image:
+        linear-gradient(45deg, transparent 50%, white 50%),
+        linear-gradient(135deg, white 50%, transparent 50%),
+        linear-gradient(to right, #ccc, #ccc);
+    background-position:
+        calc(100% - 20px) calc(1em + 2px),
+        calc(100% - 15px) calc(1em + 2px),
+        calc(100% - 2.5em) 0.5em;
+    background-size:
+        5px 5px,
+        5px 5px,
+        1px 1.5em;
+    background-repeat: no-repeat;
+}
+
+.asearch-field:focus {
+    background-image:
+        linear-gradient(45deg, white 50%, transparent 50%),
+        linear-gradient(135deg, transparent 50%, white 50%),
+        linear-gradient(to right, #fff, #fff);
+    background-position:
+        calc(100% - 15px) 1em,
+        calc(100% - 20px) 1em,
+        calc(100% - 2.5em) 0.5em;
+    background-size:
+        5px 5px,
+        5px 5px,
+        1px 1.5em;
+    background-repeat: no-repeat;
+    border-color: white;
+    outline: 0;
+}
+
+.asearch-field:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+}
+
+.asearch-field option:not(:checked) {
+    background-color: #fff;
+    color:black;
+}
+
+.rating {
+    display: inline-block;
+    unicode-bidi: bidi-override;
+    color: #888888;
+    font-size: 25px;
+    height: 25px;
+    width: auto;
+    margin: 0;
+    position: relative;
+    padding: 0;
+}
+
+.rating-upper {
+    color: #ff9800;
+    padding: 0;
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.rating-lower {
+    padding: 0;
+    display: flex;
+    z-index: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

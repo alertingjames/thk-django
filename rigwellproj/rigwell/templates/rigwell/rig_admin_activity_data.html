@@ -1,0 +1,282 @@
+{% extends 'rigwell/base_rig_admin_activity_data.html' %}
+{% block title %}Data of {{item}} for {{act.name}}{% endblock %}
+{% block body %}
+
+
+<style>
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.manage {
+  border-radius: 10%;
+}
+
+.header {
+  background-image: linear-gradient(0deg,rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url("/static/images/rig.jpg");
+  background-size:cover;
+  position:relative;
+  height:200px;
+}
+
+table {
+  width:100%;
+  overflow-x:auto;
+  margin:0;
+}
+table, th, td {
+  border: 1px solid white;
+  border-collapse: collapse;
+  padding: 15px;
+  text-align: center;
+}
+
+table#t01 tr:nth-child(even) {
+  background-color: #edf7f8;
+}
+table#t01 tr:nth-child(odd) {
+ background-color: #fff;
+}
+table#t01 th {
+  background-color: #04a2be;
+  color: white;
+}
+
+table th {
+  background-color: #04a2be;
+  font-weight: 520;
+  color:white;
+  text-align: center;
+}
+
+#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20%;
+  right: 15px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: rgba(0,0,0,0.3);
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 50%;
+}
+
+#myBtn:hover {
+  background-color: orange;
+}
+
+</style>
+
+<!--<script>-->
+<!--	history.pushState(null, null, location.href);-->
+<!--    history.back();-->
+<!--    history.forward();-->
+<!--    window.onpopstate = function () { history.go(1); };-->
+<!--</script>-->
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="../lib/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div id="no_result" style="font-size:16px; font-weight:300; color: black; text-align:center;
+	position:fixed; left:50%; float:middle; padding: 10px 15px 10px 15px;
+	transform:translate(-50%, -50%); width:auto; z-index:100; top:450px; display:none;">
+    No data uploaded ...
+</div>
+
+<button onclick="topFunction()" id="myBtn" title="Go to top"><i class="glyphicon glyphicon-menu-up" style="color:white; font-size:14px;"></i></button>
+
+<div style="background-color:white; width:100%;">
+    <div class="header" id="header">
+        <div style="font-size:16px; font-weight:500; color:white; left:80px; position:absolute; bottom:10px; font-style: italic;">Rig: {{rig.name}}</div>
+        <div style="font-size:30px; font-weight:600; font-family:cursive; color:#ffcc00; left:300px; position:absolute; bottom:10px; font-style: italic;">Data of {{item}} for {{act.name}}, {{well.name}}</div>
+    </div>
+    <form action="#" method="post">
+        {% csrf_token %}
+        <table cellspacing="0" class="table table-fit" id="t01">
+            <tr>
+                <th>id</th>
+                {% for field in fields %}
+                    <th>{{field.field_name}}</th>
+                {% endfor %}
+            </tr>
+            {% if datalist %}
+                {% for item in datalist %}
+                  <tr>
+                      <td>{{forloop.counter}}</td>
+                    {% for val in item.values %}
+                    <td>{{val}}</td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+
+            {% else %}
+                <script>document.getElementById('no_result').style.display = 'block';</script>
+            {% endif %}
+        </table>
+
+        {% if datalist %}
+        <ul class="pager" style="float:right; margin-right:20px;">
+            <li><a href="/ra_to_previous?index={{current}}" style="color:black;">&laquo; Previous</a></li>
+            {% for i in range %}
+                {% if i >= 1 %}
+                    {% load tag_library %}
+                    {% if current|to_int == i %}
+                    <li><a href="/ra_to_page?index={{i}}" style="color:red; font-weight:600;">{{i}}</a></li>
+                    {% else %}
+                    <li><a href="/ra_to_page?index={{i}}" style="color:black;">{{i}}</a></li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            <li><a href="/ra_to_next?index={{current}}" style="color:black;">Next &raquo;</a></li>
+        </ul>
+        {% endif %}
+
+    </form>
+</div>
+
+<a href="/racleardata?act_id={{act.id}}&item={{item}}" onclick="return confirm('All data in {{item}} will be deleted. Are you sure you want to clear all data for {{item}}?')">
+    <div style="font-size:16px; font-weight:500; color:white; z-index:100; position:fixed; right:30px; top:100px;
+        padding:6px 18px; border-radius:50px; border:0; background-color:#006699; box-shadow: 0px 0px 20px rgba(0,0,0,0.6);">Clear All Data</div>
+</a>
+
+<script>
+
+   function clearAllData(){
+       if(confirm('All data in {{item}} will be deleted. Are you sure you want to clear all data for {{item}}?')){
+           window.location.href = "/racleardata?act_id={{act.id}}&item={{item}}&link=" + window.location.href;
+       }
+   }
+
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    $(window).on('scroll', function () {
+
+      var $w = $(window);
+      $('.position-fixed-x').css('left', $w.scrollLeft());
+      $('.table-owner1').css('top', $w.scrollTop());
+
+    });
+</script>
+
+<script>
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+setWidth(document.getElementById("header"), document.getElementById("t01"));
+
+function setWidth(two, one) {
+  style = window.getComputedStyle(one);
+  wdt = style.getPropertyValue('width');
+  two.style.width = wdt;
+}
+
+</script>
+
+<script>
+
+ScrollTo({{member_id}});
+
+function ScrollTo(name) {
+  //init thread
+  ScrollToResolver(document.getElementById(name));
+}
+
+function ScrollToResolver(elem) {
+  elem.style.backgroundColor = "#ffccff";
+  var jump = parseInt(elem.getBoundingClientRect().top * .2);
+  document.body.scrollTop += jump - 50;
+  document.documentElement.scrollTop += jump - 50;
+  //lastjump detects anchor unreachable, also manual scrolling to cancel animation if scroll > jump
+  if (!elem.lastjump || elem.lastjump > Math.abs(jump)) {
+    elem.lastjump = Math.abs(jump);
+    setTimeout(function() {
+      ScrollToResolver(elem);
+    }, "100");
+  } else {
+    elem.lastjump = null;
+  }
+}
+
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

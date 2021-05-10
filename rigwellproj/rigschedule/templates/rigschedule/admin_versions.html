@@ -1,0 +1,1374 @@
+{% extends 'rigschedule/base_admin_versions.html' %}
+{% block title %}RIGSCHEDULE RIG VERSIONS | ADMIN{% endblock %}
+{% block body %}
+
+<br>
+<br>
+<br>
+
+<style>
+
+html, body{
+  background: url("/static/images/accountbg.jpg") no-repeat center center fixed;
+  background-size:cover;
+}
+
+#main {
+  width:100%;
+  height:auto;
+  margin-top: 0.5%;
+  margin-bottom: auto;
+  margin-left:auto;
+  margin-right:auto;
+  overflow: hidden;
+}
+
+.item-rig {
+    border-radius:5px; margin:5px; background-color:white; cursor:pointer;
+}
+
+.item-rig:hover {
+    box-shadow:0 0 8px rgba(0,0,0,0.15);
+}
+
+.rig-sel {
+    border:3px solid red;
+}
+
+.item-well {
+    border-radius:5px; margin:0px 10px 0px 10px; background-color:white; padding:20px;transition:0.3s;
+}
+
+.item-well:hover {
+    box-shadow:0 0 11px rgba(0,0,0,0.5);
+    transform: scale(1.03);
+}
+
+.box-title {
+    font-size:25px; font-weight:600; color: black; text-align:center; font-family:sansation_bold;
+}
+
+.box-dialog {
+    font-size:16px; font-weight:300; color: black; z-index:9999999; box-shadow: 0px 0px 100px rgba(0, 0, 0, 1.0); position:fixed; left:50%; float:middle; background-color:white; border-radius:10px; padding: 8px 15px 15px 15px;
+	transform:translate(-50%, -50%); min-width:500px; max-width:800px; width:auto; top:50%; display:none;
+}
+
+.wellitem-days-operation {
+    margin-right:5px; font-size:14px; font-family:sansation_light;
+}
+
+.wellitem_p_name {
+    font-size:20px; color:#0099ff;
+}
+
+.wellitem-days {
+    color:black; font-size:18px; text-align:center; margin-right:10px;
+}
+
+.wells-title {
+    color:white; font-weight:600; font-size:18px; font-family:sansation; margin-top:5px; text-align:center; width:100%;
+}
+
+.pan {
+  max-width:400px;
+  width:auto;
+  height:auto;
+  margin-bottom: auto;
+  margin-left:auto;
+  margin-right:0;
+  opacity:0.9;
+  overflow: hidden;
+}
+
+.pan2 {
+  max-width:400px;
+  width:auto;
+  height:auto;
+  margin-bottom: auto;
+  margin-left:0;
+  margin-right:auto;
+  opacity:0.9;
+  overflow: hidden;
+}
+
+input, select {
+  border-radius:5px;
+  border: 1px solid gray;
+  width: 100%;
+  height: 42px;
+  float: middle;
+  padding: 0px 15px;
+  opacity: 0.9;
+  color:black;
+  text-align:left;
+}
+
+input[type=checkbox] {
+    width:15px;height:15px;margin-right:10px;
+}
+
+textarea {
+  border-radius:5px;
+  border: 1px solid gray;
+  width: 100%;
+  padding: 15px;
+  color:black;
+}
+
+
+input:focus, select:focus {
+    outline: none;
+    border-width:2px;
+    border-color:black;
+}
+
+a {
+  color:black;
+}
+
+.form-group {
+  overflow: hidden;
+  width:100%;
+}
+
+
+.contentform {
+  padding: 20px 0px 0px 0px;
+  float:middle;
+  margin:auto;
+}
+
+.bouton-update{
+  background-color: #006600;
+  color: #FFF;
+  text-align: center;
+  width: 100%;
+  margin-bottom:10%;
+  border:0;
+  padding: 12px 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+p > span {
+    color:red;
+}
+
+p > label {
+    color:blue; font-weight:800; font-size:16px;
+}
+
+.btn-reg {
+    background:#5c85d6; border-radius:5px; border:0; color:white; width:100%; font-size:16px; margin:10px 0px 20px 0px; padding:8px; font-family:sansation_bold;
+}
+
+.btn-plus {
+    width:30px; height:30px; border-radius:50%; background:#00ace6; color:white; font-size:20px; border:0; margin-left:20px;
+}
+
+.btn-plus:hover {
+    background-color:#006699;
+}
+
+.formcontent {
+  width:100%;
+  float:middle;
+  margin:auto;
+  box-sizing: border-box;
+  padding: 0px;
+}
+
+th {color:white;}
+
+td {text-align:middle;}
+
+.slide {
+    display: inline-block;
+}
+
+.rig-name {
+    color:black;font-size:20px;font-weight:600; font-family:sansation_bold;
+}
+
+.rig-type {
+    color:#33cc33;font-size:14px;font-weight:600;text-transform:uppercase;
+}
+
+.rig-version {
+    font-style:bold;font-size:14px; font-family:sansation;
+}
+
+.well-add-btn {
+    display:inline-block; margin-right:20px; float:right; color:orange; font-size:14px; font-family:sansation;
+}
+
+.well-add-btn:hover {
+    color:orange;
+}
+
+.well-p {
+    font-weight:800;font-size:30px;color:black;
+}
+
+.p_name {
+    font-size:20px; color:0099ff;
+}
+
+.cap{
+    color:green;
+    font-size:14px;
+    margin-right:20px;
+    font-family:sansation_bold;
+}
+
+.sss{
+    color:black;
+    font-size:16px;
+    font-family:sansation;
+}
+
+label {
+    font-family:sansation_bold;
+}
+
+.singleline {
+    display: -webkit-box;
+    max-width: 100%;
+    margin: 0 auto;
+    -webkit-line-clamp: 1;
+    /* autoprefixer: off */
+    -webkit-box-orient: vertical;
+    /* autoprefixer: on */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+::-webkit-scrollbar {
+    width: 5px;  /* Remove scrollbar space */
+    height: 5px;
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background:gray;
+}
+
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 100000; /* Sit on top */
+  padding-top: 30px; /* Location of the box
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content {
+  margin: auto;
+  display: block;
+  min-width: 450px;
+  max-width: 700px;
+}
+
+/* Add Animation */
+.modal-content {
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+  from {-webkit-transform:scale(0)}
+  to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+  from {transform:scale(0)}
+  to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  color: gray;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 500px){
+  .modal-content {
+    width: 100%;
+  }
+}
+
+
+#backgroundOverlay{
+    background-color:rgba(0,0,0,0.6);
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    display:none;
+}
+
+#modal-contentbox {
+    width:100%; padding:30px; font-size:20px; font-family:sansation;
+}
+
+</style>
+
+<script type="text/javascript">
+window.onload = function() {
+	window.moveTo(0, 0);
+	window.resizeTo(screen.availWidth, screen.availHeight);
+}
+</script>
+
+<script>
+	history.pushState(null, null, location.href);
+    history.back();
+    history.forward();
+    window.onpopstate = function () { history.go(1); };
+</script>
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../lib/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script type="text/javascript" src="https://cdn.rawgit.com/asvd/dragscroll/master/dragscroll.js"></script>
+
+<div id="main">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3" style="background-color:rgba(252,252,252,0.8);">
+                <div class="contentform">
+                    <div class="formcontent">
+                        <div style="display:flex; padding:0px 0px 10px 0px;">
+                            <p style="margin:5px;"><label>RIGS</label></p>
+                            <div style="flex-grow:1;"></div>
+                            {% if last_version %}
+                            <button type="button" onclick="javascript:confirmVersionDeletion('{{last_version.pk}}');" class="btn-version">Delete Version</button>
+                            {% endif %}
+                        </div>
+                        <div style="width:100%;">
+                            <div style="width:100%; height:82%; overflow-y:auto;">
+                                {% if rigs %}
+                                {% for rig in rigs %}
+                                <div class="item-rig" id="rigitem{{rig.id}}" onclick="showRigWells(this)">
+                                    <div style="padding:15px 15px 0px 15px;">
+                                        <div class="rig-name">{{rig.name}}</div>
+                                        <label class="rig-type">{{rig.type}}</label>
+                                        <div class="rig-version">{{rig.version_text}}</div>
+                                    </div>
+
+                                    <input hidden id="rig-id" value="{{rig.pk}}">
+                                    <input hidden id="rig-name" value="{{rig.name}}">
+                                    <input hidden id="rig-type" value="{{rig.type}}">
+                                    <input hidden id="rig-pressure-rating" value="{{rig.pressure_rating}}">
+                                    <input hidden id="rig-specification" value="{{rig.specification}}">
+                                    <input hidden id="rig-contract-period" value="{{rig.contract_period}}">
+                                    <input hidden id="rig-summary" value="{{rig.summary}}">
+                                    <input hidden id="rig-comment" value="{{rig.comment}}">
+                                    <input hidden id="rig-version-text" value="{{rig.version_text}}">
+
+                                    <div style="width:100%; text-align:right;">
+                                        <a href="javascript:void(0)" onclick="openRigDetailBox(this); event.stopPropagation();" id="{{rig.id}}"
+                                            style="display:inline-block; margin-right:20px; color:orange; font-size:14px;">
+                                            <span class="fa fa-info-circle"></span>
+                                        </a>
+                                        <a href="javascript:void(0)" onclick="openEditRigBox(this); event.stopPropagation();" id="{{rig.id}}"
+                                            style="display:inline-block; margin-right:20px; color:orange; font-size:14px; display:none;">
+                                            <span class="fa fa-pencil"></span>
+                                        </a>
+                                        <a href="javascript:void(0)" onclick="confirmRigDeletion('{{rig.id}}', '{{last_version.pk}}'); event.stopPropagation();"
+                                            style="display:inline-block; margin-right:20px; color:orange; font-size:14px;">
+                                            <span class="fa fa-trash"></span>
+                                        </a>
+                                        <a href="javascript:void(0);" onclick="showNewWellBox(this); event.stopPropagation();" class="well-add-btn">
+                                            <span class="fa fa-plus" style="margin-right:5px;"></span>Add Well
+                                            <input hidden value="{{rig.id}}">
+                                            <div style="display:none;">{{rig.name}}</div>
+                                        </a>
+                                    </div>
+                                    <br>
+                                </div>
+                                {% endfor %}
+                                {% else %}
+                                <center>
+                                    <h5 class="col-sm-offset-1" style="color:#ff8080; margin:10px; font-family:sansation;">No rig found ...</h5>
+                                </center>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="contentform">
+                    <div class="formcontent">
+                        <div style="margin-top:-15px;">
+                            <div style="width:100%; height:88%; overflow:auto;">
+                                <label class="wells-title">Wells Of The Rig</label>
+                                {% if wells %}
+                                <div id="riglist">
+                                    {% for data in wells %}
+                                        <div id="rigwell{{data.rig.id}}" class="wellframes" style="display:none;">
+                                            {% if data.wells %}
+                                            <div id="welllist">
+                                                {% for well in data.wells %}
+                                                <div class="col-sm-12">
+                                                    <div class="contentform">
+                                                		<div class="formcontent">
+                                                            <div id="{{well.id}}" class="item-well">
+
+                                                                <input hidden id="well-id" value="{{well.pk}}">
+                                                                <input hidden id="well-rig-id" value="{{well.rig_id}}">
+                                                                <input hidden id="well-name" value="{{well.name}}">
+                                                                <input hidden id="well-p10-days-operation" value="{{well.p10_days_operation}}">
+                                                                <input hidden id="well-p50-days-operation" value="{{well.p50_days_operation}}">
+                                                                <input hidden id="well-p90-days-operation" value="{{well.p90_days_operation}}">
+                                                                <input hidden id="well-p10-start-date" value="{{well.p10_start_date}}">
+                                                                <input hidden id="well-p50-start-date" value="{{well.p50_start_date}}">
+                                                                <input hidden id="well-p90-start-date" value="{{well.p90_start_date}}">
+                                                                <input hidden id="well-p10-status" value="{{well.p10_status}}">
+                                                                <input hidden id="well-p50-status" value="{{well.p50_status}}">
+                                                                <input hidden id="well-p90-status" value="{{well.p90_status}}">
+                                                                <input hidden id="well-license" value="{{well.license}}">
+                                                                <input hidden id="well-field" value="{{well.field}}">
+                                                                <input hidden id="well-type" value="{{well.well_type}}">
+                                                                <input hidden id="well-status" value="{{well.well_status}}">
+                                                                <input hidden id="well-info" value="{{well.info}}">
+
+                                                                <a href="javascript:void(0)" onclick="return confirmWellDeletion('{{well.rig_id}}', '{{well.id}}');"
+                                                                    style="display:inline-block; float:right; color:orange; font-size:16px;">
+                                                                    <span class="fa fa-trash"></span>
+                                                                </a>
+
+                                                                <a href="javascript:void(0)" onclick="openEditWellBox(this)" id="{{well.id}}"
+                                                                    style="display:inline-block; margin-right:20px; float:right; color:orange; font-size:16px;">
+                                                                    <span class="fa fa-pencil" style="margin-right:5px;"></span>
+                                                                </a>
+
+                                                                <div class="well-p">{{well.name}}</div>
+
+                                                                <div style="display:flex; margin-top:5px;">
+                                                                    <div style="flex-grow:1">
+                                                                        <div class="sss"><label class="cap">Well Type: </label>{{well.well_type}}</div>
+                                                                    </div>
+                                                                    <div style="flex-grow:1">
+                                                                        <div class="sss"><label class="cap">Well Status: </label>{{well.well_status}}</div>
+                                                                    </div>
+                                                                    <div style="flex-grow:1">
+                                                                        <div class="sss"><label class="cap">License: </label>{% if well.license != '' %}{{well.license}}{% else %}---{% endif %}</div>
+                                                                    </div>
+                                                                    <div style="flex-grow:1">
+                                                                        <div class="sss"><label class="cap">Field/Area: </label>{{well.field}}</div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div style="display:flex;">
+                                                                    <div style="flex-grow:1;">
+                                                                        <label class="wellitem_p_name">P10</label> - <label class="wellitem-days-operation">Start Date: </label>
+                                                                        <label class="wellitem-days" style="{% if well.p10_status == 'start' %}color:orange;{% endif %}">{{well.p10_start_date}}</label>
+                                                                        <label class="wellitem-days-operation">Days of Operation: </label><label class="wellitem-days">{{well.p10_days_operation}}</label>
+                                                                    </div>
+                                                                    <div style="flex-grow:1;">
+                                                                        <label class="wellitem_p_name">P50</label> - <label class="wellitem-days-operation">Start Date: </label>
+                                                                        <label class="wellitem-days" style="{% if well.p10_status == 'start' %}color:orange;{% endif %}">{{well.p50_start_date}}</label>
+                                                                        <label class="wellitem-days-operation">Days of Operation: </label><label class="wellitem-days">{{well.p50_days_operation}}</label>
+                                                                    </div>
+                                                                    <div style="flex-grow:1;">
+                                                                        <label class="wellitem_p_name">P90</label> - <label class="wellitem-days-operation">Start Date: </label>
+                                                                        <label class="wellitem-days" style="{% if well.p10_status == 'start' %}color:orange;{% endif %}">{{well.p90_start_date}}</label>
+                                                                        <label class="wellitem-days-operation">Days of Operation: </label><label class="wellitem-days">{{well.p90_days_operation}}</label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="sss singleline" style="cursor:pointer;margin-top:5px;">
+                                                                    <label class="cap">Information: </label>
+                                                                    <a href="javascript:void(0)" style="color:rgba(0,0,0,0.4);" onclick="dispWellInfo(this);">{{well.info}}</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            {% else %}
+                                            <center>
+                                                <h4 class="col-sm-offset-1" style="color:rgba(255,255,255,0.6); margin:10px; font-family:sansation;">No well found ...</h4>
+                                            </center>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+var selectedObj = null;
+function showRigWells(obj) {
+    if(selectedObj != null) {
+        selectedObj.classList.remove('rig-sel');
+    }
+    obj.classList.add('rig-sel');
+    selectedObj = obj;
+
+    var wellframes = document.getElementsByClassName('wellframes');
+    if(wellframes != null) {
+        for(var i=0; i<wellframes.length; i++) {
+            wellframes[i].style.display = 'none'
+        }
+        var welllist = document.querySelector('#rigwell' + obj.id.replace('rigitem',''));
+        welllist.style.display = 'block';
+    }
+}
+
+function collectionHas(a, b) { //helper function (see below)
+    for(var i = 0, len = a.length; i < len; i ++) {
+        if(a[i] == b) return true;
+    }
+    return false;
+}
+
+function findParentBySelector(elm, selector) {
+    var all = document.querySelectorAll(selector);
+    var cur = elm.parentNode;
+    while(cur && !collectionHas(all, cur)) { //keep going up until you find a match
+        cur = cur.parentNode; //go up
+    }
+    return cur; //will return null if not found
+}
+
+</script>
+
+<!-- The Well Add Modal -->
+<div id="wellAddModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="javascript:wellAddModal.style.display='none';">&times;</span>
+        <div class="modal-content-box">
+            <div style="padding:20px;">
+
+                <div id="wellbox_title" class="box-title">Add New Well/Activity</div>
+                <div style="margin-top:5px;">
+                    <form action="/rigschedule/avnewwell" method="post" enctype="multipart/form-data" style="width:100%;" autocomplete="off">
+                        {% csrf_token %}
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="pan">
+                                        <div class="contentform">
+                        		            <div class="formcontent">
+                        		                <div class="form-group">
+                                                    <div>
+                                                        <label for="well_name">Name</label>
+                                                        <input name="well_name" required id="well_name" type="text" placeholder="Well Name...">
+                                                    </div>
+                                                </div>
+                                                <label class="p_name">P10</label>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <input type="checkbox" id="p10_status" name="p10_status" value="start"><label for="p10_start_date">Start Date</label>
+                                                        <input name="p10_start_date" required id="p10_start_date" type="date">
+                                                        <script>
+                                                            document.getElementById('p10_start_date').valueAsDate = new Date();
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <label for="p10_days_operation">Days Of Operation</label>
+                                                        <input name="p10_days_operation" required id="p10_days_operation" type="number" placeholder="0" value="1">
+                                                    </div>
+                                                </div>
+                                                <label class="p_name">P50</label>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <input type="checkbox" id="p50_status" name="p50_status" value="start"><label for="p50_start_date">Start Date</label>
+                                                        <input name="p50_start_date" required id="p50_start_date" type="date">
+                                                        <script>
+                                                            document.getElementById('p50_start_date').valueAsDate = new Date();
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <label for="p50_days_operation">Days Of Operation</label>
+                                                        <input name="p50_days_operation" required id="p50_days_operation" type="number" placeholder="0" value="1">
+                                                    </div>
+                                                </div>
+                                                <label class="p_name">P90</label>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <input type="checkbox" id="p90_status" name="p90_status" value="start"><label for="p90_start_date">Start Date</label>
+                                                        <input name="p90_start_date" required id="p90_start_date" type="date">
+                                                        <script>
+                                                            document.getElementById('p90_start_date').valueAsDate = new Date();
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <label for="p90_days_operation">Days Of Operation</label>
+                                                        <input name="p90_days_operation" required id="p90_days_operation" type="number" placeholder="0" value="1">
+                                                    </div>
+                                                </div>
+                        		            </div>
+                        		        </div>
+                        		    </div>
+                        		</div>
+                        		<div class="col-sm-6">
+                                    <div class="pan">
+                                        <div class="contentform">
+                        		            <div class="formcontent">
+                                                <div class="form-group">
+                                                    <div>
+                                                        <label for="license">License</label>
+                                                        <input name="license" id="license" type="text" placeholder="License...">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <label for="field">Field/Area</label>
+                                                        <input name="field" required id="field" type="text" placeholder="Field/Area...">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="well_type">Well Type</label>
+                                                    <select name="well_type" required id="well_type">
+                                                        <option value="Exploration">Exploration</option>
+                                                        <option value="Development">Development</option>
+                                                    </select>
+                                    			</div>
+                                    			<div class="form-group">
+                                                    <label for="well_status">Well Status</label>
+                                                    <select name="well_status" required id="well_status">
+                                                        <option value="Completed">Completed</option>
+                                                        <option value="Conceptional">Conceptional</option>
+                                                        <option value="Engineering & Design">Engineering & Design</option>
+                                                        <option value="Execution">Execution</option>
+                                                        <option value="Occupied">Occupied</option>
+                                                        <option value="Plan for Execution">Plan for Execution</option>
+                                                        <option value="Plan & Select">Plan & Select</option>
+                                                    </select>
+                                    			</div>
+                                                <div class="form-group">
+                                                    <input style="height:5px; opacity:0;">
+                                                    <!--<script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>-->
+                                                    <label for="info">Information</label>
+                                                    <textarea rows="6" name="info" id="info" placeholder="Information..." style="width:100%; height:250px;"></textarea>
+                                                    <!--<script>autosize(document.getElementById("info"));</script>-->
+                                                </div>
+                                                <input hidden name="version_id" value="{{last_version.pk}}">
+                                                <input hidden id="rig_id" name="rig_id">
+                                                <button type="submit" class="btn-reg">Submit</button>
+                        		            </div>
+                        		        </div>
+                        		    </div>
+                        		</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="editRigBox" class="box-dialog">
+    {% csrf_token %}
+    <img src="/static/images/cancel.png" style="width:25px; height:25px; float:right;" onclick="javascript:dismissLayouts();">
+    <div style="width:100%; display:inline-block;">
+        <div class="box-title">Edit The Rig</div>
+        <br>
+        <div>
+            <form action="/rigschedule/aveditrig" method="post" enctype="multipart/form-data" style="width:100%;" autocomplete="off">
+                {% csrf_token %}
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="pan">
+                                <div class="contentform">
+                		            <div class="formcontent">
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="edit_rig_name">Rig Name</label>
+                                                <input name="rig_name" required id="edit_rig_name" type="text" placeholder="Rig Name...">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="edit_rig_type">Rig Type</label>
+                                            <select name="rig_type" required id="edit_rig_type">
+                                                <option value="Jackup">Jackup</option>
+                                                <option value="Land Rig">Land Rig</option>
+                                                <option value="Semi-Submersible">Semi-Submersible</option>
+                                            </select>
+                            			</div>
+                            			<div class="form-group">
+                                            <div>
+                                                <label for="edit_pressure_rating">Pressure Rating</label>
+                                                <input name="pressure_rating" required id="edit_pressure_rating" type="text" placeholder="Pressure Rating...">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="edit_specification">Specification</label>
+                                                <input name="specification" required id="edit_specification" type="text" placeholder="Specification...">
+                                            </div>
+                                        </div>
+                		            </div>
+                		        </div>
+                		    </div>
+                		</div>
+                		<div class="col-sm-6">
+                            <div class="pan">
+                                <div class="contentform">
+                		            <div class="formcontent">
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="edit_contract_period">Contract Period</label>
+                                                <input name="contract_period" required id="edit_contract_period" type="text" placeholder="Contract Period...">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input style="height:5px; opacity:0;">
+                                            <script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>
+                                            <label for="edit_summary">Summary</label>
+                                            <textarea rows="3" name="summary" id="edit_summary" placeholder="Summary..." style="width:100%; max-height:100px;"></textarea>
+                                            <script>autosize(document.getElementById("edit_summary"));</script>
+                                        </div>
+                                        <div class="form-group">
+                                            <input style="height:5px; opacity:0;">
+                                            <!--<script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>-->
+                                            <label for="edit_comment">Comment</label>
+                                            <textarea rows="3" name="comment" id="edit_comment" placeholder="Comment..." style="width:100%; max-height:80px;"></textarea>
+                                            <!--<script>autosize(document.getElementById("edit_comment"));</script>-->
+                                        </div>
+                                        <input hidden name="version_id" value="{{last_version.pk}}">
+                                        <input hidden name="rig_id" id="edit_rig_id">
+                                        <button type="submit" class="btn-reg">Submit</button>
+                		            </div>
+                		        </div>
+                		    </div>
+                		</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- The Well Edit Modal -->
+<div id="wellEditModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="javascript:wellEditModal.style.display='none';">&times;</span>
+        <div class="modal-content-box">
+            <div style="padding:20px;">
+
+                <div class="box-title" id="edit_wellbox_title">Edit The Well/Activity</div>
+                <div style="margin-top:5px;">
+                    <form action="/rigschedule/avwelledit" method="post" enctype="multipart/form-data" style="width:100%;" autocomplete="off">
+                        {% csrf_token %}
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="pan">
+                                        <div class="contentform">
+                        		            <div class="formcontent">
+                        		                <div class="form-group">
+                                                    <div>
+                                                        <label for="edit_well_name">Name</label>
+                                                        <input name="well_name" required id="edit_well_name" type="text" placeholder="Well Name...">
+                                                    </div>
+                                                </div>
+                                                <label class="p_name">P10</label>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <input type="checkbox" id="edit_p10_status" name="p10_status" value="start"><label for="edit_p10_start_date">Start Date</label>
+                                                        <input name="p10_start_date" required id="edit_p10_start_date" type="date">
+                                                        <script>
+                                                            document.getElementById('edit_p10_start_date').valueAsDate = new Date();
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <label for="edit_p10_days_operation">Days Of Operation</label>
+                                                        <input name="p10_days_operation" required id="edit_p10_days_operation" type="number" placeholder="0" value="1">
+                                                    </div>
+                                                </div>
+                                                <label class="p_name">P50</label>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <input type="checkbox" id="edit_p50_status" name="p50_status" value="start"><label for="edit_p50_start_date">Start Date</label>
+                                                        <input name="p50_start_date" required id="edit_p50_start_date" type="date">
+                                                        <script>
+                                                            document.getElementById('edit_p50_start_date').valueAsDate = new Date();
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <label for="edit_p50_days_operation">Days Of Operation</label>
+                                                        <input name="p50_days_operation" required id="edit_p50_days_operation" type="number" placeholder="0" value="1">
+                                                    </div>
+                                                </div>
+                                                <label class="p_name">P90</label>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <input type="checkbox" id="edit_p90_status" name="p90_status" value="start"><label for="edit_p90_start_date">Start Date</label>
+                                                        <input name="p90_start_date" required id="edit_p90_start_date" type="date">
+                                                        <script>
+                                                            document.getElementById('edit_p90_start_date').valueAsDate = new Date();
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <label for="edit_p90_days_operation">Days Of Operation</label>
+                                                        <input name="p90_days_operation" required id="edit_p90_days_operation" type="number" placeholder="0" value="1">
+                                                    </div>
+                                                </div>
+                        		            </div>
+                        		        </div>
+                        		    </div>
+                        		</div>
+                        		<div class="col-sm-6">
+                                    <div class="pan">
+                                        <div class="contentform">
+                        		            <div class="formcontent">
+                        		                <div class="form-group">
+                                                    <div>
+                                                        <label for="edit_license">License</label>
+                                                        <input name="license" id="edit_license" type="text" placeholder="License...">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <label for="edit_field">Field/Area</label>
+                                                        <input name="field" required id="edit_field" type="text" placeholder="Field/Area...">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="edit_well_type">Well Type</label>
+                                                    <select name="well_type" required id="edit_well_type">
+                                                        <option value="Exploration">Exploration</option>
+                                                        <option value="Development">Development</option>
+                                                    </select>
+                                    			</div>
+                                    			<div class="form-group">
+                                                    <label for="edit_well_status">Well Status</label>
+                                                    <select name="well_status" required id="edit_well_status">
+                                                        <option value="Completed">Completed</option>
+                                                        <option value="Conceptional">Conceptional</option>
+                                                        <option value="Engineering & Design">Engineering & Design</option>
+                                                        <option value="Execution">Execution</option>
+                                                        <option value="Occupied">Occupied</option>
+                                                        <option value="Plan for Execution">Plan for Execution</option>
+                                                        <option value="Plan & Select">Plan & Select</option>
+                                                    </select>
+                                    			</div>
+                                                <div class="form-group">
+                                                    <input style="height:5px; opacity:0;">
+                                                    <!--<script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>-->
+                                                    <label for="edit_info">Information</label>
+                                                    <textarea rows="3" name="info" id="edit_info" placeholder="Information..." style="width:100%; height:250px;"></textarea>
+                                                    <!--<script>autosize(document.getElementById("edit_info"));</script>-->
+                                                </div>
+                                                <input hidden name="version_id" value="{{last_version.pk}}">
+                                                <input hidden name="rig_id" id="edit_well_rig_id">
+                                                <input hidden name="well_id" id="edit_well_id">
+                                                <button type="submit" class="btn-reg">Submit</button>
+                        		            </div>
+                        		        </div>
+                        		    </div>
+                        		</div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- The Rig Detail Modal -->
+<div id="rigDetailModal" class="modal" onclick="javascript:rigDetailModal.style.display='none';">
+    <div class="modal-content">
+        <span class="close" onclick="javascript:rigDetailModal.style.display='none';">&times;</span>
+        <div class="modal-content-box">
+            <div style="padding:30px;">
+                <div class="well-p" id="rigbox-name">{{rig.name}}</div><br>
+                <div class="sss singleline" id="rigbox-version-text" style="float:right; font-family:sansation_bold;"><label class="cap">Version: </label>{{rig.version_text}}</div>
+                <div class="sss singleline" id="rigbox-type"><label class="cap">Type: </label>{{rig.type}}</div>
+                <div class="sss" id="rigbox-spec"><label class="cap">Specification: </label>{{rig.specification}}</div>
+                <div class="sss" id="rigbox-pressure-rating"><label class="cap">Pressure Rating: </label>{{rig.pressure_rating}}</div>
+                <div class="sss" id="rigbox-contract-period"><label class="cap">Contract Period: </label>{{rig.contract_period}}</div>
+                <div class="sss">
+                    <label class="cap">Summary: </label>
+                    <div id="rigbox-summary">{{rig.summary}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+var rigDetailModal = document.getElementById("rigDetailModal");
+function openRigDetailBox(obj) {
+    var selector = ".item-rig";
+    var parent = findParentBySelector(obj, selector);
+    var rigname = parent.querySelector("#rig-name");
+    var rigtype = parent.querySelector("#rig-type");
+    var rigpressurerating = parent.querySelector("#rig-pressure-rating");
+    var rigspecification = parent.querySelector("#rig-specification");
+    var rigcontractperiod = parent.querySelector("#rig-contract-period");
+    var rigsummary = parent.querySelector("#rig-summary");
+    var rigcomment = parent.querySelector("#rig-comment");
+    var rigversiontext = parent.querySelector("#rig-version-text");
+
+    document.getElementById("rigbox-name").innerHTML = rigname.value;
+    document.getElementById("rigbox-version-text").innerHTML = "<label class='cap'>Version: </label>" + rigversiontext.value;
+    document.getElementById("rigbox-type").innerHTML = "<label class='cap'>Type: </label>" + rigtype.value;
+    document.getElementById("rigbox-spec").innerHTML = "<label class='cap'>Specification: </label>" + rigspecification.value;
+    document.getElementById("rigbox-pressure-rating").innerHTML = "<label class='cap'>Pressure Rating: </label>" + rigpressurerating.value;
+    document.getElementById("rigbox-contract-period").innerHTML = "<label class='cap'>Contract Period: </label>" + rigcontractperiod.value;
+    document.getElementById("rigbox-summary").innerHTML = rigsummary.value;
+
+    rigDetailModal.style.display = "block";
+}
+
+</script>
+
+
+<div id="backgroundOverlay" onclick="javascript:dismissLayouts();">
+</div>
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+<button onclick="topFunction()" id="upBtn"><i class="glyphicon glyphicon-menu-up" style="color:white; font-size:14px;"></i></button>
+
+<!-- The Modal -->
+<div id="myModal" class="modal" onclick="javascript:modal.style.display='none';">
+  <div class="modal-content">
+      <span class="close" onclick="javascript:modal.style.display='none';">&times;</span>
+      <br>
+      <div id="modal-contentbox">
+      </div>
+  </div>
+</div>
+
+<script>
+
+var modal = document.getElementById("myModal");
+function dispWellInfo(obj) {
+    modal.style.display = "block";
+    document.getElementById('modal-contentbox').innerHTML = obj.innerHTML;
+}
+
+function openEditRigBox(obj) {
+    var selector = ".item-rig";
+    var parent = findParentBySelector(obj, selector);
+    var rigid = obj.id;
+    var rigname = parent.querySelector("#rig-name");
+    var rigtype = parent.querySelector("#rig-type");
+    var rigpressurerating = parent.querySelector("#rig-pressure-rating");
+    var rigspecification = parent.querySelector("#rig-specification");
+    var rigcontractperiod = parent.querySelector("#rig-contract-period");
+    var rigsummary = parent.querySelector("#rig-summary");
+    var rigcomment = parent.querySelector("#rig-comment");
+    // var rigyear = parent.querySelector("#rig-year");
+    // var rigmonth = parent.querySelector("#rig-month");
+    // var rigversion = parent.querySelector("#rig-version");
+
+    document.getElementById("edit_rig_id").value = rigid;
+    document.getElementById("edit_rig_name").value = rigname.value;
+    // document.getElementById("edit_version").value = rigversion.value;
+    // document.getElementById("edit_bdaymonth").valueAsDate = new Date(rigyear.value, parseInt(rigmonth.value) - 1, 1);
+    document.getElementById("edit_rig_type").value = rigtype.value;
+    document.getElementById("edit_pressure_rating").value = rigpressurerating.value;
+    document.getElementById("edit_specification").value = rigspecification.value;
+    document.getElementById("edit_contract_period").value = rigcontractperiod.value;
+    document.getElementById("edit_summary").value = rigsummary.value;
+    document.getElementById("edit_comment").value = rigcomment.value;
+
+    showBox(document.getElementById("editRigBox"));
+
+}
+
+function getMonthFromString(mon) {
+    return new Date(Date.parse(mon + " 1, 2012")).getMonth()
+}
+
+var wellEditModal = document.getElementById("wellEditModal");
+function openEditWellBox(obj) {
+    var selector = ".item-well";
+    var parent = findParentBySelector(obj, selector);
+    var wellid = obj.id;
+    var wellrigid = parent.querySelector("#well-rig-id");
+    var wellname = parent.querySelector("#well-name");
+    var wellp10startdate = parent.querySelector("#well-p10-start-date");
+    var wellp10status = parent.querySelector("#well-p10-status");
+    var wellp50startdate = parent.querySelector("#well-p50-start-date");
+    var wellp50status = parent.querySelector("#well-p50-status");
+    var wellp90startdate = parent.querySelector("#well-p90-start-date");
+    var wellp90status = parent.querySelector("#well-p90-status");
+    var wellp10daysoperation = parent.querySelector("#well-p10-days-operation");
+    var wellp50daysoperation = parent.querySelector("#well-p50-days-operation");
+    var wellp90daysoperation = parent.querySelector("#well-p90-days-operation");
+    var welllicense = parent.querySelector("#well-license");
+    var wellfield = parent.querySelector("#well-field");
+    var welltype = parent.querySelector("#well-type");
+    var wellstatus = parent.querySelector("#well-status");
+    var wellinfo = parent.querySelector("#well-info");
+    document.getElementById("edit_well_id").value = wellid;
+    document.getElementById("edit_well_rig_id").value = wellrigid.value;
+    document.getElementById("edit_well_name").value = wellname.value;
+    document.getElementById("edit_p10_status").checked = (wellp10status.value == "start");
+    document.getElementById("edit_p50_status").checked = (wellp50status.value == 'start');
+    document.getElementById("edit_p90_status").checked = (wellp90status.value == 'start');
+    document.getElementById("edit_p10_days_operation").value = wellp10daysoperation.value;
+    document.getElementById("edit_p50_days_operation").value = wellp50daysoperation.value;
+    document.getElementById("edit_p90_days_operation").value = wellp90daysoperation.value;
+    document.getElementById("edit_license").value = welllicense.value;
+    document.getElementById("edit_p10_start_date").valueAsDate = new Date(parseInt(wellp10startdate.value.split(" ")[2]), getMonthFromString(wellp10startdate.value.split(" ")[1]), parseInt(wellp10startdate.value.split(" ")[0]));
+    document.getElementById("edit_p50_start_date").valueAsDate = new Date(parseInt(wellp50startdate.value.split(" ")[2]), getMonthFromString(wellp50startdate.value.split(" ")[1]), parseInt(wellp50startdate.value.split(" ")[0]));
+    document.getElementById("edit_p90_start_date").valueAsDate = new Date(parseInt(wellp90startdate.value.split(" ")[2]), getMonthFromString(wellp90startdate.value.split(" ")[1]), parseInt(wellp90startdate.value.split(" ")[0]));
+    document.getElementById("edit_field").value = wellfield.value;
+    document.getElementById("edit_well_type").value = welltype.value;
+    document.getElementById("edit_well_status").value = wellstatus.value;
+    document.getElementById("edit_info").value = wellinfo.value;
+
+    wellEditModal.style.display = "block";
+
+}
+
+
+function confirmRigDeletion(rigid, versionid) {
+    swal({
+        title: "Are you sure you want to delete this rig?",
+        text: "Once deleted, you will not be able to recover this rig!",
+        icon: "warning",
+        buttons: ["Cancel","Sure"],
+        dangerMode: true,
+    })
+    .then((ok) => {
+        if (ok) {
+            window.location.href = "/rigschedule/avrigdel?rig_id=" + rigid + "&version_id=" + versionid;
+        }
+    });
+
+}
+
+function confirmWellDeletion(rigid, wellid, versionid) {
+    swal({
+        title: "Are you sure you want to delete this well?",
+        text: "Once deleted, you will not be able to recover this well!",
+        icon: "warning",
+        buttons: ["Cancel","Sure"],
+        dangerMode: true,
+    })
+    .then((ok) => {
+        if (ok) {
+            window.location.href = "/rigschedule/avdelwell?well_id=" + wellid + "&rig_id=" + rigid + "&version_id=" + versionid;
+        }
+    });
+
+}
+
+function confirmVersionDeletion(versionid) {
+    swal({
+        title: "Are you sure you want to delete this version?",
+        text: "Once deleted, you will not be able to recover this version!",
+        icon: "warning",
+        buttons: ["Cancel","Sure"],
+        dangerMode: true,
+    })
+    .then((ok) => {
+        if (ok) {
+            window.location.href = "/rigschedule/avdelversion?version_id=" + versionid;
+        }
+    });
+
+}
+
+
+</script>
+
+<!--<script>-->
+<!--    var list = document.getElementById("riglist");-->
+<!--    var riglis = list.querySelectorAll( "#riglist > div > div" );-->
+<!--    var rigs = [];-->
+<!--    var rigs2 = [];-->
+<!--    for(var i=0; i<riglis.length; i++){-->
+<!--       rigs.push(riglis[i]);-->
+<!--       rigs2.push(riglis[i]);-->
+<!--    }-->
+
+<!--    function getRigData(obj){-->
+<!--        var rigid = obj.id;-->
+<!--        list.innerHTML = "";-->
+<!--        for(var i=0; i<rigs.length; i++){-->
+<!--            if(rigs[i].id == rigid){-->
+<!--                list.appendChild(rigs[i]);-->
+<!--                rigs[i].style.display = "block";-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
+
+<!--    function showRigData(rigid){-->
+<!--        list.innerHTML = "";-->
+<!--        for(var i=0; i<rigs.length; i++){-->
+<!--            if(rigs[i].id == rigid){-->
+<!--                list.appendChild(rigs[i]);-->
+<!--                rigs[i].style.display = "block";-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
+
+<!--    {% if selrigid %}-->
+<!--        showRigData({{selrigid}});-->
+<!--    {% endif %}-->
+
+<!--    var welllis = list.querySelectorAll( "#riglist > div > div > div" );-->
+<!--    var wells = [];-->
+<!--    var wells2 = [];-->
+<!--    for(var i=0; i<welllis.length; i++){-->
+<!--       wells.push(welllis[i]);-->
+<!--       wells2.push(welllis[i]);-->
+<!--    }-->
+
+<!--    function getWellData(obj){-->
+<!--        var wellid = obj.id;-->
+<!--        list.innerHTML = "";-->
+<!--        for(var i=0; i<wells.length; i++){-->
+<!--            if(wells[i].id == wellid){-->
+<!--                list.appendChild(wells[i]);-->
+<!--                wells[i].style.display = "block";-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
+
+<!--    function showWellData(wellid){-->
+<!--        list.innerHTML = "";-->
+<!--        for(var i=0; i<wells.length; i++){-->
+<!--            if(wells[i].id == wellid){-->
+<!--                list.appendChild(wells[i]);-->
+<!--                wells[i].style.display = "block";-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
+
+<!--    {% if selwellid %}-->
+<!--        showWellData({{selwellid}});-->
+<!--    {% endif %}-->
+
+<!--    var actlis = list.querySelectorAll( "#riglist > div > div > div > div" );-->
+<!--    var acts = [];-->
+<!--    var acts2 = [];-->
+<!--    for(var i=0; i<actlis.length; i++){-->
+<!--       acts.push(actlis[i]);-->
+<!--       acts2.push(actlis[i]);-->
+<!--    }-->
+
+<!--    function getActData(obj){-->
+<!--        var actid = obj.id;-->
+<!--        list.innerHTML = "";-->
+<!--        for(var i=0; i<acts.length; i++){-->
+<!--            if(acts[i].id == actid){-->
+<!--                list.appendChild(acts[i]);-->
+<!--                acts[i].style.display = "block";-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
+
+<!--    function showActData(actid){-->
+<!--        list.innerHTML = "";-->
+<!--        for(var i=0; i<acts.length; i++){-->
+<!--            if(acts[i].id == actid){-->
+<!--                list.appendChild(acts[i]);-->
+<!--                acts[i].style.display = "block";-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
+
+<!--    {% if selactid %}-->
+<!--        showActData({{selactid}});-->
+<!--    {% endif %}-->
+
+<!--</script>-->
+
+<script>
+
+function dismissLayouts(){
+    wellAddModal.style.display='none';
+    document.getElementById('editRigBox').style.display='none';
+    wellEditModal.style.display='none';
+    document.getElementById('backgroundOverlay').style.display='none';
+}
+
+function showBox(box) {
+    document.getElementById("backgroundOverlay").style.display = "block";
+    setTimeout(function(){
+        box.style.display='block';
+    },200);
+}
+
+</script>
+
+
+
+
+
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("upBtn").style.display = "block";
+    } else {
+        document.getElementById("upBtn").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+var wellAddModal = document.getElementById("wellAddModal");
+function showNewWellBox(obj){
+    dismissLayouts();
+    var rigid = obj.querySelector('input').value;
+    document.getElementById('rig_id').value = rigid;
+    var rig_name = obj.querySelector('div').innerHTML;
+    wellAddModal.style.display = "block";
+    document.getElementById('wellbox_title').innerHTML = "Add Well/Activity To " + rig_name;
+}
+
+{% if rig_id %}
+ScrollTo("rigitem{{rig_id}}");
+var rigitem = document.getElementById("rigitem{{rig_id}}");
+var rn = rigitem.querySelectorAll( "#rigitem{{rig_id}} > div > div" )[0].click();
+{% endif %}
+
+function ScrollTo(name) {
+  //init thread
+  ScrollToResolver(document.getElementById(name));
+}
+
+function ScrollToResolver(elem) {
+  var jump = parseInt(elem.getBoundingClientRect().top * .2);
+  document.body.scrollTop += jump - 50;
+  document.documentElement.scrollTop += jump - 50;
+  //lastjump detects anchor unreachable, also manual scrolling to cancel animation if scroll > jump
+  if (!elem.lastjump || elem.lastjump > Math.abs(jump)) {
+    elem.lastjump = Math.abs(jump);
+    setTimeout(function() {
+      ScrollToResolver(elem);
+    }, "50");
+  } else {
+    elem.lastjump = null;
+  }
+}
+
+</script>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Sign Up | AllWeedJobs</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="/static/meajobs/images/icon.jpg" type="image/jpg">
+
+    <link rel="stylesheet" href="/static/meajobs/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="/static/meajobs/css/animate.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/static/meajobs/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/static/meajobs/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/aos.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="/static/meajobs/css/jquery.timepicker.css">
+
+
+    <link rel="stylesheet" href="/static/meajobs/css/flaticon.css">
+    <link rel="stylesheet" href="/static/meajobs/css/icomoon.css">
+    <link rel="stylesheet" href="/static/meajobs/css/style.css">
+  </head>
+  <body>
+
+	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container-fluid px-md-4	">
+	      <a class="navbar-brand" href="/rigwell/"><img src="/static/meajobs/images/logo.jpg" style="height:60px; border-radius:5px; margin-right:15px;">AllWeedJobs</a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item"><a href="/rigwell/toblog" class="nav-link">Blog</a></li>
+	          <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+	          <!--<li class="nav-item cta mr-md-1"><a href="/rigwell/signuppage" class="nav-link">Sign Up</a></li>-->
+	          <li class="nav-item cta cta-colored"><a href="/rigwell/loginpage" class="nav-link">Log In</a></li>
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+
+    <div class="hero-wrap hero-wrap-2" style="background-image: url('/static/meajobs/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-end justify-content-start">
+          <div class="col-md-12 ftco-animate text-center mb-5">
+          	<p class="breadcrumbs mb-0"><span class="mr-3"><a href="/rigwell/">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Sign Up</span></p>
+            <h1 class="mb-3 bread">Sign Up</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+	<section class="ftco-section contact-section" style="background-color:#f7f7f9;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <h5 style="color:black;">
+                        Welcome back! Please create your account.
+                    </h5>
+                    <form action="/rigwell/awj-signup" method="post" enctype="multipart/form-data" id="loginForm" class="bg-white p-5 mt-3 contact-form">
+                        {% csrf_token %}
+                        <input style="height:2px; opacity:0;">
+                        <div class="form-group" style="text-align:left; margin-top:-20px;">
+                            <input class="form-control" type="text" name="username" id="username" placeholder="E-mail or Username">
+                            <div class="validation"></div>
+                        </div>
+                        <div class="form-group" style="margin-top:5px; text-align:left;">
+                            <input class="form-control" type="password" name="password" id="password" placeholder="Password" autocomplete="new-password" >
+                            <div class="validation"></div>
+                        </div>
+                        <div class="form-group ml-1 mt-2 mb-3" style="text-align:left;">
+                            <p style="color:black;">I want to register as:</p>
+                            <div style="display:flex;">
+                                <div class="col-md-4" style="flex-grow:1">
+                                    <label for="option-job-type-1" style="color:black;">
+                                        <input type="radio" id="option-job-type-1" name="job-type">&nbsp;&nbsp;Employer
+                                    </label>
+                                </div>
+                                <div class="col-md-4" style="flex-grow:1">
+                                    <label for="option-job-type-2" style="color:black;">
+                                        <input type="radio" id="option-job-type-2" name="job-type">&nbsp;&nbsp;Candidate
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <script src="https://www.google.com/recaptcha/api.js"></script>
+                        <div class="g-recaptcha" data-sitekey="6Lc-oScaAAAAAEixDvapV7Ha7ZAc4fotkCKVIknm"></div>
+                        <div class="form-group mt-5">
+                            <input type="submit" value="Register Your Account" class="btn btn-primary py-3 px-5">
+                        </div>
+                    </form>
+
+                    <script>
+                        function submitUserForm() {
+                            var response = grecaptcha.getResponse();
+                            console.log(response);
+                            if(response.length == 0) {
+                                alert('Please confirm you are human.');
+                                return false;
+                            }
+                            return true;
+                        }
+                    </script>
+                </div>
+                <div class="col-md-3">
+                    <div class="col-md-12 mb-4">
+                        <h2 class="h5">Contact Information</h5>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="col-md-12">
+                        <p><span>Address:</span> 198 West 21th Street, Suite 721 New York NY 10016</p>
+                    </div>
+                    <div class="col-md-12">
+                        <p><span>Phone:</span> <a href="tel://1234567920">+ 1235 2355 98</a></p>
+                    </div>
+                    <div class="col-md-12">
+                        <p><span>Email:</span> <a href="mailto:info@yoursite.com">info@yoursite.com</a></p>
+                    </div>
+                    <div class="col-md-12">
+                        <p><span>Website:</span> <a href="#">yoursite.com</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="ftco-footer ftco-bg-dark ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+        	<div class="col-md">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">About</h2>
+              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+              <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-3">
+                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Employers</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="pb-1 d-block">Browse Candidates</a></li>
+                <li><a href="#" class="pb-1 d-block">Post a Job</a></li>
+                <li><a href="#" class="pb-1 d-block">Employer Listing</a></li>
+                <li><a href="#" class="pb-1 d-block">Resume Page</a></li>
+                <li><a href="#" class="pb-1 d-block">Dashboard</a></li>
+                <li><a href="#" class="pb-1 d-block">Job Packages</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Candidate</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="pb-1 d-block">Browse Jobs</a></li>
+                <li><a href="#" class="pb-1 d-block">Submit Resume</a></li>
+                <li><a href="#" class="pb-1 d-block">Dashboard</a></li>
+                <li><a href="#" class="pb-1 d-block">Browse Categories</a></li>
+                <!--<li><a href="#" class="pb-1 d-block">My Bookmarks</a></li>-->
+                <li><a href="#" class="pb-1 d-block">Candidate Listing</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Account</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="pb-1 d-block">My Account</a></li>
+                <li><a href="#" class="pb-1 d-block">Sign In</a></li>
+                <li><a href="#" class="pb-1 d-block">Create Account</a></li>
+                <li><a href="#" class="pb-1 d-block">Checkout</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon icon-map-marker" style="color:white;"></span><span class="text" style="color:white;">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+	                <li><span class="icon icon-phone" style="color:white;"></span><span class="text" style="color:white;">+2 392 3929 210</span></li>
+	                <li><span class="icon icon-envelope" style="color:white; font-size:14px;"></span><span class="text" style="color:white;">info@yourdomain.com</span></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+
+
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="/static/meajobs/js/jquery.min.js"></script>
+  <script src="/static/meajobs/js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="/static/meajobs/js/popper.min.js"></script>
+  <script src="/static/meajobs/js/bootstrap.min.js"></script>
+  <script src="/static/meajobs/js/jquery.easing.1.3.js"></script>
+  <script src="/static/meajobs/js/jquery.waypoints.min.js"></script>
+  <script src="/static/meajobs/js/jquery.stellar.min.js"></script>
+  <script src="/static/meajobs/js/owl.carousel.min.js"></script>
+  <script src="/static/meajobs/js/jquery.magnific-popup.min.js"></script>
+  <script src="/static/meajobs/js/aos.js"></script>
+  <script src="/static/meajobs/js/jquery.animateNumber.min.js"></script>
+  <script src="/static/meajobs/js/scrollax.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="/static/meajobs/js/google-map.js"></script>
+  <script src="/static/meajobs/js/main.js"></script>
+
+  </body>
+</html>

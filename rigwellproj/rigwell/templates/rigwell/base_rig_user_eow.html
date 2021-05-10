@@ -1,0 +1,122 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}THK{% endblock %}</title>
+    {% load static %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Satisfy' rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/static/style.css"/>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/static/images/rig_logo.jpg" type="image/jpg">
+
+<style>
+
+.dropdown-menu{
+    background-color: #fff;
+    padding:20px;
+    width:220px;
+}
+
+.menu{
+    color: black;
+}
+
+.menu:hover{
+    background-color:#eee;
+    color:red;
+}
+
+.menu a{
+    color:black;
+}
+
+h4{
+    color:white;
+}
+
+h4:hover{
+    color:white;
+    text-decoration:underline;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav id="navbar" class="navbar navbar-inverse" style="background:rgba(0,0,0,0.8); border:0;">
+    <div class="container-fluid">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="topNavBar" style="border:0;">
+            <ul class="nav navbar-nav">
+                <li style="margin-right:30px;">
+                    <a href="/ruhome">
+                        <h4 style=""><span class="fa fa-home" aria-hidden="true" style="margin-right:10px;"></span>Home</h4>
+                    </a>
+                </li>
+                <li>
+                    <a href="/ruhome">
+                        <h4 style=""><span class="fa fa-file-pdf-o" aria-hidden="true" style="margin-right:10px;"></span>Create PDF</h4>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="background-color:transparent;">
+                        <h4 style=""><span class="fa fa-user-circle" aria-hidden="true" style="margin-right:10px;"></span>{{me.name}}</h4>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="menu">
+                            <div style="font-size:14px;">
+                                <a href="/rupasswordchange">
+                                    <span class="glyphicon glyphicon-lock" style="margin-right:10px;"></span>Change Password
+                                </a>
+                            </div>
+                        </li>
+                        <li class="menu" style="margin-top:15px;"><div style="font-size:14px;"><a href="/rulogout"><span class="glyphicon glyphicon-off" style="margin-right:10px;"></span>Sign Out</a></div></li>
+                    </ul>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+{% block body %}
+{% endblock %}
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

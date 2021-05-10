@@ -1,0 +1,324 @@
+{% extends 'rigschedule/base.html' %}
+{% block title %}RIGSCHEDULE USER SIGNUP{% endblock %}
+{% block body %}
+
+<style>
+
+html, body{
+  background: url("/static/images/rs/rs00.jpg") no-repeat center center fixed;
+  background-size:cover;
+}
+
+#form {
+  border-radius: 5px;
+  max-width:450px;
+  width:auto;
+  height:auto;
+  margin-top: 4%;
+  margin-bottom: 2% auto;
+  margin-left:auto;
+  margin-right:auto;
+  overflow: hidden;
+  /*background:linear-gradient(0deg,rgba(20,150,250,0.2),rgba(0,100,250,0.2));*/
+  /*background:linear-gradient(0deg,rgba(200,250,250,0.3),rgba(200,200,250,0.3));*/
+  background-size:cover;
+}
+
+.site-name {
+    font-size:25px; color:white; font-family:verdana; font-weight:600; margin-top:10px; font-family:sansation_bold;
+}
+
+.bottom-section {
+    margin-left:auto; font-size:20px; color:#fff; padding:10px 20px 10px 10px; display:inline-block; font-family:sansation_bold;
+}
+
+.bottom-question {
+    font-size:16px; color:#fff; margin-right:15px; float:left; padding-top:3px; opacity:0.7; font-family:sansation;
+}
+
+p span {
+  color: #F00;
+}
+
+p {
+  margin: 0px;
+  font-weight: 600;
+  line-height: 2;
+  color:#fff;
+}
+
+h1 {
+  text-align:center;
+  color: #666;
+  text-shadow: 1px 1px 0px #FFF;
+  margin:50px 0px 0px 0px
+}
+
+input {
+  border-radius: 50px;
+  border: 1px solid #eee;
+  margin-bottom: 15px;
+  margin-right:auto;
+  width: 100%;
+  height: 42px;
+  opacity:0.95;
+  float: middle;
+  padding: 0px 15px;
+  color:black;
+  text-align:left;
+}
+
+.icon-case {
+  width: 10%;
+  float: left;
+  border-radius: 50px 0px 0px 50px;
+  background:green;
+  height:42px;
+  position: relative;
+  text-align: center;
+  line-height:40px;
+  padding-top:11px;
+}
+
+i {
+  color:yellow;
+}
+
+.form-group {
+  overflow: hidden;
+  width:100%;
+}
+
+.contentform {
+  padding: 30px;
+  float:middle;
+  margin:auto;
+}
+
+
+.formcontent {
+  width:100%;
+  float:middle;
+  margin:auto;
+  <!--border-right: 1px dotted #CCC;-->
+  box-sizing: border-box;
+  padding: 0px;
+}
+
+.bouton-update{
+  background-color: #0077b3;
+  color: #FFF;
+  text-align: center;
+  width: 100%;
+  border:0;
+  opacity:0.95;
+  padding: 12px 18px;
+  border-radius: 50px 50px 50px 50px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+</style>
+
+<script>
+	history.pushState(null, null, location.href);
+    history.back();
+    history.forward();
+    window.onpopstate = function () { history.go(1); };
+</script>
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<img src="/static/images/processing.gif" class="glyphicon glyphicon-fire" aria-hidden="true" style="position:fixed; left:50%; float:middle; border-radius: 1px;
+	transform:translate(-50%, -50%); width:80px; z-index:100; top:120px; display: none;" id="gif">
+
+<form id="form" action="/rigschedule/usignup" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+    <div class="contentform">
+		<div class="formcontent">
+            <center>
+                <img src="/static/images/rs/rslogo1.png" style="width:150px; border-radius:30px;">
+                <div class="site-name">RIG SCHEDULE</div>
+            </center>
+            <br>
+            <div class="form-group">
+                <input type="text" name="name" id="name" placeholder="Name">
+			</div>
+			<div class="form-group">
+                <input type="email" name="email" id="email" placeholder="E-mail">
+			</div>
+			<div class="form-group" style="position:relative;">
+                <input type="password" name="password" id="password" value="" placeholder="Password" autocomplete="new-password">
+                <a href="javascript:void(0)" onclick="javascript:togglePasswordShow();">
+                    <div id="showButton" style="position:absolute; right:10px; top:10px;"><span style="font-size:20px; color:gray;" class="fa fa-eye"></span></div>
+                </a>
+            </div>
+            <center><img src="/static/images/progressbar.gif" style="width:40px; height:40px; display:none;" id="gif"></center>
+			<div class="form-group" style="margin-top:30px;">
+				<button type="button" class="bouton-update" onclick="formSubmit(document.getElementById('form'));">SIGN UP</button>
+            </div>
+			<div class="form-group">
+                <a href="/rigschedule/" style="width:auto; float:right;">
+                    <div class="bottom-section">
+                        <div class="bottom-question">Have an account?</div>LOG IN
+                    </div>
+                </a>
+			</div>
+	    </div>
+	</div>
+</form>
+
+
+<script>
+
+function formSubmit(form){
+    var name = document.getElementById("name").value;
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+    var gif = document.getElementById("gif");
+    if(name == "") {
+        showAlert("Name is invalid", "Please enter your full name.");
+        return;
+    }
+    if(email == "") {
+        showAlert("Email is invalid", "Please enter your email.");
+        return;
+    }
+    if(!isValidEmail(email)){
+        showAlert("Invalid email!", "Please enter your valid email.");
+        return;
+    }
+    if(password == "") {
+        showAlert("Password is invalid!", "Please enter your password.");
+        return;
+    }
+
+    gif.style.display = "block";
+    var formData = new FormData(form);
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var result = xhr.response;
+            if(result == "0") {
+                window.location.href = "/rigschedule?version_name=&p_name=P50&months=12&well_type=&well_field&license=&q=&prev=no&next=no";
+            }else if(result == "1") {
+                showAlert("Signup failed", "You have already been registered. Please log in.");
+            }
+            gif.style.display = "none";
+        }
+    };
+    xhr.open('POST', form.getAttribute('action'), true);
+    xhr.send(formData);
+}
+
+function isValidEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
+function showAlert(title, text) {
+    swal({
+        title: title,
+        text: text,
+        icon: "warning"
+    });
+}
+
+</script>
+
+
+<script>
+
+function getCookie(name) {
+    console.log('getCookie');
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                    }
+            }
+    }
+    console.log('cookie:' + cookieValue);
+    return cookieValue;
+}
+
+function post(path, params, method) {
+   method = method || "post"; // Set method to post by default if not specified.
+
+   // The rest of this code assumes you are not using a library.
+   // It can be made less wordy if you use one.
+   var form = document.createElement("form");
+   form.setAttribute("method", method);
+   form.setAttribute("action", path);
+
+   for(var key in params) {
+      if(params.hasOwnProperty(key)) {
+          var hiddenField = document.createElement("input");
+          hiddenField.setAttribute("type", "hidden");
+          hiddenField.setAttribute("name", key);
+          hiddenField.setAttribute("value", params[key]);
+
+          form.appendChild(hiddenField);
+      }
+   }
+
+   var hiddenField1 = document.createElement("input");
+   hiddenField1.setAttribute("type", "hidden");
+   hiddenField1.setAttribute("name", 'csrfmiddlewaretoken');
+   hiddenField1.setAttribute("value", getCookie('csrftoken'));
+   form.appendChild(hiddenField1);
+
+   document.body.appendChild(form);
+   form.submit();
+}
+
+var showF = false;
+
+function togglePasswordShow(){
+    var passwordBox = document.getElementById("password");
+    var showButton = document.getElementById("showButton");
+    if (!showF) {
+        passwordBox.type = "text";
+        showF = true;
+        showButton.innerHTML = "<span style=\"font-size:20px; color:gray;\" class=\"fa fa-eye-slash\"></span>";
+    } else {
+        passwordBox.type = "password";
+        showF = false;
+        showButton.innerHTML = "<span style=\"font-size:20px; color:gray;\" class=\"fa fa-eye\"></span>";
+    }
+}
+
+</script>
+
+
+<!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+<!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+<!--<script>-->
+<!--    $( function() {-->
+<!--        $( "#form" ).draggable();-->
+<!--      } );-->
+<!--</script>-->
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

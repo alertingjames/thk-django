@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data of {{item}} for {{act.name}}</title>
+<style>
+
+table {
+  width:auto;
+  overflow-x:auto;
+  margin:0;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+  text-align: left;
+}
+table#t01 tr:nth-child(even) {
+  background-color: #eee;
+}
+table#t01 tr:nth-child(odd) {
+ background-color: #fff;
+}
+table#t01 th {
+  background-color: #04a2be;
+  color: white;
+}
+
+</style>
+</head>
+<body>
+
+<h2>Data of {{item}} for {{act.name}}</h2>
+
+<table id="t01">
+  <tr>
+      <th>id</th>
+    {% for field in fields %}
+    <th>{{field.field_name}}</th>
+    {% endfor %}
+  </tr>
+  
+  {% for item in datalist %}
+  <tr>
+      <td>{{forloop.counter}}</td>
+    {% for val in item.values %}
+    <td>{{val}}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+  
+</table>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

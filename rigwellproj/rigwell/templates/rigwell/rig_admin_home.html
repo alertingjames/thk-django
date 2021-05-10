@@ -1,0 +1,1483 @@
+{% extends 'rigwell/base_rig_admin_home.html' %}
+{% block title %}RIGWELL HOME{% endblock %}
+{% block body %}
+
+<br>
+<br>
+<br>
+
+<style>
+
+html, body{
+  background: url("/static/images/accountbg.jpg") no-repeat center center fixed;
+  background-size:cover;
+}
+
+#main {
+  width:100%;
+  height:auto;
+  margin-top: 0.5%;
+  margin-bottom: auto;
+  margin-left:auto;
+  margin-right:auto;
+  overflow: hidden;
+}
+
+input, select {
+  border-radius:50px;
+  border: 1px solid #ccc;
+  width: 100%;
+  height: 42px;
+  float: middle;
+  padding: 0px 15px;
+  opacity: 0.8;
+  color:black;
+  text-align:left;
+}
+
+a {
+  color:black;
+}
+
+p span {
+  color: #F00;
+}
+
+p {
+  margin: 0px;
+  font-size:12px;
+  font-weight: 500;
+  /*line-height: 2;*/
+  color:#04a2be;
+}
+
+.form-group {
+  overflow: hidden;
+  width:100%;
+}
+
+.contentform {
+  padding: 20px 0px 0px 0px;
+  float:middle;
+  margin:auto;
+}
+
+.bouton-update{
+  background-color: #006600;
+  color: #FFF;
+  text-align: center;
+  width: 100%;
+  margin-bottom:10%;
+  border:0;
+  padding: 12px 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.formcontent {
+  width:100%;
+  float:middle;
+  margin:auto;
+  box-sizing: border-box;
+  padding: 0px;
+}
+
+th {color:white;}
+
+td {text-align:middle;}
+
+#upBtn {
+  display: none;
+  position: fixed;
+  bottom: 20%;
+  right: 15px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: rgba(0,0,0,0.3);
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 50%;
+}
+
+#upBtn:hover {
+  background-color: orange;
+}
+
+.slide {
+    display: inline-block;
+}
+
+/* ————————————————————–
+  Tree core styles
+*/
+.tree { margin: 1em; }
+
+.tree input {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  }
+
+.tree input ~ ul { display: none; }
+
+.tree input:checked ~ ul { display: block; }
+
+/* ————————————————————–
+  Tree rows
+*/
+.tree li {
+  line-height: 1.2;
+  position: relative;
+  padding: 0 0 1em 1em;
+}
+
+.tree ul li { padding: 1em 0 0 1em; }
+
+.tree > li:last-child { padding-bottom: 0; }
+
+/* ————————————————————–
+  Tree labels
+*/
+.tree_label {
+  position: relative;
+  display: inline-block;
+  background: rgba(252,252,252,0.8);
+}
+
+label.tree_label { cursor: pointer; }
+
+label.tree_label:hover { color: #666; }
+
+/* ————————————————————–
+  Tree expanded icon
+*/
+label.tree_label:before {
+  background: #000;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+  float: left;
+  margin: 0 1em 0 -2em;
+  width: 1em;
+  height: 1em;
+  border-radius: 1em;
+  content: '+';
+  text-align: center;
+  line-height: .9em;
+}
+
+:checked ~ label.tree_label:before { content: '–'; }
+
+/* ————————————————————–
+  Tree branches
+*/
+.tree li:before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -.5em;
+  display: block;
+  width: 0;
+  border-left: 1px solid #777;
+  content: "";
+}
+
+.tree_label:after {
+  position: absolute;
+  top: 0;
+  left: -1.5em;
+  display: block;
+  height: 0.5em;
+  width: 1em;
+  border-bottom: 1px solid #777;
+  border-left: 1px solid #777;
+  border-radius: 0 0 0 .3em;
+  content: '';
+}
+
+label.tree_label:after { border-bottom: 0; }
+
+:checked ~ label.tree_label:after {
+  border-radius: 0 .3em 0 0;
+  border-top: 1px solid #777;
+  border-right: 1px solid #777;
+  border-bottom: 0;
+  border-left: 0;
+  bottom: 0;
+  top: 0.5em;
+  height: auto;
+}
+
+.tree li:last-child:before {
+  height: 1em;
+  bottom: auto;
+}
+
+.tree > li:last-child:before { display: none; }
+
+.tree_custom {
+  display: block;
+  background: #eee;
+  padding: 3px 5px 3px 5px;
+  border-radius: 0.3em;
+}
+
+.sss{
+    color:black;
+    font-size:18px;
+}
+
+.cap{
+    color:black;
+    font-size:16px;
+    margin-right:20px;
+}
+
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+
+</style>
+
+<script type="text/javascript">
+window.onload = function() {
+	window.moveTo(0, 0);
+	window.resizeTo(screen.availWidth, screen.availHeight);
+}
+</script>
+
+<script>
+	history.pushState(null, null, location.href);
+    history.back();
+    history.forward();
+    window.onpopstate = function () { history.go(1); };
+</script>
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../lib/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script type="text/javascript" src="https://cdn.rawgit.com/asvd/dragscroll/master/dragscroll.js"></script>
+
+<div id="main">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3" style="background-color:rgba(252,252,252,0.8);">
+                <div class="contentform">
+                    <div class="formcontent">
+                        <p style="float:left; font-weight:600; font-size:16px;">Add New Rig <span>*</span></p>
+                        <button type="button" onclick="javascript:showNewRigBox();"
+                                style="width:30px; height:30px; border-radius:50%; background:green; color:white; font-size:20px; border:0; float:left; margin-left:20px;">+</button>
+                        <div style="width:100%; margin-bottom:30px;">
+                            <div style="width:100%; height:84%; overflow:auto;">
+                                {% if datas %}
+                                <ul class="tree">
+                                    {% for data in datas %}
+                                        <li>
+                                            <input type="checkbox" id="rig{{data.rig.id}}"/>
+                                            <label class="tree_label" for="rig{{data.rig.id}}"><span class="tree_custom" style="background:red; color:white;">{{data.rig.name}}</span></label>
+                                            <ul>
+                                                <a href="javascript:void(0);" onclick="getRigData(this);" id="{{data.rig.id}}">
+                                                    <li><span class="tree_label"><span class="tree_custom" style="background:orange; color:white;">{{data.rig.name}} Info</span></span></li>
+                                                </a>
+                                                {% if data.wells %}
+                                                    {% for well in data.wells %}
+                                                    <li>
+                                                        <input type="checkbox" id="well{{data.rig.id}}{{well.well.id}}" />
+                                                        <label for="well{{data.rig.id}}{{well.well.id}}" class="tree_label">{{well.well.name}}</label>
+                                                        <ul>
+                                                            <a href="javascript:void(0);" onclick="getWellData(this);" id="{{well.well.id}}">
+                                                                <li><span class="tree_label"><span class="tree_custom" style="background:green; color:white;">{{well.well.name}} Info</span></span></li>
+                                                            </a>
+                                                            {% if well.activities %}
+                                                                {% for activity in well.activities %}
+                                                                <li>
+                                                                    <input type="checkbox" id="act{{data.rig.id}}{{well.well.id}}{{activity.id}}" />
+                                                                    <label for="act{{data.rig.id}}{{well.well.id}}{{activity.id}}" class="tree_label">{{activity.name}}</label>
+                                                                    <ul>
+                                                                        <a href="javascript:void(0);" onclick="getActData(this);" id="{{activity.id}}">
+                                                                            <li><span class="tree_label"><span class="tree_custom" style="background:brown; color:white;">{{activity.name}} Info</span></span></li>
+                                                                        </a>
+                                                                        <a href="/raactivitydataview?idx=0&rig_id={{data.rig.id}}&well_id={{well.well.id}}&act_id={{activity.id}}"><li><span class="tree_label" style="color:brown; font-weight:600;">Time SDL</span></li></a>
+                                                                        <!--<a href=""><li><span class="tree_label" style="color:brown; font-weight:600;">Time/Depth</span></li></a>-->
+                                                                        <a href="/raactivitydataview?idx=1&rig_id={{data.rig.id}}&well_id={{well.well.id}}&act_id={{activity.id}}"><li><span class="tree_label" style="color:brown; font-weight:600;">TD Extended</span></li></a>
+                                                                        <a href="/raactivitydataview?idx=2&rig_id={{data.rig.id}}&well_id={{well.well.id}}&act_id={{activity.id}}"><li><span class="tree_label" style="color:brown; font-weight:600;">TD TIH Stat</span></li></a>
+                                                                        <a href="/raactivitydataview?idx=3&rig_id={{data.rig.id}}&well_id={{well.well.id}}&act_id={{activity.id}}"><li><span class="tree_label" style="color:brown; font-weight:600;">TD Drlg Stat</span></li></a>
+                                                                        <a href="/raactivitydataview?idx=4&rig_id={{data.rig.id}}&well_id={{well.well.id}}&act_id={{activity.id}}"><li><span class="tree_label" style="color:brown; font-weight:600;">TD POH Stat</span></li></a>
+                                                                    </ul>
+                                                                </li>
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        </ul>
+                                                    </li>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                    <center>
+                                        <h5 class="my_items col-sm-offset-1" style="color:red; margin: 10px;">No result found ...</h5>
+                                    </center>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="contentform">
+                    <div class="formcontent">
+                        <div style="margin-top:-15px;">
+                            <div style="width:100%; height:90%; overflow:auto;">
+                            {% if datas %}
+                            <div id="riglist">
+                                {% for data in datas %}
+                                    <div>
+                                        <div id="{{data.rig.id}}" style="width:500px; border-radius:5px; margin:15px; background-color:white; display:none;">
+                                            {% if data.rig.picture_url %}
+                                                <img src="{{data.rig.picture_url}}" style="width:100%; border-radius:5px 5px 0px 0px;">
+                                            {% else %}
+                                                <div style="width:100%; height:200px; text-align:center; color:gray; font-size:14px; padding-top:100px; background-color:#eee; border-radius:5px 5px 0px 0px;">No image loaded...</div>
+                                            {% endif %}
+                                            <br>
+                                            <div style="padding:15px 15px 0px 15px;">
+                                                <div class="sss"><label class="cap">Rig Name: </label>{{data.rig.name}}</div>
+                                                <div class="sss"><label class="cap">Rig Type: </label>{{data.rig.type}}</div>
+                                                <div class="sss"><label class="cap">Rig Contractor: </label>{{data.rig.contractor}}</div>
+                                            </div>
+                                            <div style="width:100%; text-align:right;">
+                                                <a href="javascript:void(0)" onclick="openEditRigBox(this)" id="{{data.rig.id}}" style="display:inline-block; margin-right:20px; color:orange;
+                                                        font-size:16px;">
+                                                    <span class="fa fa-pencil" style="margin-right:5px;"></span>Edit
+                                                </a>
+                                                <a href="/rarigdel?rig_id={{data.rig.id}}" onclick="return confirm('Are you sure you want to delete this rig?')"
+                                                    style="display:inline-block; margin-right:20px; color:orange; font-size:16px;">
+                                                    <span class="fa fa-trash" style="margin-right:5px;"></span>Delete
+                                                </a>
+                                                <a href="javascript:void(0);" onclick="showNewWellBox(this);" style="display:inline-block; margin-right:20px; float:right; color:orange;
+                                                        font-size:16px;">
+                                                    <span class="fa fa-plus" style="margin-right:5px;"></span>Add Well
+                                                    <input hidden value="{{data.rig.id}}">
+                                                    <div style="display:none;">{{data.rig.name}}</div>
+                                                </a>
+                                            </div>
+                                            <br>
+                                        </div>
+
+                                        {% if data.wells %}
+                                        <div id="welllist">
+                                            {% for well in data.wells %}
+                                                <div id="{{well.well.id}}" style="width:800px; border-radius:5px; margin:15px; background-color:white; padding:20px; display:none;">
+
+                                                    <a href="javascript:void(0);" onclick="showNewActivityBox(this);" style="display:inline-block; margin-right:10px; float:right; color:orange;
+                                                            font-size:16px;">
+                                                        <span class="fa fa-plus" style="margin-right:5px;"></span>Add Activity
+                                                        <input hidden value="{{well.well.id}}">
+                                                        <div style="display:none;">{{well.well.name}}</div>
+                                                    </a>
+                                                    <a href="/radelwell?well_id={{well.well.id}}" onclick="return confirm('Are you sure you want to delete this well?')"
+                                                        style="display:inline-block; margin-right:20px; float:right; color:orange; font-size:16px;">
+                                                        <span class="fa fa-trash" style="margin-right:5px;"></span>Delete
+                                                    </a>
+                                                    <a href="javascript:void(0)" onclick="openEditWellBox(this)" id="{{well.well.id}}" style="display:inline-block; margin-right:20px; float:right; color:orange;
+                                                            font-size:16px;">
+                                                        <span class="fa fa-pencil" style="margin-right:5px;"></span>Edit
+                                                    </a>
+
+                                                    <div class="sss" style="margin-bottom:10px; font-size:50px; color:green;">Well Info:</div>
+                                                    <div class="sss" style="font-size:14px; color:gray;">
+                                                        <label class="cap" style="font-size:14px; color:gray;">Rig ---------- </label>{{data.rig.name}} ---------- {{data.rig.type}}, {{data.rig.contractor}}
+                                                    </div>
+                                                    <br>
+                                                    <div class="sss"><label class="cap">Well Name: </label>{{well.well.name}}</div>
+                                                    <div class="sss"><label class="cap">Field Name: </label>{{well.well.field}}</div>
+                                                    <div class="sss"><label class="cap">Country: </label>{{well.well.country}}</div>
+                                                    <div class="sss"><label class="cap">Well Start Time: </label>{{well.well.well_start_time}}</div>
+                                                    <div class="sss"><label class="cap">Well End Time: </label>{{well.well.well_end_time}}</div>
+                                                </div>
+
+                                                {% if well.activities %}
+                                                <div id="actlist">
+                                                    {% for activity in well.activities %}
+                                                        <div id="{{activity.id}}" style="width:1000px; border-radius:5px; margin:15px; background-color:white; padding:20px; display:none;">
+                                                            <form id="actform"  action="/raactitemsetup" target="_blank" method="post" enctype="multipart/form-data"
+                                                                style="display:inline-block; margin-right:10px; float:right; font-size:14px;">
+                                                                {% csrf_token %}
+                                                                <select name="act_item" required id="act_item" style="width:auto; height:auto; padding:3px; border-radius:30px; border:1px solid black; text-align-last:center;">
+                                                                    <option value="All Items">All Items</option>
+                                                                    <option value="Time SDL">Time SDL</option>
+                                                                    <!--<option value="Time/Depth">Time/Depth</option>-->
+                                                                    <option value="TD Extended">TD Extended</option>
+                                                                    <option value="TD TIH Stat">TD TIH Stat</option>
+                                                                    <option value="TD Drlg Stat">TD Drlg Stat</option>
+                                                                    <option value="TD POH Stat">TD POH Stat</option>
+                                                                </select>
+                                                                <a href="javascript:void(0)" onclick="javascript:document.getElementById('actform').submit();"
+                                                                    style="color:brown; font-size:16px; margin-right:30px;">
+                                                                    <span class="fa fa-plus" style="margin:8px;"></span>Add Data
+                                                                    <input hidden name="act_id" value="{{activity.id}}">
+                                                                </a>
+                                                                <a href="javascript:void(0)" onclick="openEditActBox(this)" id="{{activity.id}}"
+                                                                    style="color:orange; font-size:16px; margin-right:5px;">
+                                                                    <span class="fa fa-pencil" style="margin:8px;"></span>Edit
+                                                                </a>
+                                                                <a href="/radelactivity?act_id={{activity.id}}" onclick="return confirm('Are you sure you want to delete this activity?')"
+                                                                    style="color:orange; font-size:16px;">
+                                                                    <span class="fa fa-trash" style="margin:8px;"></span>Delete
+                                                                </a>
+                                                            </form>
+                                                            <div class="sss" style="margin-bottom:10px; font-size:50px; color:green;">Activity Info:</div>
+                                                            <div class="sss" style="font-size:14px; color:gray;">
+                                                                <label class="cap" style="font-size:14px; color:gray;">Rig ---------- </label>{{data.rig.name}} ---------- {{data.rig.type}}, {{data.rig.contractor}}
+                                                            </div>
+                                                            <div class="sss" style="font-size:14px; color:gray;">
+                                                                <label class="cap" style="font-size:14px; color:gray;">Well ---------- </label>{{well.well.name}} ---------- {{well.well.field}}, {{well.well.country}}, {{well.well.well_start_time}} ~ {{well.well.well_end_time}}
+                                                            </div>
+                                                            <br>
+                                                            <div class="sss"><label class="cap">Activity Name: </label>{{activity.name}}</div>
+                                                            <div class="sss"><label class="cap">Activity Number: </label>{{activity.number}}</div>
+                                                            <div class="sss"><label class="cap">Hole/Section Phase: </label>{{activity.hole}}</div>
+                                                            <div class="sss"><label class="cap">Time Start: </label>{{activity.time_start}}</div>
+                                                            <div class="sss"><label class="cap">Time End: </label>{{activity.time_end}}</div>
+                                                            <div class="sss"><label class="cap">Depth Start: </label>{{activity.depth_start}}</div>
+                                                            <div class="sss"><label class="cap">Depth End: </label>{{activity.depth_end}}</div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+
+                                    </div>
+
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="newRigBox" style="font-size:16px; font-weight:300; color: black; z-index:999; box-shadow: 0px 0px 100px rgba(0, 0, 0, 1.0);
+	position:fixed; left:50%; float:middle; background-color:white; border-radius:10px; padding: 8px 15px 15px 15px;
+	transform:translate(-50%, -50%); min-width:300px; max-width:600px; width:auto; top:40%; display:none;">
+    {% csrf_token %}
+    <img src="/static/images/cancel.png" style="width:25px; height:25px; float:right;" onclick="javascript:dismissLayouts();">
+    <input style="height:2px; opacity:0;">
+    <div style="width:100%; display:inline-block;">
+        <div style="font-size:18px; font-weight:500; color: black; text-align:center;">Add New Rig</div>
+        <br>
+        <div>
+            <form action="/ranewrig" method="post" enctype="multipart/form-data" style="width:100%;">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div style="text-align:center; width:100%;">
+                        <input name="rig_name" required id="rig_name" type="text" placeholder="Rig Name...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <select name="rig_type" required id="rig_type">
+                        <option value="">Rig Type</option>
+                        <option value="Land Rig">Land Rig</option>
+                        <option value="Platform">Platform</option>
+                        <option value="Jackup">Jackup</option>
+                        <option value="Semi-Submersible">Semi-Submersible</option>
+                        <option value="Drillship">Drillship</option>
+                    </select>
+    			</div>
+    			<div class="form-group">
+                    <div style="text-align:center; width:100%;">
+                        <input name="rig_contractor" required id="rig_contractor" type="text" placeholder="Rig Contractor...">
+                    </div>
+                </div>
+                <div class="form-group" style="width:auto; margin-bottom:10px;">
+    				<img src="" style="width:auto; height:40px; float:left; margin-left:10px; display:none;" id="output">
+    				<label style="float:left; margin-left:15px; margin-right:10px;">
+    				    <i class="fa fa-paperclip" style="font-size:25px; color:rgba(20,150,250,0.8);"></i>
+                        <input type="file" name="rig_image" style="display:none;" value="http://lorempixel.com/100/100/people/9" id="picture" accept="image/*"/>
+                    </label>Load a rig picture
+                    <script>
+                        function readFile() {
+                            if (this.files) {
+                                var file = this.files[0];
+                                var picReader = new FileReader();
+                                picReader.addEventListener("load",function(event){
+                                    document.getElementById("output").src = event.target.result;
+                                    document.getElementById("output").style.display = "block";
+                                });
+                                //Read the image
+                                picReader.readAsDataURL(file);
+                            }
+                        }
+                        document.getElementById("picture").addEventListener("change", readFile);
+                    </script>
+                </div>
+
+                <button type="submit" style="background:#5c85d6; border-radius:5px; border:0; color:white; width:100%; font-size:16px; margin-bottom:10px; padding:8px;">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div id="newWellBox" style="font-size:16px; font-weight:300; color: black; z-index:999; box-shadow: 0px 0px 100px rgba(0, 0, 0, 1.0);
+	position:fixed; left:50%; float:middle; background-color:white; border-radius:10px; padding: 8px 15px 15px 15px;
+	transform:translate(-50%, -50%); min-width:300px; max-width:600px; width:auto; top:50%; display:none;">
+    {% csrf_token %}
+    <img src="/static/images/cancel.png" style="width:25px; height:25px; float:right;" onclick="javascript:dismissLayouts();">
+    <input style="height:2px; opacity:0;">
+    <div style="width:100%; display:inline-block;">
+        <div style="font-size:18px; font-weight:500; color: black; text-align:center;" id="wellbox_title">Add New Well</div>
+        <br>
+        <div>
+            <form action="/ranewwell" method="post" enctype="multipart/form-data" style="width:100%;">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div style="text-align:center; width:100%;">
+                        <input name="well_name" required id="well_name" type="text" placeholder="Well Name...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div style="text-align:center; width:100%;">
+                        <input name="well_field" required id="well_field" type="text" placeholder="Well Field...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <select name="well_country" required id="well_country">
+                        <option value="">Country</option>
+                        <option value="United State">United State</option>
+                        <option value="Russia">Russia</option>
+                        <option value="China">China</option>
+                        <option value="Japan">Japan</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Brazil">Brazil</option>
+                        <option value="India">India</option>
+                        <option value="Norway">Norway</option>
+                        <option value="Spain">Spain</option>
+                        <option value="Italy">Italy</option>
+                    </select>
+    			</div>
+
+    			<link rel="stylesheet" href="/static/css/jquery.datetimepicker.min.css">
+                <script src="/static/js/jquery.datetimepicker.full.js"></script>
+
+    			<div class="form-group">
+                    <div style="text-align:center; width:100%;" id="datetimebox" onchange="updatedatetime();">
+                        <input required id="well_start_time" type="text"  placeholder="Well Start Time..." autocomplete="off">
+                    </div>
+
+                    <input type="hidden" name="well_start_time" id="fromdate">
+                    <script>
+                        jQuery('#datetimebox').datetimepicker({
+                            timepicker: true,
+		                    datepicker: true,
+		                    defaultTime: true,
+                        });
+                        function updatedatetime(){
+                            var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                            var datetime = document.getElementById("datetimebox").value;
+                            var year = datetime.substring(0, 4);
+                            var month = datetime.substring(5, 7);
+                            var day = datetime.substring(8, 10);
+                            var hour = datetime.substring(11, 13);
+                            var minute = datetime.substring(14, 16);
+                            var ap = '';
+                            if (parseInt(hour) > 12) {
+                                hour = String(parseInt(hour) - 12);
+                                ap = 'PM';
+                            }else ap = 'AM';
+                            var monthindex = parseInt(month);
+                            month = months[monthindex - 1];
+                            document.getElementById("well_start_time").value = month + ' ' + day + ', ' + year + ' ' + hour + ':' + minute + ' ' + ap;
+                            document.getElementById("fromdate").value = datetime;
+                        }
+                    </script>
+                </div>
+
+                <div class="form-group">
+                    <div style="text-align:center; width:100%;" id="datetimebox2" onchange="updatedatetime2();">
+                        <input required id="well_end_time" type="text"  placeholder="Well End Time..." autocomplete="off">
+                    </div>
+
+                    <input type="hidden" name="well_end_time" id="enddate">
+                    <script>
+                        jQuery('#datetimebox2').datetimepicker({
+                            timepicker: true,
+		                    datepicker: true,
+                        });
+                        function updatedatetime2(){
+                            var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                            var datetime = document.getElementById("datetimebox2").value;
+                            var year = datetime.substring(0, 4);
+                            var month = datetime.substring(5, 7);
+                            var day = datetime.substring(8, 10);
+                            var hour = datetime.substring(11, 13);
+                            var minute = datetime.substring(14, 16);
+                            var ap = '';
+                            if (parseInt(hour) > 12) {
+                                hour = String(parseInt(hour) - 12);
+                                ap = 'PM';
+                            }else ap = 'AM';
+                            var monthindex = parseInt(month);
+                            month = months[monthindex - 1];
+                            document.getElementById("well_end_time").value = month + ' ' + day + ', ' + year + ' ' + hour + ':' + minute + ' ' + ap;
+                            document.getElementById("enddate").value = datetime;
+                        }
+                    </script>
+                </div>
+
+                <input hidden id="rig_id" name="rig_id">
+
+                <center><button type="submit" style="background:#5c85d6; border-radius:5px; border:0; color:white; width:100%; font-size:16px; margin-top:10px; margin-bottom:10px; padding:8px;">Submit</button></center>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div id="newActivityBox" style="font-size:16px; font-weight:300; color: black; z-index:999; box-shadow: 0px 0px 100px rgba(0, 0, 0, 1.0);
+	position:fixed; left:50%; float:middle; background-color:white; border-radius:10px; padding: 8px 15px 15px 15px;
+	transform:translate(-50%, -50%); min-width:300px; max-width:600px; width:auto; top:40%; display:none;">
+    {% csrf_token %}
+    <img src="/static/images/cancel.png" style="width:25px; height:25px; float:right;" onclick="javascript:dismissLayouts();">
+    <input style="height:2px; opacity:0;">
+    <div style="width:100%; display:inline-block;">
+        <div style="font-size:18px; font-weight:500; color: black; text-align:center;" id="actbox_title">Add New Activity</div>
+        <br>
+        <div>
+            <form action="/ranewactivity" method="post" enctype="multipart/form-data" style="width:100%;">
+                {% csrf_token %}
+                <div class="form-group">
+                    <select name="act_name" required id="act_name">
+                        <option value="">Activity Name</option>
+                        <option value="Drilling Run">Drilling Run</option>
+                        <option value="Casing Run">Casing Run</option>
+                        <option value="Cementing Run">Cementing Run</option>
+                        <option value="Conditioning Run">Conditioning Run</option>
+                        <option value="Placing/Retrieving Equipment Run">Placing/Retrieving Equipment Run</option>
+                        <option value="Milling Run">Milling Run</option>
+                        <option value="Fishing Run">Fishing Run</option>
+                        <option value="Testing Run">Testing Run</option>
+                        <option value="Tubing Run">Tubing Run</option>
+                        <option value="Screen Run">Screen Run</option>
+                    </select>
+    			</div>
+                <div class="form-group">
+                    <div style="text-align:center; width:100%;">
+                        <input name="act_number" required id="act_number" type="number" step="any" placeholder="Activity Number...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <select name="act_hole" required id="act_hole">
+                        <option value="">Hole/Section Phase</option>
+                        <option value="26 Inch Section">26 Inch Section</option>
+                        <option value="17-1/2 Inch Section">17-1/2 Inch Section</option>
+                        <option value="12-1/4 Inch Section">12-1/4 Inch Section</option>
+                        <option value="8-1/2 Inch Section">8-1/2 Inch Section</option>
+                        <option value="6-1/2 Inch Phase">6-1/2 Inch Phase</option>
+                        <option value="Completion Phase">Completion Phase</option>
+                        <option value="Plug and Abandonment Phase">Plug and Abandonment Phase</option>
+                    </select>
+    			</div>
+
+    			<link rel="stylesheet" href="/static/css/jquery.datetimepicker.min.css">
+                <script src="/static/js/jquery.datetimepicker.full.js"></script>
+
+    			<div class="form-group">
+                    <div style="text-align:center; width:100%;" id="datetimebox3" onchange="updatedatetime3();">
+                        <input required id="time_start" type="text"  placeholder="Time Start..." autocomplete="off">
+                    </div>
+
+                    <input type="hidden" name="time_start" id="sdate">
+                    <script>
+                        jQuery('#datetimebox3').datetimepicker({
+                            timepicker: true,
+		                    datepicker: true,
+                        });
+                        function updatedatetime3(){
+                            var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                            var datetime = document.getElementById("datetimebox3").value;
+                            var year = datetime.substring(0, 4);
+                            var month = datetime.substring(5, 7);
+                            var day = datetime.substring(8, 10);
+                            var hour = datetime.substring(11, 13);
+                            var minute = datetime.substring(14, 16);
+                            var ap = '';
+                            if (parseInt(hour) > 12) {
+                                hour = String(parseInt(hour) - 12);
+                                ap = 'PM';
+                            }else ap = 'AM';
+                            var monthindex = parseInt(month);
+                            month = months[monthindex - 1];
+                            document.getElementById("time_start").value = month + ' ' + day + ', ' + year + ' ' + hour + ':' + minute + ' ' + ap;
+                            document.getElementById("sdate").value = datetime;
+                        }
+                    </script>
+                </div>
+
+                <div class="form-group">
+                    <div style="text-align:center; width:100%;" id="datetimebox4" onchange="updatedatetime4();">
+                        <input required id="time_end" type="text"  placeholder="Time End..." autocomplete="off">
+                    </div>
+
+                    <input type="hidden" name="time_end" id="edate">
+                    <script>
+                        jQuery('#datetimebox4').datetimepicker({
+                            timepicker: true,
+		                    datepicker: true,
+                        });
+                        function updatedatetime4(){
+                            var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                            var datetime = document.getElementById("datetimebox4").value;
+                            var year = datetime.substring(0, 4);
+                            var month = datetime.substring(5, 7);
+                            var day = datetime.substring(8, 10);
+                            var hour = datetime.substring(11, 13);
+                            var minute = datetime.substring(14, 16);
+                            var ap = '';
+                            if (parseInt(hour) > 12) {
+                                hour = String(parseInt(hour) - 12);
+                                ap = 'PM';
+                            }else ap = 'AM';
+                            var monthindex = parseInt(month);
+                            month = months[monthindex - 1];
+                            document.getElementById("time_end").value = month + ' ' + day + ', ' + year + ' ' + hour + ':' + minute + ' ' + ap;
+                            document.getElementById("edate").value = datetime;
+                        }
+                    </script>
+                </div>
+
+                <div class="form-group">
+                    <div style="text-align:center; width:100%;">
+                        <input name="act_depth_start" required id="act_depth_start" type="number" step="any" placeholder="Depth Start...">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div style="text-align:center; width:100%;">
+                        <input name="act_depth_end" required id="act_depth_end" type="number" step="any" placeholder="Depth End...">
+                    </div>
+                </div>
+
+                <input hidden id="well_id" name="well_id">
+
+                <center><button type="submit" style="background:#5c85d6; border-radius:5px; border:0; color:white; width:100%; font-size:16px; margin-top:10px; margin-bottom:10px; padding:8px;">Submit</button></center>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div id="editWellBox" style="font-size:16px; font-weight:300; color: black; z-index:999; box-shadow: 0px 0px 100px rgba(0, 0, 0, 1.0);
+	position:fixed; left:50%; float:middle; background-color:white; border-radius:10px; padding: 8px 15px 15px 15px;
+	transform:translate(-50%, -50%); min-width:300px; max-width:600px; width:auto; top:40%; display:none;">
+    {% csrf_token %}
+    <img src="/static/images/cancel.png" style="width:25px; height:25px; float:right;" onclick="javascript:dismissLayouts();">
+    <input style="height:2px; opacity:0;">
+    <div style="width:100%; display:inline-block;">
+        <div style="font-size:18px; font-weight:500; color: black; text-align:center;" id="wellbox_title">Edit Well</div>
+        <br>
+        <div>
+            <form action="/raeditwell" method="post" enctype="multipart/form-data" style="width:100%;">
+                {% csrf_token %}
+                <div class="form-group">
+                    <p>Well Name <span>*</span></p>
+                    <div style="text-align:center; width:100%;">
+                        <input name="well_name" required id="edit_well_name" type="text" placeholder="Well Name...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p>Well Field <span>*</span></p>
+                    <div style="text-align:center; width:100%;">
+                        <input name="well_field" required id="edit_well_field" type="text" placeholder="Well Field...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p>Country <span>*</span></p>
+                    <select name="well_country" required id="edit_well_country">
+                        <option value="" id="edit_country_option"></option>
+                        <option value="">--Select a Country name--</option>
+                        <option value="United State">United State</option>
+                        <option value="Russia">Russia</option>
+                        <option value="China">China</option>
+                        <option value="Japan">Japan</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Brazil">Brazil</option>
+                        <option value="India">India</option>
+                        <option value="Norway">Norway</option>
+                        <option value="Spain">Spain</option>
+                        <option value="Italy">Italy</option>
+                    </select>
+    			</div>
+
+    			<link rel="stylesheet" href="/static/css/jquery.datetimepicker.min.css">
+                <script src="/static/js/jquery.datetimepicker.full.js"></script>
+
+    			<div class="form-group">
+    			    <p>Well Start Time <span>*</span></p>
+                    <div style="text-align:center; width:100%;" id="datetimebox5" onchange="updatedatetime5();">
+                        <input required id="edit_well_start_time" type="text" placeholder="Well Start Time..." autocomplete="off">
+                    </div>
+
+                    <input type="hidden" name="well_start_time" id="edit_fromdate">
+                    <script>
+                        jQuery('#datetimebox5').datetimepicker({
+                            timepicker: true,
+		                    datepicker: true,
+		                    defaultTime: true,
+                        });
+                        function updatedatetime5(){
+                            var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                            var datetime = document.getElementById("datetimebox5").value;
+                            var year = datetime.substring(0, 4);
+                            var month = datetime.substring(5, 7);
+                            var day = datetime.substring(8, 10);
+                            var hour = datetime.substring(11, 13);
+                            var minute = datetime.substring(14, 16);
+                            var ap = '';
+                            if (parseInt(hour) > 12) {
+                                hour = String(parseInt(hour) - 12);
+                                ap = 'PM';
+                            }else ap = 'AM';
+                            var monthindex = parseInt(month);
+                            month = months[monthindex - 1];
+                            document.getElementById("edit_well_start_time").value = month + ' ' + day + ', ' + year + ' ' + hour + ':' + minute + ' ' + ap;
+                            document.getElementById("edit_fromdate").value = datetime;
+                        }
+                    </script>
+                </div>
+
+                <div class="form-group">
+                    <p>Well End Time <span>*</span></p>
+                    <div style="text-align:center; width:100%;" id="datetimebox6" onchange="updatedatetime6();">
+                        <input required id="edit_well_end_time" type="text"  placeholder="Well End Time..." autocomplete="off">
+                    </div>
+
+                    <input type="hidden" name="well_end_time" id="edit_enddate">
+                    <script>
+                        jQuery('#datetimebox6').datetimepicker({
+                            timepicker: true,
+		                    datepicker: true,
+                        });
+                        function updatedatetime6(){
+                            var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                            var datetime = document.getElementById("datetimebox6").value;
+                            var year = datetime.substring(0, 4);
+                            var month = datetime.substring(5, 7);
+                            var day = datetime.substring(8, 10);
+                            var hour = datetime.substring(11, 13);
+                            var minute = datetime.substring(14, 16);
+                            var ap = '';
+                            if (parseInt(hour) > 12) {
+                                hour = String(parseInt(hour) - 12);
+                                ap = 'PM';
+                            }else ap = 'AM';
+                            var monthindex = parseInt(month);
+                            month = months[monthindex - 1];
+                            document.getElementById("edit_well_end_time").value = month + ' ' + day + ', ' + year + ' ' + hour + ':' + minute + ' ' + ap;
+                            document.getElementById("edit_enddate").value = datetime;
+                        }
+                    </script>
+                </div>
+
+                <input hidden name="well_id" id="edit_well_id">
+
+                <center><button type="submit" style="background:#5c85d6; border-radius:5px; border:0; color:white; width:100%; font-size:16px; margin-top:10px; margin-bottom:10px; padding:8px;">Submit</button></center>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div id="editActBox" style="font-size:16px; font-weight:300; color: black; z-index:999; box-shadow: 0px 0px 100px rgba(0, 0, 0, 1.0);
+	position:fixed; left:50%; float:middle; background-color:white; border-radius:10px; padding: 8px 15px 15px 15px;
+	transform:translate(-50%, -50%); min-width:300px; max-width:600px; width:auto; top:50%; display:none;">
+    {% csrf_token %}
+    <img src="/static/images/cancel.png" style="width:25px; height:25px; float:right;" onclick="javascript:dismissLayouts();">
+    <input style="height:2px; opacity:0;">
+    <div style="width:100%; display:inline-block;">
+        <div style="font-size:18px; font-weight:500; color: black; text-align:center;" id="actbox_title">Edit Activity</div>
+        <br>
+        <div>
+            <form action="/raeditactivity" method="post" enctype="multipart/form-data" style="width:100%;">
+                {% csrf_token %}
+                <div class="form-group">
+                    <p>Activity Name <span>*</span></p>
+                    <select name="act_name" required id="edit_act_name">
+                        <option value="" id="edit_act_name_option"></option>
+                        <option value="">--Select an Activity name--</option>
+                        <option value="Drilling Run">Drilling Run</option>
+                        <option value="Casing Run">Casing Run</option>
+                        <option value="Cementing Run">Cementing Run</option>
+                        <option value="Conditioning Run">Conditioning Run</option>
+                        <option value="Placing/Retrieving Equipment Run">Placing/Retrieving Equipment Run</option>
+                        <option value="Milling Run">Milling Run</option>
+                        <option value="Fishing Run">Fishing Run</option>
+                        <option value="Testing Run">Testing Run</option>
+                        <option value="Tubing Run">Tubing Run</option>
+                        <option value="Screen Run">Screen Run</option>
+                    </select>
+    			</div>
+                <div class="form-group">
+                    <p>Activity Number <span>*</span></p>
+                    <div style="text-align:center; width:100%;">
+                        <input name="act_number" required id="edit_act_number" type="number" step="any" placeholder="Activity Number...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p>Hole/Section <span>*</span></p>
+                    <select name="act_hole" required id="edit_act_hole">
+                        <option value="" id="edit_act_hole_option"></option>
+                        <option value="">--Select a Hole/Section phase--</option>
+                        <option value="26 Inch Section">26 Inch Section</option>
+                        <option value="17-1/2 Inch Section">17-1/2 Inch Section</option>
+                        <option value="12-1/4 Inch Section">12-1/4 Inch Section</option>
+                        <option value="8-1/2 Inch Section">8-1/2 Inch Section</option>
+                        <option value="6-1/2 Inch Phase">6-1/2 Inch Phase</option>
+                        <option value="Completion Phase">Completion Phase</option>
+                        <option value="Plug and Abandonment Phase">Plug and Abandonment Phase</option>
+                    </select>
+    			</div>
+
+    			<link rel="stylesheet" href="/static/css/jquery.datetimepicker.min.css">
+                <script src="/static/js/jquery.datetimepicker.full.js"></script>
+
+    			<div class="form-group">
+    			    <p>Time Start <span>*</span></p>
+                    <div style="text-align:center; width:100%;" id="datetimebox7" onchange="updatedatetime7();">
+                        <input required id="edit_act_time_start" type="text"  placeholder="Time Start..." autocomplete="off">
+                    </div>
+
+                    <input type="hidden" name="time_start" id="edit_sdate">
+                    <script>
+                        jQuery('#datetimebox7').datetimepicker({
+                            timepicker: true,
+		                    datepicker: true,
+                        });
+                        function updatedatetime7(){
+                            var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                            var datetime = document.getElementById("datetimebox7").value;
+                            var year = datetime.substring(0, 4);
+                            var month = datetime.substring(5, 7);
+                            var day = datetime.substring(8, 10);
+                            var hour = datetime.substring(11, 13);
+                            var minute = datetime.substring(14, 16);
+                            var ap = '';
+                            if (parseInt(hour) > 12) {
+                                hour = String(parseInt(hour) - 12);
+                                ap = 'PM';
+                            }else ap = 'AM';
+                            var monthindex = parseInt(month);
+                            month = months[monthindex - 1];
+                            document.getElementById("edit_act_time_start").value = month + ' ' + day + ', ' + year + ' ' + hour + ':' + minute + ' ' + ap;
+                            document.getElementById("edit_sdate").value = datetime;
+                        }
+                    </script>
+                </div>
+
+                <div class="form-group">
+                    <p>Time End <span>*</span></p>
+                    <div style="text-align:center; width:100%;" id="datetimebox8" onchange="updatedatetime8();">
+                        <input required id="edit_act_time_end" type="text"  placeholder="Time End..." autocomplete="off">
+                    </div>
+
+                    <input type="hidden" name="time_end" id="edit_edate">
+                    <script>
+                        jQuery('#datetimebox8').datetimepicker({
+                            timepicker: true,
+		                    datepicker: true,
+                        });
+                        function updatedatetime8(){
+                            var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                            var datetime = document.getElementById("datetimebox8").value;
+                            var year = datetime.substring(0, 4);
+                            var month = datetime.substring(5, 7);
+                            var day = datetime.substring(8, 10);
+                            var hour = datetime.substring(11, 13);
+                            var minute = datetime.substring(14, 16);
+                            var ap = '';
+                            if (parseInt(hour) > 12) {
+                                hour = String(parseInt(hour) - 12);
+                                ap = 'PM';
+                            }else ap = 'AM';
+                            var monthindex = parseInt(month);
+                            month = months[monthindex - 1];
+                            document.getElementById("edit_act_time_end").value = month + ' ' + day + ', ' + year + ' ' + hour + ':' + minute + ' ' + ap;
+                            document.getElementById("edit_edate").value = datetime;
+                        }
+                    </script>
+                </div>
+
+                <div class="form-group">
+                    <p>Depth Start <span>*</span></p>
+                    <div style="text-align:center; width:100%;">
+                        <input name="act_depth_start" required id="edit_act_depth_start" type="number" step="any" placeholder="Depth Start...">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <p>Depth End <span>*</span></p>
+                    <div style="text-align:center; width:100%;">
+                        <input name="act_depth_end" required id="edit_act_depth_end" type="number" step="any" placeholder="Depth End...">
+                    </div>
+                </div>
+
+                <input hidden name="act_id" id="edit_act_id">
+
+                <center><button type="submit" style="background:#5c85d6; border-radius:5px; border:0; color:white; width:100%; font-size:16px; margin-top:10px; margin-bottom:10px; padding:8px;">Submit</button></center>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+<button onclick="topFunction()" id="upBtn"><i class="glyphicon glyphicon-menu-up" style="color:white; font-size:14px;"></i></button>
+
+<script>
+    var list = document.getElementById("riglist");
+    var riglis = list.querySelectorAll( "#riglist > div > div" );
+    var rigs = [];
+    var rigs2 = [];
+    for(var i=0; i<riglis.length; i++){
+       rigs.push(riglis[i]);
+       rigs2.push(riglis[i]);
+    }
+
+    function getRigData(obj){
+        var rigid = obj.id;
+        list.innerHTML = "";
+        for(var i=0; i<rigs.length; i++){
+            if(rigs[i].id == rigid){
+                list.appendChild(rigs[i]);
+                rigs[i].style.display = "block";
+            }
+        }
+    }
+
+    function showRigData(rigid){
+        list.innerHTML = "";
+        for(var i=0; i<rigs.length; i++){
+            if(rigs[i].id == rigid){
+                list.appendChild(rigs[i]);
+                rigs[i].style.display = "block";
+            }
+        }
+    }
+
+    {% if selrigid %}
+        showRigData({{selrigid}});
+    {% endif %}
+
+    var welllis = list.querySelectorAll( "#riglist > div > div > div" );
+    var wells = [];
+    var wells2 = [];
+    for(var i=0; i<welllis.length; i++){
+       wells.push(welllis[i]);
+       wells2.push(welllis[i]);
+    }
+
+    function getWellData(obj){
+        var wellid = obj.id;
+        list.innerHTML = "";
+        for(var i=0; i<wells.length; i++){
+            if(wells[i].id == wellid){
+                list.appendChild(wells[i]);
+                wells[i].style.display = "block";
+            }
+        }
+    }
+
+    function showWellData(wellid){
+        list.innerHTML = "";
+        for(var i=0; i<wells.length; i++){
+            if(wells[i].id == wellid){
+                list.appendChild(wells[i]);
+                wells[i].style.display = "block";
+            }
+        }
+    }
+
+    {% if selwellid %}
+        showWellData({{selwellid}});
+    {% endif %}
+
+    var actlis = list.querySelectorAll( "#riglist > div > div > div > div" );
+    var acts = [];
+    var acts2 = [];
+    for(var i=0; i<actlis.length; i++){
+       acts.push(actlis[i]);
+       acts2.push(actlis[i]);
+    }
+
+    function getActData(obj){
+        var actid = obj.id;
+        list.innerHTML = "";
+        for(var i=0; i<acts.length; i++){
+            if(acts[i].id == actid){
+                list.appendChild(acts[i]);
+                acts[i].style.display = "block";
+            }
+        }
+    }
+
+    function showActData(actid){
+        list.innerHTML = "";
+        for(var i=0; i<acts.length; i++){
+            if(acts[i].id == actid){
+                list.appendChild(acts[i]);
+                acts[i].style.display = "block";
+            }
+        }
+    }
+
+    {% if selactid %}
+        showActData({{selactid}});
+    {% endif %}
+
+</script>
+
+<script>
+    function dismissLayouts(){
+        document.getElementById('newRigBox').style.display='none';
+        document.getElementById('newWellBox').style.display='none';
+        document.getElementById('newActivityBox').style.display='none';
+        document.getElementById('editWellBox').style.display='none';
+        document.getElementById("editActBox").style.display = "none";
+    }
+</script>
+
+
+
+
+
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("upBtn").style.display = "block";
+    } else {
+        document.getElementById("upBtn").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+function showNewRigBox(obj){
+    dismissLayouts();
+    document.getElementById('newRigBox').style.display='block';
+}
+
+function showNewWellBox(obj){
+    dismissLayouts();
+    var rigid = obj.querySelector('input').value;
+    document.getElementById('rig_id').value = rigid;
+    var rig_name = obj.querySelector('div').innerHTML;
+    document.getElementById('newWellBox').style.display='block';
+    document.getElementById('wellbox_title').innerHTML = "Add Well To " + rig_name;
+}
+
+function showNewActivityBox(obj){
+    dismissLayouts();
+    var wellid = obj.querySelector('input').value;
+    document.getElementById('well_id').value = wellid;
+    var well_name = obj.querySelector('div').innerHTML;
+    document.getElementById('newActivityBox').style.display='block';
+    document.getElementById('actbox_title').innerHTML = "Add Activity To " + well_name;
+}
+
+function ScrollTo(name) {
+  //init thread
+  ScrollToResolver(document.getElementById(name));
+}
+
+function ScrollToResolver(elem) {
+  var jump = parseInt(elem.getBoundingClientRect().top * .2);
+  document.body.scrollTop += jump - 50;
+  document.documentElement.scrollTop += jump - 50;
+  //lastjump detects anchor unreachable, also manual scrolling to cancel animation if scroll > jump
+  if (!elem.lastjump || elem.lastjump > Math.abs(jump)) {
+    elem.lastjump = Math.abs(jump);
+    setTimeout(function() {
+      ScrollToResolver(elem);
+    }, "50");
+  } else {
+    elem.lastjump = null;
+  }
+}
+
+</script>
+
+
+{% if datas %}
+<div id="editriglist">
+    {% for data in datas %}
+        <div>
+            <div id="{{data.rig.id}}" style="font-size:16px; font-weight:300; color: black; z-index:999; box-shadow: 0px 0px 100px rgba(0, 0, 0, 1.0);
+            	position:fixed; left:50%; float:middle; background-color:white; border-radius:10px; padding: 8px 15px 15px 15px;
+            	transform:translate(-50%, -50%); min-width:300px; max-width:600px; width:auto; top:50%; display:none;">
+                {% csrf_token %}
+                <img src="/static/images/cancel.png" style="width:25px; height:25px; float:right;" onclick="javascript:closeEditRigBox();">
+                <input style="height:2px; opacity:0;">
+                <div style="width:100%; display:inline-block;">
+                    <div style="font-size:18px; font-weight:500; color: black; text-align:center;">Edit Rig</div>
+                    <br>
+                    <div>
+                        <form action="/raeditrig" method="post" enctype="multipart/form-data" style="width:100%;">
+                            {% csrf_token %}
+                            <div class="form-group" style="width:auto; margin-bottom:10px;">
+                				<img src="{% if data.rig.picture_url %}{{data.rig.picture_url}}{% else %}{% endif %}" style="width:auto; max-width:80%; max-height:100px; float:left; margin-left:10px;"
+                				    id="output">
+                				<label style="float:left; margin-left:15px; margin-right:10px;">
+                				    <i class="fa fa-paperclip" style="font-size:25px; color:rgba(20,150,250,0.8);"></i>
+                                    <input type="file" name="rig_image" style="display:none;" value="http://lorempixel.com/100/100/people/9" id="picture" onchange="loadFile(event)" accept="image/*"/>
+                                </label><label style="color:#04a2be; font-weight:600;">Edit Rig Picture <span style="color:#F00;">*</span></label>
+
+                                <script>
+                                  var loadFile = function(event) {
+                                    var output = editRigBox.querySelector("#output");
+                                    output.src = URL.createObjectURL(event.target.files[0]);
+                                    output.onload = function() {
+                                      URL.revokeObjectURL(output.src) // free memory
+                                    }
+                                  };
+                                </script>
+                            </div>
+                            <div class="form-group">
+                                <p>Rig Name <span>*</span></p>
+                                <div style="text-align:center; width:100%;">
+                                    <input name="rig_name" required id="rig_name" type="text" value="{{data.rig.name}}" placeholder="Rig Name...">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <p>Rig Type <span>*</span></p>
+                                <select name="rig_type" required id="rig_type">
+                                    <option value="{{data.rig.type}}">{{data.rig.type}}</option>
+                                    <option value="">--Select a Rig type--</option>
+                                    <option value="Land Rig">Land Rig</option>
+                                    <option value="Platform">Platform</option>
+                                    <option value="Jackup">Jackup</option>
+                                    <option value="Semi-Submersible">Semi-Submersible</option>
+                                    <option value="Drillship">Drillship</option>
+                                </select>
+                			</div>
+                			<div class="form-group">
+                			    <p>Rig Contractor <span>*</span></p>
+                                <div style="text-align:center; width:100%;">
+                                    <input name="rig_contractor" required id="rig_contractor" type="text" value="{{data.rig.contractor}}" placeholder="Rig Contractor...">
+                                </div>
+                            </div>
+                            <input hidden name="rig_id" value="{{data.rig.id}}">
+                            <button type="submit" style="background:#5c85d6; border-radius:5px; border:0; color:white; width:100%; font-size:16px; margin-bottom:10px; padding:8px;">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            {% if data.wells %}
+            <div id="editwelllist">
+                {% for well in data.wells %}
+                    <div id="{{well.well.id}}" style="display:none;">
+                        <input id="well_id" type="hidden" value="{{well.well.id}}">
+                        <input id="well_name" type="hidden" value="{{well.well.name}}">
+                        <input id="well_field" type="hidden" value="{{well.well.field}}">
+                        <input id="well_country" type="hidden" value="{{well.well.country}}">
+                        <input id="well_start_time" type="hidden" value="{{well.well.well_start_time}}">
+                        <input id="well_end_time" type="hidden" value="{{well.well.well_end_time}}">
+                    </div>
+
+                    {% if well.activities %}
+                    <div id="editactlist">
+                        {% for activity in well.activities %}
+                            <div id="{{activity.id}}" style="display:none;">
+                                <input id="act_id" type="hidden" value="{{activity.id}}">
+                                <input id="act_name" type="hidden" value="{{activity.name}}">
+                                <input id="act_number" type="hidden" value="{{activity.number}}">
+                                <input id="act_hole" type="hidden" value="{{activity.hole}}">
+                                <input id="act_time_start" type="hidden" value="{{activity.time_start}}">
+                                <input id="act_time_end" type="hidden" value="{{activity.time_end}}">
+                                <input id="act_depth_start" type="hidden" value="{{activity.depth_start}}">
+                                <input id="act_depth_end" type="hidden" value="{{activity.depth_end}}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>
+
+    {% endfor %}
+</div>
+{% endif %}
+
+
+<script>
+    var elist = document.getElementById("editriglist");
+    var eriglis = elist.querySelectorAll( "#editriglist > div > div" );
+    var erigs = [];
+    for(var i=0; i<eriglis.length; i++){
+       erigs.push(eriglis[i]);
+    }
+
+    var editRigBox = null;
+
+    function openEditRigBox(obj){
+        var rigid = obj.id;
+        for(var i=0; i<erigs.length; i++){
+            if(erigs[i].id == rigid){
+                erigs[i].style.display = "block";
+                editRigBox = erigs[i];
+            }
+        }
+    }
+
+    function closeEditRigBox(){
+        if(editRigBox != null){
+            editRigBox.style.display = "none";
+        }
+    }
+
+    var ewelllis = elist.querySelectorAll( "#editriglist > div > div > div" );
+    var ewells = [];
+    for(var i=0; i<ewelllis.length; i++){
+      ewells.push(ewelllis[i]);
+    }
+
+    var editWellBox = null;
+
+    function openEditWellBox(obj){
+        var wellid = obj.id;
+        for(var i=0; i<ewells.length; i++){
+            if(ewells[i].id == wellid){
+                editWellBox = ewells[i];
+                document.getElementById("edit_well_id").value = editWellBox.querySelector("#well_id").value;
+                document.getElementById("edit_well_name").value = editWellBox.querySelector("#well_name").value;
+                document.getElementById("edit_well_field").value = editWellBox.querySelector("#well_field").value;
+                document.getElementById("edit_country_option").value = editWellBox.querySelector("#well_country").value;
+                document.getElementById("edit_country_option").text = editWellBox.querySelector("#well_country").value;
+                document.getElementById("edit_well_start_time").value = editWellBox.querySelector("#well_start_time").value;
+                document.getElementById("edit_well_end_time").value = editWellBox.querySelector("#well_end_time").value;
+                document.getElementById("editWellBox").style.display = "block";
+            }
+        }
+    }
+
+    var eactlis = elist.querySelectorAll( "#editriglist > div > div > div > div" );
+    var eacts = [];
+    for(var i=0; i<eactlis.length; i++){
+      eacts.push(eactlis[i]);
+    }
+
+    var editActBox = null;
+
+    function openEditActBox(obj){
+        var actid = obj.id;
+        for(var i=0; i<eacts.length; i++){
+            if(eacts[i].id == actid){
+                editActBox = eacts[i];
+                document.getElementById("edit_act_id").value = editActBox.querySelector("#act_id").value;
+                document.getElementById("edit_act_name_option").value = editActBox.querySelector("#act_name").value;
+                document.getElementById("edit_act_name_option").text = editActBox.querySelector("#act_name").value;
+                document.getElementById("edit_act_number").value = editActBox.querySelector("#act_number").value;
+                document.getElementById("edit_act_hole_option").value = editActBox.querySelector("#act_hole").value;
+                document.getElementById("edit_act_hole_option").text = editActBox.querySelector("#act_hole").value;
+                document.getElementById("edit_act_time_start").value = editActBox.querySelector("#act_time_start").value;
+                document.getElementById("edit_act_time_end").value = editActBox.querySelector("#act_time_end").value;
+                document.getElementById("edit_act_depth_start").value = editActBox.querySelector("#act_depth_start").value;
+                document.getElementById("edit_act_depth_end").value = editActBox.querySelector("#act_depth_end").value;
+                document.getElementById("editActBox").style.display = "block";
+            }
+        }
+    }
+
+</script>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

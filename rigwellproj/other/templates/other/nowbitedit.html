@@ -1,0 +1,240 @@
+{% extends 'other/base_bid.html' %}
+{% block title %}Now Edit!{% endblock %}
+{% block body %}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<meta charset="utf-8">
+<style>
+
+html, body{
+  background:linear-gradient(0deg,rgba(200,250,250,0.5),rgba(200,200,250,0.5)), url("/static/images/other/copybackground.jpg") no-repeat center center fixed;
+  background-size:cover;
+}
+
+#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 80px;
+  right: 10px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+#myBtn:hover {
+  background-color: blue;
+}
+
+#edit {
+  border-radius: 5px;
+  max-width:1000px;
+  margin-top:4%;
+  margin-left:auto;
+  margin-right:auto;
+  margin-bottom:5%;
+  background:linear-gradient(0deg,rgba(100,50,250,0.0),rgba(100,50,250,0.1),rgba(100,50,250,0.1),rgba(100,50,250,0.1),rgba(100,50,250,0.1),rgba(100,50,250,0.1));
+  background-size:cover;
+  overflow: hidden;
+  box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+/*#edit:hover {*/
+/*  background:linear-gradient(0deg,rgba(100,50,250,0.0),rgba(100,50,250,0.1),rgba(100,50,250,0.1),rgba(100,50,250,0.1),rgba(100,50,250,0.1),rgba(100,50,250,0.1));*/
+/*  background-size:cover;*/
+/*}*/
+
+.form-group {
+  overflow: hidden;
+  width:100%;
+}
+
+.contentform {
+  padding: 10px;
+}
+
+textarea {
+  border-radius: 0px 0px 5px 5px;
+  border: 1px solid #EEE;
+  width: 100%;
+  float: left;
+  padding: 15px 20px;
+  opacity: 0.8;
+  color:white;
+  text-align:left;
+  background-color:black;
+}
+
+.bouton-update{
+  background-color:rgba(100,50,250,0.8);
+  color: white;
+  text-align: center;
+  width: 100%;
+  border:0;
+  padding: 12px 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#snackbar {
+    visibility: hidden;
+    min-width: 200px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 12px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+
+#snackbar.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+</style>
+
+<script>
+	history.pushState(null, null, location.href);
+	window.onpopstate = function () {
+        history.go(1);
+    };
+</script>
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../lib/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<a href="/other/bidhome">
+    <img src="/static/images/other/backicon.png" style="position:relative; width:40px; height:40px; border-radius:50%; border:2px solid white; z-index:100; left:3%; top:10px;">
+</a>
+
+<div id="edit">
+    <div class="contentform">
+        <form style="width:100%;" action="/other/savenowbid" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <input style="height:5px; opacity:0;">
+                <script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>
+                <textarea name="text" id="text" placeholder="Write something here..." style="min-height:600px;" ondblclick="javascript:copy(this);">{{nowbid.text}}</textarea>
+                <script>autosize(document.getElementById("text"));</script>
+            </div>
+            <div style="width:100%; margin-bottom:8px; display:flex;">
+                <button class="bouton-update" type="button" style="width:100px;" onclick="javascript:window.location.href=document.URL;"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                <button class="bouton-update" type="submit" style="flex-grow:1; margin-left:3px;"><i class="fa fa-check" aria-hidden="true"></i></button>
+                <button class="bouton-update" type="button" style="width:100px; margin-left:3px;" onclick="javascript:document.getElementById('text').value='';">
+                    <i class="fa fa-remove" aria-hidden="true"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="snackbar">Copied to clipboard ...</div>
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+function copy(obj){
+    var copyTextarea = obj;
+    copyTextarea.focus();
+    copyTextarea.select();
+
+    try {
+       var successful = document.execCommand('copy');
+       var msg = successful ? 'successful' : 'unsuccessful';
+       showToast();
+    } catch (err) {
+
+    }
+}
+
+function showToast() {
+    var x = document.getElementById("snackbar");
+    x.className = "show";
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+
+</script>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $( function() {
+        $( "#edit" ).draggable();
+      } );
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

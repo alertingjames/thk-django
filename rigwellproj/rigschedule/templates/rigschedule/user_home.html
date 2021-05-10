@@ -1,0 +1,705 @@
+{% extends 'rigschedule/base_user_home.html' %}
+{% block title %}RIG SCHEDULE USER HOME{% endblock %}
+
+{% block body %}
+
+<script>
+	history.pushState(null, null, location.href);
+    history.back();
+    history.forward();
+    window.onpopstate = function () { history.go(1); };
+</script>
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div id="no_result">
+    No data loaded...
+</div>
+
+<div id="search-header">
+    <a href="/rigschedule">
+        <img src="/static/images/rs/rslogo.png" class="logo">
+    </a>
+    <a href="/rigschedule/ulogout" style="float:right; color:white; margin-right:10px;">
+        <div class="btn-logout"><span class="glyphicon glyphicon-off" aria-hidden="true" style="margin-right:10px;"></span>Logout</div>
+    </a>
+    <div>
+        <select name="version_name" id="version_name" class="version-list" onchange="setVersionValue(this)">
+            {% if versions|length > 0 %}
+            {% for version in versions %}
+            <option value="{{version.version_name}}">{{version.version_name}}</option>
+            {% endfor %}
+            {% else %}
+            <option value="">No version...</option>
+            {% endif %}
+        </select>
+
+        <script>
+            var version_name = "";
+            {% if last_version is not None %}
+            document.getElementById("version_name").value = "{{last_version.version_name}}";
+            document.getElementById("version_name").text = "{{last_version.version_name}}";
+            version_name = document.getElementById("version_name").value;
+            {% endif %}
+            function setVersionValue(obj){
+                version_name = obj.value;
+                filter();
+            }
+        </script>
+    </div>
+    <div class="filter-bar">
+        <div class="p-btn-section">
+            <button id="btn-p10" class="p10-btn" onclick="selp(this, true)">
+                P10
+            </button>
+            <div style="background-color:rgba(0,0,0,0.6); width:1.2px;"></div>
+            <button id="btn-p50" class="p50-btn" onclick="selp(this, true)">
+                P50
+            </button>
+            <div style="background-color:rgba(0,0,0,0.6); width:1.2px;"></div>
+            <button id="btn-p90" class="p90-btn" onclick="selp(this, true)">
+                P90
+            </button>
+        </div>
+        <script>
+            var oldsel = null;
+            var p_name = "P50";
+            function selp(obj, opt) {
+                if(oldsel != null) {
+                    oldsel.style.backgroundColor = "white";
+                    oldsel.style.color = "black";
+                }
+                obj.style.backgroundColor = "black";
+                obj.style.color = "white";
+                oldsel = obj;
+                if(obj.id == "btn-p10"){
+                    p_name = "P10";
+                }else if(obj.id == "btn-p50"){
+                    p_name = "P50";
+                }else if(obj.id == "btn-p90"){
+                    p_name = "P90";
+                }
+                if(opt == true){
+                    filter();
+                }
+            }
+            selp(document.getElementById("btn-p50"), false);
+            {% if p_name != '' %}
+            {% if p_name == 'P10' %}
+            selp(document.getElementById("btn-p10"), false);
+            {% elif p_name == 'P50' %}
+            selp(document.getElementById("btn-p50"), false);
+            {% elif p_name == 'P90' %}
+            selp(document.getElementById("btn-p90"), false);
+            {% endif %}
+            {% endif %}
+        </script>
+        <div style="flex-grow:1;"></div>
+        <div>
+            <label for="license" style="color:white; font-size:12px; font-family:sansation_light;">License</label><br>
+            <select name="license" id="license" class="license-section" onchange="setLicenseValue(this)">
+                {% if licenses|length > 0 %}
+                <option value="">No-Filter</option>
+                {% for license in licenses %}
+                <option value="{{license}}">{{license}}</option>
+                {% endfor %}
+                {% else %}
+                <option value="">No license...</option>
+                {% endif %}
+            </select>
+            <script>
+                var license = "";
+                {% if license != '' %}
+                document.getElementById("license").value = "{{license}}";
+                document.getElementById("license").text = "{{license}}";
+                license = document.getElementById("license").value;
+                {% endif %}
+                function setLicenseValue(obj){
+                    license = obj.value;
+                    filter();
+                }
+            </script>
+        </div>
+        <div style="margin-left:10px;">
+            <label for="well-type" style="color:white; font-size:12px; font-family:sansation_light;">Status & Well Type</label><br>
+            <select name="well_type" id="well-type" class="license-section" onchange="setWellTypeValue(this)">
+                <option value="">No-Filter</option>
+                <option value="" disabled style="color:orange; font-family:sansation;">-- Well Type --</option>
+                <option value="Exploration">Exploration</option>
+                <option value="Development">Development</option>
+                <option value="" disabled style="color:orange; font-family:sansation;">-- Well Status --</option>
+                <option value="Completed">Completed</option>
+                <option value="Conceptional">Conceptional</option>
+                <option value="Engineering & Design">Engineering & Design</option>
+                <option value="Execution">Execution</option>
+                <option value="Occupied">Occupied</option>
+                <option value="Plan for Execution">Plan for Execution</option>
+                <option value="Plan & Select">Plan & Select</option>
+            </select>
+        </div>
+        <script>
+            var well_type = "";
+            {% if well_type != "" %}
+            document.getElementById("well-type").value = "{{well_type}}";
+            document.getElementById("well-type").text = "{{well_type}}";
+            well_type = document.getElementById("well-type").value;
+            {% endif %}
+            function setWellTypeValue(obj){
+                well_type = obj.value;
+                filter();
+            }
+        </script>
+    </div>
+    <div class="filter-bar" style="margin-top:5px;">
+        <div class="m-btn-section">
+            <div style="padding:3px; color:black; font-size:12px; font-family:sansation; margin-right:5px; margin-top:auto; margin-bottom:auto;">MONTHS</div>
+            <div style="background-color:rgba(0,0,0,0.6); width:1.2px;"></div>
+            <button id="btn-m1" class="p50-btn" onclick="selm(this, true)">
+                1
+            </button>
+            <div style="background-color:rgba(0,0,0,0.6); width:1.2px;"></div>
+            <button id="btn-m3" class="p50-btn" onclick="selm(this, true)">
+                3
+            </button>
+            <div style="background-color:rgba(0,0,0,0.6); width:1.2px;"></div>
+            <button id="btn-m6" class="p50-btn" onclick="selm(this, true)">
+                6
+            </button>
+            <div style="background-color:rgba(0,0,0,0.6); width:1.2px;"></div>
+            <button id="btn-m12" class="p50-btn" onclick="selm(this, true)">
+                12
+            </button>
+            <div style="background-color:rgba(0,0,0,0.6); width:1.2px;"></div>
+            <button id="btn-m18" class="p90-btn" onclick="selm(this, true)">
+                18
+            </button>
+        </div>
+        <script>
+            var oldsel2 = null;
+            var months = 12;
+            function selm(obj, opt) {
+                if(oldsel2 != null) {
+                    oldsel2.style.backgroundColor = "white";
+                    oldsel2.style.color = "black";
+                }
+                obj.style.backgroundColor = "black";
+                obj.style.color = "white";
+                oldsel2 = obj;
+                if(obj.id == "btn-m1"){
+                    months = 1;
+                }else if(obj.id == "btn-m3"){
+                    months = 3;
+                }else if(obj.id == "btn-m6"){
+                    months = 6;
+                }else if(obj.id == "btn-m12"){
+                    months = 12;
+                }else if(obj.id == "btn-m18"){
+                    months = 18;
+                }
+                if(opt == true) {
+                    filter();
+                }
+            }
+            selm(document.getElementById("btn-m12"), false);
+            {% if months == '1' %}
+            selm(document.getElementById("btn-m1"), false);
+            {% elif months == '3' %}
+            selm(document.getElementById("btn-m3"), false);
+            {% elif months == '6' %}
+            selm(document.getElementById("btn-m6"), false);
+            {% elif months == '12' %}
+            selm(document.getElementById("btn-m12"), false);
+            {% elif months == '18' %}
+            selm(document.getElementById("btn-m18"), false);
+            {% endif %}
+        </script>
+        <div style="flex-grow:1;"></div>
+        <div class="viewing-title">{{years}}</div>
+        <div style="flex-grow:1;"></div>
+        <div style="margin-right:10px;">
+            <label for="well-field" style="color:white; font-size:12px; font-family:sansation_light;">Field / Area</label><br>
+            <select name="well_field" id="well-field" class="license-section" onchange="setWellFieldValue(this)">
+                {% if fields|length > 0 %}
+                <option value="">No-Filter</option>
+                {% for field in fields %}
+                <option value="{{field}}">{{field}}</option>
+                {% endfor %}
+                {% else %}
+                <option value="">No field/area...</option>
+                {% endif %}
+            </select>
+        </div>
+        <script>
+            var well_field = "";
+            {% if well_field %}
+            document.getElementById("well-field").value = "{{well_field}}";
+            document.getElementById("well-field").text = "{{well_field}}";
+            well_field = document.getElementById("well-field").value;
+            {% endif %}
+            function setWellFieldValue(obj){
+                well_field = obj.value;
+                filter();
+            }
+        </script>
+        <div class="search-section">
+            <i class="fa fa-search"></i><input type="text" name="q" id="q" placeholder="Search..." autocomplete="off">
+        </div>
+        <script>
+            var q = "";
+            var input = document.getElementById("q");
+            input.addEventListener("keyup", function(event) {
+                event.preventDefault();
+                if (event.keyCode === 13) {
+                    q = input.value;
+                    filter();
+                }
+            });
+            {% if q != '' %}
+            q = "{{q}}";
+            input.value = q;
+            {% endif %}
+        </script>
+    </div>
+    <div style="margin-top:-10px;">
+        <a href="javascript:void(0)" style="float:left; color:white;" onclick="prev()">
+            <div class="btn-logout"><span class="glyphicon glyphicon-menu-left" style="font-size:13px;"></span>&nbsp;PREV</div>
+        </a>
+        <a href="javascript:void(0)" style="float:right; color:white;" onclick="next()">
+            <div class="btn-logout">NEXT&nbsp;<span class="glyphicon glyphicon-menu-right" aria-hidden="true" style="font-size:13px;"></span></div>
+        </a>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<div id="table-header" align="top">
+    <table cellspacing="0" class="table table-fit">
+        <tr>
+            <th>id</th>
+            <th>Rigs</th>
+            {% for fieldname in fieldnames %}
+            {% if fieldname == version_name %}
+            <th style="background-color:#cc33ff;">{{fieldname}}</th>
+            {% else %}
+            <th>{{fieldname}}</th>
+            {% endif %}
+            {% endfor %}
+        </tr>
+    </table>
+</div>
+
+<div id="table-main">
+    <div style="height:180px;"></div>
+    {% if datas %}
+    <table cellspacing="0" class="table table-fit">
+        <tr>
+            <th>id</th>
+            <th>Rigs</th>
+            {% for fieldname in fieldnames %}
+            {% if fieldname == version_name %}
+            <th style="background-color:#cc33ff;">{{fieldname}}</th>
+            {% else %}
+            <th>{{fieldname}}</th>
+            {% endif %}
+            {% endfor %}
+        </tr>
+
+        {% for data in datas %}
+        <tr class="item-rig">
+            <td>{{forloop.counter}}</td>
+            <td>
+                <a href="javascript:void(0)" onclick="openRigDetailBox(this)" class="rigbox">
+                    <div style="display:flex;">
+                        <div style="margin-top:15px;">
+                            {% if data.rigwell.rig.type == 'Jackup' %}<i class="fa fa-futbol-o" style="margin-right:3px;color:#9933ff;font-size:12px;"></i>
+                            {% elif data.rigwell.rig.type == 'Land Rig' %}<i class="fa fa-tree" style="margin-right:3px;color:#b38600;font-size:12px;"></i>
+                            {% elif data.rigwell.rig.type == 'Semi-Submersible' %}<i class="fa fa-diamond" style="margin-right:3px;color:green;font-size:12px;"></i>
+                            {% endif %}
+                        </div>
+                        <div style="flex-grow:1;margin-left:5px;">
+                            <label style="font-size:16px;">{{data.rigwell.rig.name}}</label>
+                            <div style="font-size:12px;">
+                                {{data.rigwell.rig.type}}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <input hidden id="rig-id" value="{{data.rigwell.rig.pk}}">
+                <input hidden id="rig-name" value="{{data.rigwell.rig.name}}">
+                <input hidden id="rig-type" value="{{data.rigwell.rig.type}}">
+                <input hidden id="rig-pressure-rating" value="{{data.rigwell.rig.pressure_rating}}">
+                <input hidden id="rig-specification" value="{{data.rigwell.rig.specification}}">
+                <input hidden id="rig-contract-period" value="{{data.rigwell.rig.contract_period}}">
+                <input hidden id="rig-summary" value="{{data.rigwell.rig.summary}}">
+                <input hidden id="rig-comment" value="{{data.rigwell.rig.comment}}">
+                <input hidden id="rig-created-time" value="{{data.rigwell.rig.created_time}}">
+                <input hidden id="rig-version" value="{{data.rigwell.rig.version_text}}">
+
+            </td>
+            {% for item in data.dlist %}
+            <td style="padding:10px 0px 10px 0px;">
+                {% for well in item.wells %}
+                {% if well is not None %}
+                <a href="javascript:void(0)" onclick="openWellDetailBox(this)" style="color:white;">
+                    <div class="singleline" style="font-size:12px; background-color:{% if well.well_status == 'Completed' %}#009933;{% elif well.well_status == 'Conceptional' %}#996633;
+                        {% elif well.well_status == 'Engineering & Design' %}#0066cc;{% elif well.well_status == 'Execution' %}#6666ff;{% elif well.well_status == 'Occupied' %}#ff0000;
+                        {% elif well.well_status == 'Plan for Execution' %}#ff9900;{% elif well.well_status == 'Plan & Select' %}#33cc33;{% endif %}">
+                        {% if well.status == 'rpt' %}
+                        <span style="opacity:0;">{{well.status}}</span>
+                        {% else %}
+                        {% if well.well_status == 'Completed' %}<i class="fa fa-lock" style="margin-right:5px;font-size:14px;"></i>
+                        {% elif p_name == 'P10' and well.p10_status == 'start' %}<i class="fa fa-check" style="margin-right:5px;font-size:14px;"></i>
+                        {% elif p_name == 'P50' and well.p50_status == 'start' %}<i class="fa fa-check" style="margin-right:5px;font-size:14px;"></i>
+                        {% elif p_name == 'P90' and well.p90_status == 'start' %}<i class="fa fa-check" style="margin-right:5px;font-size:14px;"></i>
+                        {% endif %}
+                        <span>{{well.name}}</span>
+                        {% endif %}
+                    </div>
+
+                    <input hidden id="well-id" value="{{well.pk}}">
+                    <input hidden id="well-rig-id" value="{{well.rig_id}}">
+                    <input hidden id="well-name" value="{{well.name}}">
+                    <input hidden id="well-p10-days-operation" value="{{well.p10_days_operation}}">
+                    <input hidden id="well-p50-days-operation" value="{{well.p50_days_operation}}">
+                    <input hidden id="well-p90-days-operation" value="{{well.p90_days_operation}}">
+                    <input hidden id="well-p10-start-date" value="{{well.p10_start_date}}">
+                    <input hidden id="well-p50-start-date" value="{{well.p50_start_date}}">
+                    <input hidden id="well-p90-start-date" value="{{well.p90_start_date}}">
+                    <input hidden id="well-p10-status" value="{{well.p10_status}}">
+                    <input hidden id="well-p50-status" value="{{well.p50_status}}">
+                    <input hidden id="well-p90-status" value="{{well.p90_status}}">
+                    <input hidden id="well-license" value="{% if well.license != '' %}{{well.license}}{% else %}---{% endif %}">
+                    <input hidden id="well-field" value="{{well.field}}">
+                    <input hidden id="well-type" value="{{well.well_type}}">
+                    <input hidden id="well-status" value="{{well.well_status}}">
+                    <input hidden id="well-info" value="{{well.info}}">
+                </a>
+                <div style="height:2px;"></div>
+                {% else %}
+                <a>
+                    <div class="singleline" style="font-size:12px;opacity:0;">
+                        <span>None</span>
+                    </div>
+                </a>
+                <div style="height:2px;"></div>
+                {% endif %}
+                {% endfor %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+        <script>
+            document.getElementById('no_result').style.display = 'block';
+            // document.getElementById('bg').style.display = 'block';
+        </script>
+    {% endif %}
+
+</div>
+
+<div id="bg" style="width:100vw; height:100vh; position:fixed; display:block;
+    background:linear-gradient(0deg,rgba(0,51,77,0.4),rgba(0,51,77,0.6),rgba(0,51,77,0.8),rgba(0,51,77,1),rgba(0,51,77,1)), url('/static/images/rs/rs00.jpg') no-repeat center center fixed; background-size:cover;"></div>
+
+<!-- The Rig Detail Modal -->
+<div id="rigDetailModal" class="modal" onclick="javascript:rigDetailModal.style.display='none';">
+    <div class="modal-content">
+        <span class="close" onclick="javascript:rigDetailModal.style.display='none';">&times;</span>
+        <div class="modal-content-box">
+            <div class="item-well">
+                <div class="well-p" id="rigbox-name">{{rig.name}}</div><br>
+                <div class="sss singleline" id="rigbox-version-text" style="float:right; font-family:sansation_bold;"><label class="cap">Version: </label>{{rig.version_text}}</div>
+                <div class="sss singleline" id="rigbox-type"><label class="cap">Type: </label>{{rig.type}}</div>
+                <div class="sss" id="rigbox-spec"><label class="cap">Specification: </label>{{rig.specification}}</div>
+                <div class="sss" id="rigbox-pressure-rating"><label class="cap">Pressure Rating: </label>{{rig.pressure_rating}}</div>
+                <div class="sss" id="rigbox-contract-period"><label class="cap">Contract Period: </label>{{rig.contract_period}}</div>
+                <div class="sss">
+                    <label class="cap">Summary: </label>
+                    <div id="rigbox-summary">{{rig.summary}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Well Detail Modal -->
+<div id="wellDetailModal" class="modal" onclick="javascript:wellDetailModal.style.display='none';">
+    <div class="modal-content">
+        <span class="close" onclick="javascript:wellDetailModal.style.display='none';">&times;</span>
+        <div class="modal-content-box">
+            <div class="item-well">
+                <div class="sss" style="font-size:14px; color:gray;" id="rig-section">
+                    <label class="cap" style="font-size:14px; color:gray;">Rig ---------- </label>{{data.rig.name}} ---------- {{data.rig.type}}, {{data.rig.version_text}}
+                </div>
+
+                <div class="well-p" id="detail-well-name">{{well.name}}</div>
+
+                <div style="display:flex; margin-top:5px;">
+                    <div style="flex-grow:1">
+                        <div class="sss" id="detail-well-type"><label class="cap">Well Type: </label>{{well.well_type}}</div>
+                    </div>
+                    <div style="flex-grow:1">
+                        <div class="sss" id="detail-well-status"><label class="cap">Well Status: </label>{{well.well_status}}</div>
+                    </div>
+                    <div style="flex-grow:1">
+                        <div class="sss" id="detail-well-license"><label class="cap">License: </label>{% if well.license != '' %}{{well.license}}{% else %}---{% endif %}</div>
+                    </div>
+                    <div style="flex-grow:1">
+                        <div class="sss" id="detail-well-field"><label class="cap">Field/Area: </label>{{well.field}}</div>
+                    </div>
+                </div>
+
+                <div style="display:flex;">
+                    <div style="flex-grow:1;">
+                        <label class="wellitem_p_name">P10</label> - <label class="wellitem-days-operation">Start Date: </label>
+                        <label class="wellitem-days" id="detail-well-p10-start-date">{{well.p10_start_date}}</label>
+                        <label class="wellitem-days-operation">Days of Operation: </label><label class="wellitem-days" id="detail-well-p10-days">{{well.p10_days_operation}}</label>
+                    </div>
+                    <div style="flex-grow:1;">
+                        <label class="wellitem_p_name">P50</label> - <label class="wellitem-days-operation">Start Date: </label>
+                        <label class="wellitem-days" id="detail-well-p50-start-date">{{well.p50_start_date}}</label>
+                        <label class="wellitem-days-operation">Days of Operation: </label><label class="wellitem-days" id="detail-well-p50-days">{{well.p50_days_operation}}</label>
+                    </div>
+                    <div style="flex-grow:1;">
+                        <label class="wellitem_p_name">P90</label> - <label class="wellitem-days-operation">Start Date: </label>
+                        <label class="wellitem-days" id="detail-well-p90-start-date">{{well.p90_start_date}}</label>
+                        <label class="wellitem-days-operation">Days of Operation: </label><label class="wellitem-days" id="detail-well-p90-days">{{well.p90_days_operation}}</label>
+                    </div>
+                </div>
+
+                <div class="sss singleline" style="cursor:pointer;margin-top:5px;">
+                    <label class="cap">Information: </label>
+                    <div id="detail-well-info">{{well.info}}</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+function getMonthFromString(mon) {
+    return new Date(Date.parse(mon + " 1, 2012")).getMonth()
+}
+
+var rigDetailModal = document.getElementById("rigDetailModal");
+function openRigDetailBox(obj) {
+    var selector = ".item-rig";
+    var parent = findParentBySelector(obj, selector);
+    var rigname = parent.querySelector("#rig-name");
+    var rigtype = parent.querySelector("#rig-type");
+    var rigpressurerating = parent.querySelector("#rig-pressure-rating");
+    var rigspecification = parent.querySelector("#rig-specification");
+    var rigcontractperiod = parent.querySelector("#rig-contract-period");
+    var rigsummary = parent.querySelector("#rig-summary");
+    var rigcomment = parent.querySelector("#rig-comment");
+    var rigversion = parent.querySelector("#rig-version");
+
+    document.getElementById("rigbox-name").innerHTML = rigname.value;
+    document.getElementById("rigbox-version-text").innerHTML = "<label class='cap'>Version: </label>" + rigversion.value;
+    document.getElementById("rigbox-type").innerHTML = "<label class='cap'>Type: </label>" + rigtype.value;
+    document.getElementById("rigbox-spec").innerHTML = "<label class='cap'>Specification: </label>" + rigspecification.value;
+    document.getElementById("rigbox-pressure-rating").innerHTML = "<label class='cap'>Pressure Rating: </label>" + rigpressurerating.value;
+    document.getElementById("rigbox-contract-period").innerHTML = "<label class='cap'>Contract Period: </label>" + rigcontractperiod.value;
+    document.getElementById("rigbox-summary").innerHTML = rigsummary.value;
+
+    rigDetailModal.style.display = "block";
+}
+
+var monthNames = [
+    "January", "February", "March",
+    "April", "May", "June",
+    "July", "August", "September",
+    "October", "November", "December"
+];
+
+var wellDetailModal = document.getElementById("wellDetailModal");
+function openWellDetailBox(obj) {
+    var selector = ".item-rig";
+    var parent = findParentBySelector(obj, selector);
+    var rigname = parent.querySelector("#rig-name");
+    var rigtype = parent.querySelector("#rig-type");
+    var rigpressurerating = parent.querySelector("#rig-pressure-rating");
+    var rigspecification = parent.querySelector("#rig-specification");
+    var rigcontractperiod = parent.querySelector("#rig-contract-period");
+    var rigversion = parent.querySelector("#rig-version");
+    var rigsummary = parent.querySelector("#rig-summary");
+    var rigcomment = parent.querySelector("#rig-comment");
+
+    document.getElementById('rig-section').innerHTML = "<label class='cap' style='font-size:14px; color:gray;'>Rig ---------- </label>" + rigname.value + " ---------- " + rigtype.value + ", " + rigversion.value;
+
+    var wellrigid = obj.querySelector("#well-rig-id");
+    var wellname = obj.querySelector("#well-name");
+    var wellp10startdate = obj.querySelector("#well-p10-start-date");
+    var wellp10status = obj.querySelector("#well-p10-status");
+    var wellp50startdate = obj.querySelector("#well-p50-start-date");
+    var wellp50status = obj.querySelector("#well-p50-status");
+    var wellp90startdate = obj.querySelector("#well-p90-start-date");
+    var wellp90status = obj.querySelector("#well-p90-status");
+    var wellp10daysoperation = obj.querySelector("#well-p10-days-operation");
+    var wellp50daysoperation = obj.querySelector("#well-p50-days-operation");
+    var wellp90daysoperation = obj.querySelector("#well-p90-days-operation");
+    var welllicense = obj.querySelector("#well-license");
+    var wellfield = obj.querySelector("#well-field");
+    var welltype = obj.querySelector("#well-type");
+    var wellstatus = obj.querySelector("#well-status");
+    var wellinfo = obj.querySelector("#well-info");
+
+    document.getElementById("detail-well-name").innerHTML = wellname.value;
+    document.getElementById("detail-well-p10-days").innerHTML = wellp10daysoperation.value;
+    document.getElementById("detail-well-p50-days").innerHTML = wellp50daysoperation.value;
+    document.getElementById("detail-well-p90-days").innerHTML = wellp90daysoperation.value;
+    document.getElementById("detail-well-p10-start-date").innerHTML = wellp10startdate.value.split("-")[2] + " " + monthNames[parseInt(wellp10startdate.value.split("-")[1]) - 1] + " " + wellp10startdate.value.split("-")[0];
+    if(wellp10status.value == "start") document.getElementById("detail-well-p10-start-date").style.color = "orange";
+    else document.getElementById("detail-well-p10-start-date").style.color = "black";
+    document.getElementById("detail-well-p50-start-date").innerHTML = wellp50startdate.value.split("-")[2] + " " + monthNames[parseInt(wellp50startdate.value.split("-")[1]) - 1] + " " + wellp50startdate.value.split("-")[0];
+    if(wellp50status.value == "start") document.getElementById("detail-well-p50-start-date").style.color = "orange";
+    else document.getElementById("detail-well-p50-start-date").style.color = "black";
+    document.getElementById("detail-well-p90-start-date").innerHTML = wellp90startdate.value.split("-")[2] + " " + monthNames[parseInt(wellp90startdate.value.split("-")[1]) - 1] + " " + wellp90startdate.value.split("-")[0];
+    if(wellp90status.value == "start") document.getElementById("detail-well-p90-start-date").style.color = "orange";
+    else document.getElementById("detail-well-p90-start-date").style.color = "black";
+    document.getElementById("detail-well-type").innerHTML = "<label class='cap'>Well Type: </label>" + welltype.value;
+    document.getElementById("detail-well-status").innerHTML = "<label class='cap'>Well Status: </label>" + wellstatus.value;
+    document.getElementById("detail-well-field").innerHTML = "<label class='cap'>Field/Area: </label>" + wellfield.value;
+    document.getElementById("detail-well-license").innerHTML = "<label class='cap'>License: </label>" + welllicense.value;
+    document.getElementById("detail-well-info").innerHTML = wellinfo.value;
+
+    wellDetailModal.style.display = "block";
+}
+
+
+</script>
+
+<button onclick="topFunction()" id="upBtn"><i class="glyphicon glyphicon-menu-up" style="color:white; font-size:14px;"></i></button>
+
+<script>
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 150 || document.documentElement.scrollTop > 150) {
+        document.getElementById("table-header").style.display = "block";
+        document.getElementById("upBtn").style.display = "block";
+        document.getElementById("title").style.display = "block";
+    }else {
+        document.getElementById("table-header").style.display = "none";
+        document.getElementById("upBtn").style.display = "none";
+        document.getElementById("title").style.display = "none";
+    }
+}
+
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+function filter() {
+    window.location.href = "/rigschedule?version_name=" + version_name + "&p_name=" + p_name + "&months=" + String(months) + "&well_type=" + well_type + "&well_field=" + well_field + "&license=" + license + "&q=" + q + "&prev=no&next=no";
+}
+
+function prev() {
+    window.location.href = "/rigschedule?version_name=" + version_name + "&p_name=" + p_name + "&months=" + String(months) + "&well_type=" + well_type + "&well_field=" + well_field + "&license=" + license + "&q=" + q + "&prev=yes&next=no";
+}
+
+function next() {
+    window.location.href = "/rigschedule?version_name=" + version_name + "&p_name=" + p_name + "&months=" + String(months) + "&well_type=" + well_type + "&well_field=" + well_field + "&license=" + license + "&q=" + q + "&prev=no&next=yes";
+}
+
+</script>
+
+<script>
+
+function ScrollTo(name) {
+  //init thread
+  ScrollToResolver(document.getElementById(name));
+}
+
+function ScrollToResolver(elem) {
+  elem.style.backgroundColor = "#ffccff";
+  var jump = parseInt(elem.getBoundingClientRect().top * .2);
+  document.body.scrollTop += jump - 50;
+  document.documentElement.scrollTop += jump - 50;
+  //lastjump detects anchor unreachable, also manual scrolling to cancel animation if scroll > jump
+  if (!elem.lastjump || elem.lastjump > Math.abs(jump)) {
+    elem.lastjump = Math.abs(jump);
+    setTimeout(function() {
+      ScrollToResolver(elem);
+    }, "100");
+  } else {
+    elem.lastjump = null;
+  }
+}
+
+function collectionHas(a, b) { //helper function (see below)
+    for(var i = 0, len = a.length; i < len; i ++) {
+        if(a[i] == b) return true;
+    }
+    return false;
+}
+
+function findParentBySelector(elm, selector) {
+    var all = document.querySelectorAll(selector);
+    var cur = elm.parentNode;
+    while(cur && !collectionHas(all, cur)) { //keep going up until you find a match
+        cur = cur.parentNode; //go up
+    }
+    return cur; //will return null if not found
+}
+
+
+</script>
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,814 @@
+{% extends 'rigwell/base_rig_user_eow.html' %}
+{% block title %}{{rig.name}}, {{well.name}} EOW{% endblock %}
+{% block body %}
+
+<br>
+<br>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<meta charset="utf-8">
+<script src="https://cdn.anychart.com/js/8.0.1/anychart-core.min.js"></script>
+<script src="https://cdn.anychart.com/js/8.0.1/anychart-pie.min.js"></script>
+
+<style>
+
+html, body{
+  background: linear-gradient(0deg,rgba(0,0,0,0.8),rgba(0,0,0,0.8)), url('/static/images/accountbg.jpg') no-repeat center center fixed;
+  background-size:cover;
+}
+
+table {
+  width:100%;
+  overflow-x:auto;
+  margin:0;
+}
+
+th, td {
+  border: 1px solid rgba(255,255,255,0.2);
+  border-collapse: collapse;
+  padding: 30px 10px 30px 10px;
+  text-align: center;
+  color:white;
+}
+
+th {
+  font-weight: 600;
+}
+
+table tr:nth-child(even) {
+  background-color: rgba(255,255,255,0.1);
+}
+
+table tr:nth-child(odd) {
+  background-color: transparent;
+}
+
+#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20%;
+  right: 15px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: rgba(0,0,0,0.3);
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 50%;
+}
+
+#myBtn:hover {
+  background-color: orange;
+}
+
+h1 {
+  text-align:center;
+  color: #666;
+  text-shadow: 1px 1px 0px #FFF;
+  margin:50px 0px 0px 0px
+}
+
+.button{
+    width:auto; height:auto; padding:6px 15px; margin:10px; float:left; text-align:center; border-radius:4px; font-size:16px; color:white; margin-left:5px; background-color:rgba(0,0,0,0.2);
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 50px;
+  background: #005580;
+  -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #33ccff;
+}
+
+</style>
+
+<!--<script>-->
+<!--	history.pushState(null, null, location.href);-->
+<!--    history.back();-->
+<!--    history.forward();-->
+<!--    window.onpopstate = function () { history.go(1); };-->
+<!--</script>-->
+
+{% if note %}
+<script>alert("{{note}}");</script>
+{% endif %}
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../lib/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<div id="title" style="font-size:25px; font-weight:800; color: #F7D479; text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7); text-align:center;
+	position:fixed; left:50%; float:middle; transform:translate(-50%, -50%); width:350px; z-index:100; top:92px; display:none;">EOW Of {{rig.name}}, {{well.name}}</div>
+
+
+<div style="width:100%; height:auto; text-align:center;">
+    {% csrf_token %}
+    <div style="font-size:25px; font-weight:800;
+        color: #F7D479; text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7); text-align:center; width:100%; margin-top:40px;">EOW Of {{rig.name}}, {{well.name}}<br>
+    </div>
+
+    <div style="font-size:18px; font-weight:600;
+        color: #F7D479; text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7); text-align:center; width:100%;">{{well.well_start_time}} ~ {{well.well_end_time}}<br>
+    </div>
+
+    <label style="color:white; font-size:20px; font-weight:500; font-family:verdana; width:100%; text-align:center; margin:30px 0px 0px 0px;">Time & Depth</label>
+
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+
+    <div style="width:100%;">
+        <div style="margin:20px 0px;">
+            <div id="container" style="min-height:600px;"></div>
+        </div>
+        <script>
+
+            Highcharts.theme = {
+                colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
+                    '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+                chart: {
+                    backgroundColor: '#00000000',
+                    style: {
+                        fontFamily: '\'Unica One\', sans-serif'
+                    },
+                    plotBorderColor: '#606063'
+                },
+                title: {
+                    style: {
+                        color: '#E0E0E3',
+                        // textTransform: 'uppercase',
+                        fontSize: '18px'
+                    }
+                },
+                subtitle: {
+                    style: {
+                        color: '#E0E0E3',
+                        // textTransform: 'uppercase'
+                    }
+                },
+                xAxis: {
+                    gridLineColor: '#707073',
+                    labels: {
+                        style: {
+                            color: '#E0E0E3'
+                        }
+                    },
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    title: {
+                        style: {
+                            color: '#A0A0A3'
+                        }
+                    }
+                },
+                yAxis: {
+                    gridLineColor: '#707073',
+                    labels: {
+                        style: {
+                            color: '#E0E0E3'
+                        }
+                    },
+                    lineColor: '#707073',
+                    minorGridLineColor: '#505053',
+                    tickColor: '#707073',
+                    tickWidth: 1,
+                    title: {
+                        style: {
+                            color: '#A0A0A3'
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                    style: {
+                        color: '#F0F0F0'
+                    }
+                },
+                plotOptions: {
+                    series: {
+                        dataLabels: {
+                            color: '#F0F0F3',
+                            style: {
+                                fontSize: '13px'
+                            },
+                            enabled: true
+                        },
+                        marker: {
+                            lineColor: '#333'
+                        }
+                    },
+                    boxplot: {
+                        fillColor: '#505053'
+                    },
+                    candlestick: {
+                        lineColor: 'white'
+                    },
+                    errorbar: {
+                        color: 'white'
+                    }
+                },
+                legend: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    itemStyle: {
+                        color: '#E0E0E3'
+                    },
+                    itemHoverStyle: {
+                        color: '#FFF'
+                    },
+                    itemHiddenStyle: {
+                        color: '#606063'
+                    },
+                    title: {
+                        style: {
+                            color: '#C0C0C0'
+                        }
+                    }
+                },
+                credits: {
+                    style: {
+                        color: '#666'
+                    }
+                },
+                labels: {
+                    style: {
+                        color: '#707073'
+                    }
+                },
+                drilldown: {
+                    activeAxisLabelStyle: {
+                        color: '#F0F0F3'
+                    },
+                    activeDataLabelStyle: {
+                        color: '#F0F0F3'
+                    }
+                },
+                navigation: {
+                    buttonOptions: {
+                        symbolStroke: '#DDDDDD',
+                        theme: {
+                            fill: '#505053'
+                        }
+                    }
+                },
+                // scroll charts
+                rangeSelector: {
+                    buttonTheme: {
+                        fill: '#505053',
+                        stroke: '#000000',
+                        style: {
+                            color: '#CCC'
+                        },
+                        states: {
+                            hover: {
+                                fill: '#707073',
+                                stroke: '#000000',
+                                style: {
+                                    color: 'white'
+                                }
+                            },
+                            select: {
+                                fill: '#000003',
+                                stroke: '#000000',
+                                style: {
+                                    color: 'white'
+                                }
+                            }
+                        }
+                    },
+                    inputBoxBorderColor: '#505053',
+                    inputStyle: {
+                        backgroundColor: '#333',
+                        color: 'silver'
+                    },
+                    labelStyle: {
+                        color: 'silver'
+                    }
+                },
+                navigator: {
+                    handles: {
+                        backgroundColor: '#666',
+                        borderColor: '#AAA'
+                    },
+                    outlineColor: '#CCC',
+                    maskFill: 'rgba(255,255,255,0.1)',
+                    series: {
+                        color: '#7798BF',
+                        lineColor: '#A6C7ED'
+                    },
+                    xAxis: {
+                        gridLineColor: '#505053'
+                    }
+                },
+                scrollbar: {
+                    barBackgroundColor: '#808083',
+                    barBorderColor: '#808083',
+                    buttonArrowColor: '#CCC',
+                    buttonBackgroundColor: '#606063',
+                    buttonBorderColor: '#606063',
+                    rifleColor: '#FFF',
+                    trackBackgroundColor: '#404043',
+                    trackBorderColor: '#404043'
+                }
+            };
+
+            // Apply the theme
+            Highcharts.setOptions(Highcharts.theme);
+
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'spline',
+                },
+                title: {
+                    text: 'Time vs Depth Of {{well.name}}, {{rig.name}}'
+                },
+                subtitle: {
+                    text: 'Time vs Depth Of {{well.name}}, {{well.well_start_time}} ~ {{well.well_end_time}}'
+                },
+                xAxis: {
+                    opposite: true,
+                    type: 'datetime',
+                    title: {
+                        text: 'Date & Time'
+                    }
+                },
+                yAxis: {
+                    reversed: true,
+                    title: {
+                        text: 'Depth and Hole Depth'
+                    },
+                    min: 0
+                },
+                tooltip: {
+                    headerFormat: "<b>{series.name}</b><br>",
+                    pointFormat: "{point.x: %e. %b '%y %H:%M:%S}<br>{point.y:.4f}"
+                },
+
+                plotOptions: {
+                    series: {
+                        marker: {
+                            enabled: true
+                        }
+                    }
+                },
+
+                colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
+
+                // Define the data points. All series have a dummy year
+                // of 1970/71 in order to be compared on the same x axis. Note
+                // that in JavaScript, months start at 0 for January, 1 for February etc.
+                series: [{
+                    name: "Depth",
+                    data: [
+                        {% for data in depthDataList %}[Date.UTC({{data.year}}, {{data.month}}, {{data.day}}, {{data.hour}}, {{data.minute}}, {{data.second}}), {{data.depth}}]{% if not forloop.last %}, {% endif %}{% endfor %}
+                    ]
+                }, {
+                    name: "Hole Depth",
+                    data: [
+                        {% for data in holeDepthDataList %}[Date.UTC({{data.year}}, {{data.month}}, {{data.day}}, {{data.hour}}, {{data.minute}}, {{data.second}}), {{data.depth}}]{% if not forloop.last %}, {% endif %}{% endfor %}
+                    ]
+                }],
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            plotOptions: {
+                                series: {
+                                    marker: {
+                                        radius: 2.5
+                                    }
+                                }
+                            }
+                        }
+                    }]
+                }
+            });
+
+        </script>
+
+
+        <label style="color:white; font-size:20px; font-weight:500; font-family:verdana; width:100%; text-align:center; margin:30px 0px 20px 0px;">Time Breakdown</label>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div id="container2" style="height:600px;"></div>
+                </div>
+                <div class="col-sm-3">
+                    <table cellspacing="0" class="table table-fit">
+                        <tr>
+                            <th style="padding: 20px 10px 20px 10px;">TD Intepr Act</th>
+                            <th style="padding: 20px 10px 20px 10px;">Accumulation</th>
+                        </tr>
+                        {% for data in timebreakdownsublist1 %}
+                        <tr>
+                            <td>{{data.title}}</td>
+                            <td>{{data.value}}%</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div class="col-sm-3">
+                    <table cellspacing="0" class="table table-fit">
+                        <tr>
+                            <th style="padding: 20px 10px 20px 10px;">TD Intepr Act</th>
+                            <th style="padding: 20px 10px 20px 10px;">Accumulation</th>
+                        </tr>
+                        {% for data in timebreakdownsublist2 %}
+                        <tr>
+                            <td>{{data.title}}</td>
+                            <td>{{data.value}}%</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script>
+
+            Highcharts.chart('container2', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Time breakdown of T/D Intepr Act, {{well.name}}'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Accumulation',
+                    colorByPoint: true,
+                    data: [
+
+                        {% for data in timebreakdownlist %}
+
+                        {
+                            name: '{{data.title}}',
+                            y: {{data.value}},
+                            sliced: true,
+                            selected: true
+                        }
+
+                        {% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+
+                    ]
+                }]
+            });
+
+        </script>
+
+    </div>
+
+    <br>
+
+
+    <label style="color:white; font-size:20px; font-weight:500; font-family:verdana; width:100%; text-align:center; margin:30px 0px 15px 0px;">Run Detail</label>
+
+    {% if datas_1 or datas_2 or datas_3 or datas_4 or datas_5 or datas_6 or datas_7 %}
+
+    <div class="table">
+        <table cellspacing="0" class="table table-fit" style="background-color:transparent;">
+            <tr>
+                <th style="width:3%; padding: 30px 10px 30px 10px;">id</th>
+                <th style="width:12%; padding: 30px 10px 30px 10px;">Phase/Section</th>
+                <th style="width:12%; padding: 30px 10px 30px 10px;">Activity Name</th>
+                <th style="width:12%; padding: 30px 10px 30px 10px;">Start Hole Depth</th>
+                <th style="width:12%; padding: 30px 10px 30px 10px;">End Hole Depth</th>
+                <th style="width:12%; padding: 30px 10px 30px 10px;">Distance Drilled</th>
+                <th style="width:12%; padding: 30px 10px 30px 10px;">Start Time</th>
+                <th style="width:12%; padding: 30px 10px 30px 10px;">End Time</th>
+                <th style="width:13%; padding: 30px 10px 30px 10px;">Duration</th>
+            </tr>
+
+            {% if datas_1.data %}
+            <tr style="background-color: rgba(0,0,0,0.6);"><td colspan="9">{{datas_1.phase_section}}</td></tr>
+            {% for data in datas_1.data %}
+            <tr>
+                <td><label>{{forloop.counter}}</label></td>
+                <td>{{data.phase_section}}</td>
+                <td>{{data.activity_name}}</td>
+                <td>{{data.start_hole_depth}}</td>
+                <td>{{data.end_hole_depth}}</td>
+                <td>{{data.distance_drilled}}</td>
+                <td>{{data.start_time}}</td>
+                <td>{{data.end_time}}</td>
+                <td>{{data.duration}}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+
+            {% if datas_2.data %}
+            <tr style="background-color: rgba(0,0,0,0.6);"><td colspan="9">{{datas_2.phase_section}}</td></tr>
+            {% for data in datas_2.data %}
+            <tr>
+                <td><label>{{forloop.counter}}</label></td>
+                <td>{{data.phase_section}}</td>
+                <td>{{data.activity_name}}</td>
+                <td>{{data.start_hole_depth}}</td>
+                <td>{{data.end_hole_depth}}</td>
+                <td>{{data.distance_drilled}}</td>
+                <td>{{data.start_time}}</td>
+                <td>{{data.end_time}}</td>
+                <td>{{data.duration}}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+
+            {% if datas_3.data %}
+            <tr style="background-color: rgba(0,0,0,0.6);"><td colspan="9">{{datas_3.phase_section}}</td></tr>
+            {% for data in datas_3.data %}
+            <tr>
+                <td><label>{{forloop.counter}}</label></td>
+                <td>{{data.phase_section}}</td>
+                <td>{{data.activity_name}}</td>
+                <td>{{data.start_hole_depth}}</td>
+                <td>{{data.end_hole_depth}}</td>
+                <td>{{data.distance_drilled}}</td>
+                <td>{{data.start_time}}</td>
+                <td>{{data.end_time}}</td>
+                <td>{{data.duration}}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+
+            {% if datas_4.data %}
+            <tr style="background-color: rgba(0,0,0,0.6);"><td colspan="9">{{datas_4.phase_section}}</td></tr>
+            {% for data in datas_4.data %}
+            <tr>
+                <td><label>{{forloop.counter}}</label></td>
+                <td>{{data.phase_section}}</td>
+                <td>{{data.activity_name}}</td>
+                <td>{{data.start_hole_depth}}</td>
+                <td>{{data.end_hole_depth}}</td>
+                <td>{{data.distance_drilled}}</td>
+                <td>{{data.start_time}}</td>
+                <td>{{data.end_time}}</td>
+                <td>{{data.duration}}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+
+            {% if datas_5.data %}
+            <tr style="background-color: rgba(0,0,0,0.6);"><td colspan="9">{{datas_5.phase_section}}</td></tr>
+            {% for data in datas_5.data %}
+            <tr>
+                <td><label>{{forloop.counter}}</label></td>
+                <td>{{data.phase_section}}</td>
+                <td>{{data.activity_name}}</td>
+                <td>{{data.start_hole_depth}}</td>
+                <td>{{data.end_hole_depth}}</td>
+                <td>{{data.distance_drilled}}</td>
+                <td>{{data.start_time}}</td>
+                <td>{{data.end_time}}</td>
+                <td>{{data.duration}}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+
+            {% if datas_6.data %}
+            <tr style="background-color: rgba(0,0,0,0.6);"><td colspan="9">{{datas_6.phase_section}}</td></tr>
+            {% for data in datas_6.data %}
+            <tr>
+                <td><label>{{forloop.counter}}</label></td>
+                <td>{{data.phase_section}}</td>
+                <td>{{data.activity_name}}</td>
+                <td>{{data.start_hole_depth}}</td>
+                <td>{{data.end_hole_depth}}</td>
+                <td>{{data.distance_drilled}}</td>
+                <td>{{data.start_time}}</td>
+                <td>{{data.end_time}}</td>
+                <td>{{data.duration}}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+
+            {% if datas_7.data %}
+            <tr style="background-color: rgba(0,0,0,0.6);"><td colspan="9">{{datas_7.phase_section}}</td></tr>
+            {% for data in datas_7.data %}
+            <tr>
+                <td><label>{{forloop.counter}}</label></td>
+                <td>{{data.phase_section}}</td>
+                <td>{{data.activity_name}}</td>
+                <td>{{data.start_hole_depth}}</td>
+                <td>{{data.end_hole_depth}}</td>
+                <td>{{data.distance_drilled}}</td>
+                <td>{{data.start_time}}</td>
+                <td>{{data.end_time}}</td>
+                <td>{{data.duration}}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+
+        </table>
+
+    </div>
+
+    {% endif %}
+
+    <br>
+    <br>
+
+</div>
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+<button onclick="topFunction()" id="myBtn" title="Go to top"><i class="glyphicon glyphicon-menu-up" style="color:white; font-size:14px;"></i></button>
+
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+        document.getElementById("myBtn").style.display = "block";
+        document.getElementById("title").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+        document.getElementById("title").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+{% if rig %}
+    ScrollTo({{rig.id}});
+{% endif %}
+
+function ScrollTo(name) {
+  //init thread
+  ScrollToResolver(document.getElementById(name));
+}
+
+function ScrollToResolver(elem) {
+  var jump = parseInt(elem.getBoundingClientRect().top * .2);
+  document.body.scrollTop += jump - 50;
+  document.documentElement.scrollTop += jump - 50;
+  //lastjump detects anchor unreachable, also manual scrolling to cancel animation if scroll > jump
+  if (!elem.lastjump || elem.lastjump > Math.abs(jump)) {
+    elem.lastjump = Math.abs(jump);
+    setTimeout(function() {
+      ScrollToResolver(elem);
+    }, "50");
+  } else {
+    elem.lastjump = null;
+  }
+}
+
+
+
+function getCookie(name) {
+    console.log('getCookie');
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                    }
+            }
+    }
+    console.log('cookie:' + cookieValue);
+    return cookieValue;
+}
+
+function post(path, params, method) {
+   method = method || "post"; // Set method to post by default if not specified.
+
+   // The rest of this code assumes you are not using a library.
+   // It can be made less wordy if you use one.
+   var form = document.createElement("form");
+   form.setAttribute("method", method);
+   form.setAttribute("action", path);
+
+   for(var key in params) {
+      if(params.hasOwnProperty(key)) {
+          var hiddenField = document.createElement("input");
+          hiddenField.setAttribute("type", "hidden");
+          hiddenField.setAttribute("name", key);
+          hiddenField.setAttribute("value", params[key]);
+
+          form.appendChild(hiddenField);
+      }
+   }
+
+   var hiddenField1 = document.createElement("input");
+   hiddenField1.setAttribute("type", "hidden");
+   hiddenField1.setAttribute("name", 'csrfmiddlewaretoken');
+   hiddenField1.setAttribute("value", getCookie('csrftoken'));
+   form.appendChild(hiddenField1);
+
+   document.body.appendChild(form);
+   form.submit();
+}
+
+</script>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

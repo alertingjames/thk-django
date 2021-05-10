@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Company Salaries | AllWeedJobs</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="/static/meajobs/images/icon.jpg" type="image/jpg">
+
+    <link rel="stylesheet" href="/static/meajobs/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="/static/meajobs/css/animate.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/static/meajobs/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/static/meajobs/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/aos.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="/static/meajobs/css/jquery.timepicker.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+
+    <link rel="stylesheet" href="/static/meajobs/css/flaticon.css">
+    <link rel="stylesheet" href="/static/meajobs/css/icomoon.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/style.css">
+    <link rel="stylesheet" href="/static/meajobs/css/style2.css">
+
+    <script src="/static/meajobs/pie-chart/rpie.js"></script>
+
+    <style>
+        .snapshot {
+            border:1px solid #eee; border-radius:5px; background-color:rgba(0,0,0,0.02); height:100px;
+        }
+    </style>
+
+  </head>
+  <body>
+
+	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container-fluid px-md-4	">
+	      <a class="#"><img src="/static/meajobs/comlogos/company-5.png" style="height:60px; border-radius:5px; margin-right:15px;"></a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	            <li class="nav-item"><a href="/rigwell/jobcompanies" class="nav-link">Find Another Company</a></li>
+	            <li class="nav-item"><a href="/rigwell/comprofile" class="nav-link">Snapshot</a></li>
+	            <li class="nav-item"><a href="/rigwell/comreviews" class="nav-link">Reviews</a></li>
+	            <li class="nav-item active"><a href="/rigwell/comsalaries" class="nav-link">Salaries</a></li>
+	            <li class="nav-item"><a href="/rigwell/comjobs" class="nav-link">Jobs</a></li>
+	            <!--<li class="nav-item"><a href="/rigwell/comqa" class="nav-link">Q & A</a></li>-->
+	            <!--<li class="nav-item"><a href="/rigwell/cominterviews" class="nav-link">Interviews</a></li>-->
+	            {% if isloggedin == 'yes' %}
+	          <li class="nav-item"><a href="/rigwell/contact" class="nav-link"><span class="far fa-comment-alt"></span></a></li>
+	          <li class="nav-item"><a href="/rigwell/contact" class="nav-link"><span class="fas fa-bell"></span></a></li>
+	          <li class="nav-item dropdown dropdown-bubble" aria-expanded="false">
+                <a id="dLabel" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-user"></span></a>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
+                    <center><div class="prof-email text-black">info.myprofile@myemail.com</div></center>
+                    <div style="height:1.5px; background:#f1f1f1; margin-bottom:5px;"></div>
+                    <li class="menu px-3 w-100"><a href="#" class="text-black">Profile<span class="fa fa-user-circle"></span></a></li>
+                    <li class="menu px-3 w-100"><a href="#" class="text-black">My Jobs<span class="fa fa-heart"></span></a></li>
+                    <li class="menu px-3 w-100"><a href="#" class="text-black">My Reviews<span class="fas fa-pen-square"></span></a></li>
+                    <li class="menu px-3 w-100"><a href="#" class="text-black">Account<span class="fa fa-cog"></span></a></li>
+                    <div style="height:1.5px; background:#f1f1f1; margin-bottom:5px;"></div>
+                    <li class="menu px-3 w-100"><a href="/rigwell/awj-logout" class="text-black">Logout<span class="fas fa-sign-out-alt"></span></a></li>
+                </ul>
+              </li>
+	          {% else %}
+	          <li class="nav-item cta mr-md-1"><a href="/rigwell/signuppage" class="nav-link">Sign Up</a></li>
+	          <li class="nav-item cta cta-colored"><a href="/rigwell/loginpage" class="nav-link">Log In</a></li>
+	          {% endif %}
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+
+    <div class="hero-wrap hero-wrap-2" style="background-image: url('/static/meajobs/comlogos/company-5.png');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-end justify-content-start">
+          <div class="col-md-12 ftco-animate text-center mb-5">
+          	<p class="breadcrumbs mb-0"><span class="mr-3"><a href="/rigwell/">Home <i class="ion-ios-arrow-forward"></i></a></span>
+          	    <span class="mr-3"><a href="/rigwell/jobcompanies">Companies <i class="ion-ios-arrow-forward"></i></a></span>
+          	    <span class="mr-3"><a href="/rigwell/comprofile">BRADFORD WHITE <i class="ion-ios-arrow-forward"></i></a></span> <span class="mr-3">SALLARIES</span></p>
+            <h1 class="mb-3 bread">BRADFORD WHITE</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section">
+    	<div class="container">
+    		<div class="row justify-content-center mb-5">
+              <div class="col-md-7 heading-section text-center ftco-animate">
+              	<span class="subheading">Job Company</span>
+                <h2 class="mb-0">Company Salaries</h2>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="/static/meajobs/comlogos/company-5.png" style="height:100px;">
+                </div>
+                <div class="col-md-4 mt-3">
+                    <div class="heading text-dark">BRADFORD WHITE</a></div>
+                    <span class="text-dark mr-1">3.8</span>
+                    <div class="rating">
+                        <div class="rating-upper" style="width:75%;">
+                            <span>★</span>
+                            <span>★</span>
+                            <span>★</span>
+                            <span>★</span>
+                            <span>★</span>
+                        </div>
+                        <div class="rating-lower">
+                            <span>★</span>
+                            <span>★</span>
+                            <span>★</span>
+                            <span>★</span>
+                            <span>★</span>
+                        </div>
+                    </div>
+                    <span class="text-dark ml-3">254 reviews</span>
+                </div>
+                <div class="col-md-4 mt-3">
+                    <a href="#" class="btn btn-primary" style="width:150px;">Follow</a>
+                </div>
+            </div>
+    	</div>
+    </section>
+
+    <section class="ftco-section ftco-candidates ftco-candidates-2" style="background:rgba(0,0,0,0.01);">
+    	<div class="container">
+    	    <div style="margin-bottom:30px;">
+    	        <div class="w-100"><h4>BRADFORD WHITE Salaries</h4></div>
+            </div>
+            <div class="w-100 mb-5">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="search-job">
+                            <div class="form-group">
+                			    <div class="form-field">
+                			        <div class="icon"><span class="icon-search" style="font-size:18px;"></span></div>
+                					<input type="text" class="form-control" placeholder="Location" style="font-size:18px;">
+                				</div>
+                			</div>
+            			</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="search-job">
+                            <div class="form-group">
+        				        <div class="form-field">
+        					        <div class="select-wrap">
+        							    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+        							    <select name="" id="" class="form-control" style="font-size:18px;">
+        							        <option value="">Construction</option>
+            							    <option value="">Manufaturing</option>
+            							     <option value="">Non-Profit</option>
+            							     <option value="">Technology</option>
+            							     <option value="">Public Utilities</option>
+            							     <option value="">Financial</option>
+            							     <option value="">Education</option>
+            							     <option value="">Pharmaceutical</option>
+            							     <option value="">Transportation</option>
+            							     <option value="">Government</option>
+            							     <option value="">Retail</option>
+            							     <option value="">Healthcare</option>
+        							    </select>
+        							 </div>
+        					    </div>
+        				    </div>
+    				    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 mb-4">
+    	        <div class="w-100"><h4>Average Salaries at BRADFORD WHITE</h4></div>
+            </div>
+    		<div class="row">
+    			<div class="col-lg-8 pr-lg-4">
+    				<div class="row">
+		    			<div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="snapshot px-3 py-3 mb-3">
+                                        <strong class="text-dark">Construction</strong><br>
+                                        <strong class="text-dark mt-1 mr-2" style="font-size:25px;">$1500</strong><span>per month</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="snapshot px-3 py-3 mb-3">
+                                        <strong class="text-dark">Manufaturing</strong><br>
+                                        <strong class="text-dark mt-1 mr-2" style="font-size:25px;">$800</strong><span>per month</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="snapshot px-3 py-3 mb-3">
+                                        <strong class="text-dark">Non-Profit</strong><br>
+                                        <strong class="text-dark mt-1 mr-2" style="font-size:25px;">$2500</strong><span>per month</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="snapshot px-3 py-3 mb-3">
+                                        <strong class="text-dark">Technology</strong><br>
+                                        <strong class="text-dark mt-1 mr-2" style="font-size:25px;">$1200</strong><span>per month</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="snapshot px-3 py-3 mb-3">
+                                        <strong class="text-dark">Public Utilities</strong><br>
+                                        <strong class="text-dark mt-1 mr-2" style="font-size:25px;">$4500</strong><span>per month</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="snapshot px-3 py-3 mb-3">
+                                        <strong class="text-dark">Financial</strong><br>
+                                        <strong class="text-dark mt-1 mr-2" style="font-size:25px;">$5000</strong><span>per month</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="snapshot px-3 py-3 mb-3">
+                                        <strong class="text-dark">Education</strong><br>
+                                        <strong class="text-dark mt-1 mr-2" style="font-size:25px;">$900</strong><span>per month</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="snapshot px-3 py-3 mb-3">
+                                        <strong class="text-dark">Pharmaceutical</strong><br>
+                                        <strong class="text-dark mt-1 mr-2" style="font-size:25px;">$1000</strong><span>per month</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="snapshot px-3 py-3 mb-3">
+                                        <strong class="text-dark">Transportation</strong><br>
+                                        <strong class="text-dark mt-1 mr-2" style="font-size:25px;">$2500</strong><span>per month</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="snapshot px-3 py-3 mb-3">
+                                        <strong class="text-dark">Government</strong><br>
+                                        <strong class="text-dark mt-1 mr-2" style="font-size:25px;">$2000</strong><span>per month</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="snapshot px-3 py-3 mb-3">
+                                        <strong class="text-dark">Retail</strong><br>
+                                        <strong class="text-dark mt-1 mr-2" style="font-size:25px;">$3000</strong><span>per month</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="snapshot px-3 py-3 mb-3">
+                                        <strong class="text-dark">Healthcare</strong><br>
+                                        <strong class="text-dark mt-1 mr-2" style="font-size:25px;">$500</strong><span>per month</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    		        </div>
+    		        <div class="salaries mt-5">
+                        <h3 class="heading-3">Construction</h3>
+                        <li><a>Pipefitter <span><strong>$1000</strong>per month</span></a></li>
+                        <li><a>Painter <span><strong>$500</strong>per month</span></a></li>
+                        <li><a>Laborer <span><strong>$800</strong>per month</span></a></li>
+                        <li><a>Equipment Operator <span><strong>$1500</strong>per month</span></a></li>
+                        <li><a>Carpenter <span><strong>$200</strong>per month</span></a></li>
+                    </div>
+		    	</div>
+		    	<div class="col-lg-4 sidebar">
+    		        <div class="sidebar-box bg-white p-4 ftco-animate">
+    		        	<div style="text-align:center;">
+    		        	    <h3 class="heading-sidebar">Salary satisfaction</h3>
+        		        	<div class="piechart">
+                    			<canvas id="canvas" width="200" height="200"></canvas>
+                    		</div>
+    		        	</div>
+    		        	<div class="px-3">
+    		        	    <p>Most people think they are paid fairly at NSC Technologies, LLC</p>
+                            <p>Based on 272 ratings</p>
+    		        	</div>
+
+    		        	<!--<hr style="border:3px solid #f1f1f1">-->
+
+    		        </div>
+		        </div>
+		        <script>
+		            var obj = {
+						pie: 'stroke',
+						values: [80],
+						colors: ['#FFC107'],
+						isStrokePie: {
+							stroke: 20,
+							overlayStroke: true,
+							overlayStrokeColor: '#eee',
+							strokeStartEndPoints: 'No',
+							strokeAnimation: false,
+							strokeAnimationSpeed: 20,
+							fontSize: '50px',
+							textAlignement: 'center',
+							fontFamily: 'Arial',
+							fontWeight: 'bold'
+						}
+					};
+					generatePieGraph('canvas', obj);
+		        </script>
+    		</div>
+    	</div>
+    </section>
+
+    <footer class="ftco-footer ftco-bg-dark ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+        	<div class="col-md">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">About</h2>
+              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+              <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-3">
+                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Employers</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="pb-1 d-block">Browse Candidates</a></li>
+                <li><a href="#" class="pb-1 d-block">Post a Job</a></li>
+                <li><a href="#" class="pb-1 d-block">Employer Listing</a></li>
+                <li><a href="#" class="pb-1 d-block">Resume Page</a></li>
+                <li><a href="#" class="pb-1 d-block">Dashboard</a></li>
+                <li><a href="#" class="pb-1 d-block">Job Packages</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Candidate</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="pb-1 d-block">Browse Jobs</a></li>
+                <li><a href="#" class="pb-1 d-block">Submit Resume</a></li>
+                <li><a href="#" class="pb-1 d-block">Dashboard</a></li>
+                <li><a href="#" class="pb-1 d-block">Browse Categories</a></li>
+                <!--<li><a href="#" class="pb-1 d-block">My Bookmarks</a></li>-->
+                <li><a href="#" class="pb-1 d-block">Candidate Listing</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Account</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="pb-1 d-block">My Account</a></li>
+                <li><a href="#" class="pb-1 d-block">Sign In</a></li>
+                <li><a href="#" class="pb-1 d-block">Create Account</a></li>
+                <li><a href="#" class="pb-1 d-block">Checkout</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon icon-map-marker" style="color:white;"></span><span class="text" style="color:white;">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+	                <li><span class="icon icon-phone" style="color:white;"></span><span class="text" style="color:white;">+2 392 3929 210</span></li>
+	                <li><span class="icon icon-envelope" style="color:white; font-size:14px;"></span><span class="text" style="color:white;">info@yourdomain.com</span></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+
+
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+    <script src="/static/meajobs/js/jquery.min.js"></script>
+    <script src="/static/meajobs/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="/static/meajobs/js/popper.min.js"></script>
+    <script src="/static/meajobs/js/bootstrap.min.js"></script>
+    <script src="/static/meajobs/js/jquery.easing.1.3.js"></script>
+    <script src="/static/meajobs/js/jquery.waypoints.min.js"></script>
+    <script src="/static/meajobs/js/jquery.stellar.min.js"></script>
+    <script src="/static/meajobs/js/owl.carousel.min.js"></script>
+    <script src="/static/meajobs/js/jquery.magnific-popup.min.js"></script>
+    <script src="/static/meajobs/js/aos.js"></script>
+    <script src="/static/meajobs/js/jquery.animateNumber.min.js"></script>
+    <script src="/static/meajobs/js/scrollax.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+    <script src="/static/meajobs/js/google-map.js"></script>
+    <script src="/static/meajobs/js/main.js"></script>
+
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Company Reviews | AllWeedJobs</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="/static/meajobs/images/icon.jpg" type="image/jpg">
+
+    <link rel="stylesheet" href="/static/meajobs/css/open-iconic-bootstrap.min.css">
+    <link rel="stylesheet" href="/static/meajobs/css/animate.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/static/meajobs/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/static/meajobs/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/aos.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/ionicons.min.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="/static/meajobs/css/jquery.timepicker.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css">
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+
+    <link rel="stylesheet" href="/static/meajobs/css/flaticon.css">
+    <link rel="stylesheet" href="/static/meajobs/css/icomoon.css">
+
+    <link rel="stylesheet" href="/static/meajobs/css/style.css">
+    <link rel="stylesheet" href="/static/meajobs/css/style2.css">
+
+    <style>
+        .snapshot {
+            border:1px solid #eee; border-radius:5px; background-color:rgba(0,0,0,0.02); height:130px;
+        }
+
+        /* The bar container */
+        .bar-container {
+          width: 100%;
+          background-color: #f1f1f1;
+          text-align: center;
+          color: white;
+        }
+
+        /* Individual bars */
+        .bar-5 {width: 60%; height: 10px; background-color: #4CAF50;}
+        .bar-4 {width: 30%; height: 10px; background-color: #2196F3;}
+        .bar-3 {width: 10%; height: 10px; background-color: #00bcd4;}
+        .bar-2 {width: 4%; height: 10px; background-color: #ff9800;}
+        .bar-1 {width: 15%; height: 10px; background-color: #f44336;}
+
+        /* Responsive layout - make the columns stack on top of each other instead of next to each other */
+        @media (max-width: 400px) {
+          .side, .middle {
+            width: 100%;
+          }
+          .right {
+            display: none;
+          }
+        }
+
+    </style>
+
+  </head>
+  <body>
+
+	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container-fluid px-md-4	">
+	      <a class="#"><img src="/static/meajobs/comlogos/company-5.png" style="height:60px; border-radius:5px; margin-right:15px;"></a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	            <li class="nav-item"><a href="/rigwell/jobcompanies" class="nav-link">Find Another Company</a></li>
+	            <li class="nav-item"><a href="/rigwell/comprofile" class="nav-link">Snapshot</a></li>
+	            <li class="nav-item active"><a href="/rigwell/comreviews" class="nav-link">Reviews</a></li>
+	            <li class="nav-item"><a href="/rigwell/comsalaries" class="nav-link">Salaries</a></li>
+	            <li class="nav-item"><a href="/rigwell/comjobs" class="nav-link">Jobs</a></li>
+	            <!--<li class="nav-item"><a href="/rigwell/comqa" class="nav-link">Q & A</a></li>-->
+	            <!--<li class="nav-item"><a href="/rigwell/cominterviews" class="nav-link">Interviews</a></li>-->
+	            {% if isloggedin == 'yes' %}
+	          <li class="nav-item"><a href="/rigwell/contact" class="nav-link"><span class="far fa-comment-alt"></span></a></li>
+	          <li class="nav-item"><a href="/rigwell/contact" class="nav-link"><span class="fas fa-bell"></span></a></li>
+	          <li class="nav-item dropdown dropdown-bubble" aria-expanded="false">
+                <a id="dLabel" class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-user"></span></a>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
+                    <center><div class="prof-email text-black">info.myprofile@myemail.com</div></center>
+                    <div style="height:1.5px; background:#f1f1f1; margin-bottom:5px;"></div>
+                    <li class="menu px-3 w-100"><a href="#" class="text-black">Profile<span class="fa fa-user-circle"></span></a></li>
+                    <li class="menu px-3 w-100"><a href="#" class="text-black">My Jobs<span class="fa fa-heart"></span></a></li>
+                    <li class="menu px-3 w-100"><a href="#" class="text-black">My Reviews<span class="fas fa-pen-square"></span></a></li>
+                    <li class="menu px-3 w-100"><a href="#" class="text-black">Account<span class="fa fa-cog"></span></a></li>
+                    <div style="height:1.5px; background:#f1f1f1; margin-bottom:5px;"></div>
+                    <li class="menu px-3 w-100"><a href="/rigwell/awj-logout" class="text-black">Logout<span class="fas fa-sign-out-alt"></span></a></li>
+                </ul>
+              </li>
+	          {% else %}
+	          <li class="nav-item cta mr-md-1"><a href="/rigwell/signuppage" class="nav-link">Sign Up</a></li>
+	          <li class="nav-item cta cta-colored"><a href="/rigwell/loginpage" class="nav-link">Log In</a></li>
+	          {% endif %}
+	        </ul>
+	      </div>
+	    </div>
+	  </nav>
+    <!-- END nav -->
+
+    <div class="hero-wrap hero-wrap-2" style="background-image: url('/static/meajobs/comlogos/company-5.png');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-end justify-content-start">
+          <div class="col-md-12 ftco-animate text-center mb-5">
+          	<p class="breadcrumbs mb-0"><span class="mr-3"><a href="/rigwell/">Home <i class="ion-ios-arrow-forward"></i></a></span>
+          	    <span class="mr-3"><a href="/rigwell/jobcompanies">Companies <i class="ion-ios-arrow-forward"></i></a></span> <span>BRADFORD WHITE</span></p>
+            <h1 class="mb-3 bread">BRADFORD WHITE</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="ftco-section">
+    	<div class="container">
+    		<div class="row justify-content-center mb-5">
+              <div class="col-md-7 heading-section text-center ftco-animate">
+              	<span class="subheading">Job Company</span>
+                <h2 class="mb-0">Company Reviews</h2>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="/static/meajobs/comlogos/company-5.png" style="height:100px;">
+                </div>
+                <div class="col-md-4 mt-3">
+                    <div class="heading text-dark">BRADFORD WHITE</a></div>
+                    <span class="text-dark mr-1">3.8</span>
+                    <div class="rating">
+                        <div class="rating-upper" style="width:75%;">
+                            <span>★</span>
+                            <span>★</span>
+                            <span>★</span>
+                            <span>★</span>
+                            <span>★</span>
+                        </div>
+                        <div class="rating-lower">
+                            <span>★</span>
+                            <span>★</span>
+                            <span>★</span>
+                            <span>★</span>
+                            <span>★</span>
+                        </div>
+                    </div>
+                    <span class="text-dark ml-3">254 reviews</span>
+                </div>
+                <div class="col-md-4 mt-3">
+                    <a href="#" class="btn btn-primary" style="width:150px;">Follow</a>
+                </div>
+            </div>
+    	</div>
+    </section>
+
+    <section class="ftco-section ftco-candidates ftco-candidates-2 bg-light">
+    	<div class="container">
+    	    <div style="margin-top:-30px; margin-bottom:30px;">
+    	        <h4>Recent Reviews</h4>
+            </div>
+    		<div class="row">
+    			<div class="col-lg-8 pr-lg-4">
+    				<div class="row">
+		    			<div class="col-md-12">
+		    				<div class="team d-md-flex p-4 bg-white">
+    		        			<div style="text-align:center;">
+    		        			    <span class="text-dark" style="font-size:30px;">3.8</span>
+    		        			    <br>
+                                    <div class="rating">
+                                        <div class="rating-upper" style="width:75%;">
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                        </div>
+                                        <div class="rating-lower">
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                        </div>
+                                    </div>
+    		        			</div>
+    		        			<div class="text pl-md-4">
+    		        				<span class="location mb-0">Western City, UK</span>
+    		        				<h2>Fast pace working enviornment</h2>
+    		        				<div class="tagcloud">
+                                        <a href="#" class="tag-cloud-link" style="float:right; color:gray; border:1px solid #ccc; font-size:12px; background-color:#e6e6ff;">Report</a>
+                                    </div>
+    		        				<span class="position">Education</span><span class="seen ml-2">March 16, 2020</span>
+    			        			<div class="max-5lines mb-2">This is a fast pace working enviornment, you must be able to handle caseloads up to 50 and document well. Benefits are awesome and they also pay for schooling.</div>
+    		        			</div>
+    		        		</div>
+		    			</div>
+		    			<div class="col-md-12">
+		    				<div class="team d-md-flex p-4 bg-white">
+    		        			<div style="text-align:center;">
+    		        			    <span class="text-dark" style="font-size:30px;">3.8</span>
+    		        			    <br>
+                                    <div class="rating">
+                                        <div class="rating-upper" style="width:75%;">
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                        </div>
+                                        <div class="rating-lower">
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                        </div>
+                                    </div>
+    		        			</div>
+    		        			<div class="text pl-md-4">
+    		        				<span class="location mb-0">Western City, UK</span>
+    		        				<h2>Fast pace working enviornment</h2>
+    		        				<div class="tagcloud">
+                                        <a href="#" class="tag-cloud-link" style="float:right; color:gray; border:1px solid #ccc; font-size:12px; background-color:#e6e6ff;">Report</a>
+                                    </div>
+    		        				<span class="position">Education</span><span class="seen ml-2">March 16, 2020</span>
+    			        			<div class="max-5lines mb-2">This is a fast pace working enviornment, you must be able to handle caseloads up to 50 and document well. Benefits are awesome and they also pay for schooling.</div>
+    		        			</div>
+    		        		</div>
+		    			</div>
+		    			<div class="col-md-12">
+		    				<div class="team d-md-flex p-4 bg-white">
+    		        			<div style="text-align:center;">
+    		        			    <span class="text-dark" style="font-size:30px;">3.8</span>
+    		        			    <br>
+                                    <div class="rating">
+                                        <div class="rating-upper" style="width:75%;">
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                        </div>
+                                        <div class="rating-lower">
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                        </div>
+                                    </div>
+    		        			</div>
+    		        			<div class="text pl-md-4">
+    		        				<span class="location mb-0">Western City, UK</span>
+    		        				<h2>Fast pace working enviornment</h2>
+    		        				<div class="tagcloud">
+                                        <a href="#" class="tag-cloud-link" style="float:right; color:gray; border:1px solid #ccc; font-size:12px; background-color:#e6e6ff;">Report</a>
+                                    </div>
+    		        				<span class="position">Education</span><span class="seen ml-2">March 16, 2020</span>
+    			        			<div class="max-5lines mb-2">This is a fast pace working enviornment, you must be able to handle caseloads up to 50 and document well. Benefits are awesome and they also pay for schooling.</div>
+    		        			</div>
+    		        		</div>
+		    			</div>
+		    			<div class="col-md-12">
+		    				<div class="team d-md-flex p-4 bg-white">
+    		        			<div style="text-align:center;">
+    		        			    <span class="text-dark" style="font-size:30px;">3.8</span>
+    		        			    <br>
+                                    <div class="rating">
+                                        <div class="rating-upper" style="width:75%;">
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                        </div>
+                                        <div class="rating-lower">
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                        </div>
+                                    </div>
+    		        			</div>
+    		        			<div class="text pl-md-4">
+    		        				<span class="location mb-0">Western City, UK</span>
+    		        				<h2>Fast pace working enviornment</h2>
+    		        				<div class="tagcloud">
+                                        <a href="#" class="tag-cloud-link" style="float:right; color:gray; border:1px solid #ccc; font-size:12px; background-color:#e6e6ff;">Report</a>
+                                    </div>
+    		        				<span class="position">Education</span><span class="seen ml-2">March 16, 2020</span>
+    			        			<div class="max-5lines mb-2">This is a fast pace working enviornment, you must be able to handle caseloads up to 50 and document well. Benefits are awesome and they also pay for schooling.</div>
+    		        			</div>
+    		        		</div>
+		    			</div>
+		    			<div class="col-md-12">
+		    				<div class="team d-md-flex p-4 bg-white">
+    		        			<div style="text-align:center;">
+    		        			    <span class="text-dark" style="font-size:30px;">3.8</span>
+    		        			    <br>
+                                    <div class="rating">
+                                        <div class="rating-upper" style="width:75%;">
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                        </div>
+                                        <div class="rating-lower">
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                            <span>★</span>
+                                        </div>
+                                    </div>
+    		        			</div>
+    		        			<div class="text pl-md-4">
+    		        				<span class="location mb-0">Western City, UK</span>
+    		        				<h2>Fast pace working enviornment</h2>
+    		        				<div class="tagcloud">
+                                        <a href="#" class="tag-cloud-link" style="float:right; color:gray; border:1px solid #ccc; font-size:12px; background-color:#e6e6ff;">Report</a>
+                                    </div>
+    		        				<span class="position">Education</span><span class="seen ml-2">March 16, 2020</span>
+    			        			<div class="max-5lines mb-2">This is a fast pace working enviornment, you must be able to handle caseloads up to 50 and document well. Benefits are awesome and they also pay for schooling.</div>
+    		        			</div>
+    		        		</div>
+		    			</div>
+		    		</div>
+		    		<div class="row mt-5">
+		          <div class="col text-center">
+		            <div class="block-27">
+		              <ul>
+		                <li><a href="#">&lt;</a></li>
+		                <li class="active"><span>1</span></li>
+		                <li><a href="#">2</a></li>
+		                <li><a href="#">3</a></li>
+		                <li><a href="#">4</a></li>
+		                <li><a href="#">5</a></li>
+		                <li><a href="#">&gt;</a></li>
+		              </ul>
+		            </div>
+		          </div>
+		        </div>
+		    	</div>
+		    	<div class="col-lg-4 sidebar">
+    		        <div class="sidebar-box bg-white p-4 ftco-animate">
+    		        	<div style="text-align:center;">
+    		        	    <h3 class="heading-sidebar">Overall Rating</h3>
+        		        	<span class="text-dark w-100" style="font-size:30px;">3.8</span>
+        		        	<div class="rating">
+                                <div class="rating-upper" style="width:75%;">
+                                    <span>★</span>
+                                    <span>★</span>
+                                    <span>★</span>
+                                    <span>★</span>
+                                    <span>★</span>
+                                </div>
+                                <div class="rating-lower">
+                                    <span>★</span>
+                                    <span>★</span>
+                                    <span>★</span>
+                                    <span>★</span>
+                                    <span>★</span>
+                                </div>
+                            </div>
+                            <br>
+                            <span class="text-dark w-100">Based on 254 reviews</span>
+    		        	</div>
+    		        	<hr style="border:3px solid #f1f1f1">
+
+                        <div class="row pl-3 pr-3">
+                          <div class="side">
+                            <div>5 </div>
+                          </div>
+                          <div class="middle">
+                            <div class="bar-container">
+                              <div class="bar-5"></div>
+                            </div>
+                          </div>
+                          <div class="side right">
+                            <div>150</div>
+                          </div>
+                          <div class="side">
+                            <div>4 </div>
+                          </div>
+                          <div class="middle">
+                            <div class="bar-container">
+                              <div class="bar-4"></div>
+                            </div>
+                          </div>
+                          <div class="side right">
+                            <div>63</div>
+                          </div>
+                          <div class="side">
+                            <div>3 </div>
+                          </div>
+                          <div class="middle">
+                            <div class="bar-container">
+                              <div class="bar-3"></div>
+                            </div>
+                          </div>
+                          <div class="side right">
+                            <div>15</div>
+                          </div>
+                          <div class="side">
+                            <div>2 </div>
+                          </div>
+                          <div class="middle">
+                            <div class="bar-container">
+                              <div class="bar-2"></div>
+                            </div>
+                          </div>
+                          <div class="side right">
+                            <div>6</div>
+                          </div>
+                          <div class="side">
+                            <div>1 </div>
+                          </div>
+                          <div class="middle">
+                            <div class="bar-container">
+                              <div class="bar-1"></div>
+                            </div>
+                          </div>
+                          <div class="side right">
+                            <div>20</div>
+                          </div>
+                        </div>
+                        <a href="/rigwell/rating" class="btn btn-primary w-100 mt-5">Review This Company</a>
+    		        </div>
+		        </div>
+    		</div>
+    	</div>
+    </section>
+
+    <footer class="ftco-footer ftco-bg-dark ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+        	<div class="col-md">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">About</h2>
+              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+              <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-3">
+                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Employers</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="pb-1 d-block">Browse Candidates</a></li>
+                <li><a href="#" class="pb-1 d-block">Post a Job</a></li>
+                <li><a href="#" class="pb-1 d-block">Employer Listing</a></li>
+                <li><a href="#" class="pb-1 d-block">Resume Page</a></li>
+                <li><a href="#" class="pb-1 d-block">Dashboard</a></li>
+                <li><a href="#" class="pb-1 d-block">Job Packages</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Candidate</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="pb-1 d-block">Browse Jobs</a></li>
+                <li><a href="#" class="pb-1 d-block">Submit Resume</a></li>
+                <li><a href="#" class="pb-1 d-block">Dashboard</a></li>
+                <li><a href="#" class="pb-1 d-block">Browse Categories</a></li>
+                <!--<li><a href="#" class="pb-1 d-block">My Bookmarks</a></li>-->
+                <li><a href="#" class="pb-1 d-block">Candidate Listing</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Account</h2>
+              <ul class="list-unstyled">
+                <li><a href="#" class="pb-1 d-block">My Account</a></li>
+                <li><a href="#" class="pb-1 d-block">Sign In</a></li>
+                <li><a href="#" class="pb-1 d-block">Create Account</a></li>
+                <li><a href="#" class="pb-1 d-block">Checkout</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon icon-map-marker" style="color:white;"></span><span class="text" style="color:white;">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+	                <li><span class="icon icon-phone" style="color:white;"></span><span class="text" style="color:white;">+2 392 3929 210</span></li>
+	                <li><span class="icon icon-envelope" style="color:white; font-size:14px;"></span><span class="text" style="color:white;">info@yourdomain.com</span></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+
+
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+    <script src="/static/meajobs/js/jquery.min.js"></script>
+    <script src="/static/meajobs/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="/static/meajobs/js/popper.min.js"></script>
+    <script src="/static/meajobs/js/bootstrap.min.js"></script>
+    <script src="/static/meajobs/js/jquery.easing.1.3.js"></script>
+    <script src="/static/meajobs/js/jquery.waypoints.min.js"></script>
+    <script src="/static/meajobs/js/jquery.stellar.min.js"></script>
+    <script src="/static/meajobs/js/owl.carousel.min.js"></script>
+    <script src="/static/meajobs/js/jquery.magnific-popup.min.js"></script>
+    <script src="/static/meajobs/js/aos.js"></script>
+    <script src="/static/meajobs/js/jquery.animateNumber.min.js"></script>
+    <script src="/static/meajobs/js/scrollax.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+    <script src="/static/meajobs/js/google-map.js"></script>
+    <script src="/static/meajobs/js/main.js"></script>
+
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

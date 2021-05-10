@@ -1,0 +1,590 @@
+{% extends 'rigschedule/base_admin_home.html' %}
+{% block title %}RIG SCHEDULE USERS{% endblock %}
+{% block body %}
+
+<br>
+<br>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<style>
+
+html, body{
+  background: url("/static/images/rs/userbg.png") no-repeat center center fixed;
+  background-size:cover;
+}
+
+#no_result {
+    font-size:20px; font-weight:300; color:rgba(255,255,255,0.6); text-align:center; position:fixed; left:50%; float:middle; padding:10px 15px 10px 15px; font-family:sansation;
+    transform:translate(-50%, -50%); width:auto; z-index:100; top:300px; display:none;
+}
+
+.userform {
+  border-radius: 15px;
+  max-width:550px;
+  width:auto;
+  margin:auto;
+  overflow: hidden;
+  text-align:center;
+}
+
+.action-menu {
+    position:absolute;
+    bottom:0;
+    left:15%;
+    right:15%;
+    height:auto;
+    border-radius: 10px 10px 0px 0px;
+    background: linear-gradient(0deg,rgba(255,255,255,0.0),rgba(255,255,255,0.6),rgba(255,255,255,0.9),rgba(255,255,255,0.95),rgba(255,255,255,0.95),rgba(255,255,255,0.95),rgba(255,255,255,0.95),rgba(255,255,255,0.95));
+    text-align:center;
+    display:none;
+}
+
+.userform:hover .action-menu{
+    display:block;
+}
+
+#title0 {
+    font-size:35px; font-weight:800; font-family:sansation_bold; color: #F7D479; text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7); text-align:center; width:100%; margin-top:40px;
+}
+
+#title {
+    font-size:25px; font-weight:800; color: #F7D479; text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7); text-align:center;  font-family:sansation_bold;
+    position:fixed; left:50%; float:middle; transform:translate(-50%, -50%); width:350px; z-index:100; top:92px; display:none;
+}
+
+#search {
+    float:left; margin-left:10px; font-size:20px; color:white; font-family:sansation; width:90%; height:auto; background:transparent; border:0; padding:3px 6px;
+}
+
+.username {
+    cursor:pointer; margin-top:10px; font-family:sansation; color:white; font-weight:600; font-size:25px;
+}
+
+p span {
+  color: #F00;
+}
+
+p {
+  margin: 0px;
+  font-weight: 200;
+  line-height: 2;
+}
+
+form h1 {
+  font-size: 21px;
+  background: #327a81 none repeat scroll 0% 0%;
+  color: rgb(255, 255, 255);
+  padding: 19px 22px;
+  border-radius: 5px 5px 0px 0px;
+  margin: auto;
+  text-shadow: none;
+  text-align:left
+}
+
+h1 {
+  text-align:center;
+  color: #666;
+  text-shadow: 1px 1px 0px #FFF;
+  margin:50px 0px 0px 0px
+}
+
+.form-group {
+  overflow: hidden;
+  width:100%;
+}
+
+.contentform {
+  padding: 10px 10px;
+}
+
+.centered-and-cropped { object-fit: cover }
+
+#backgroundOverlay{
+    background-color:rgba(0,0,0,0.8);
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:10000;
+    display:none;
+}
+
+.bouton-update{
+  background-color: #008CBA;
+  color: #FFF;
+  text-align: center;
+  width: 100%;
+  border:0;
+  padding: 12px 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+input {
+  border-radius: 50px;
+  border: 1px solid #eee;
+  margin-bottom: 15px;
+  margin-right:auto;
+  width: 100%;
+  height: 42px;
+  opacity:0.95;
+  float: middle;
+  padding: 0px 15px;
+  color:black;
+  text-align:left;
+}
+
+textarea {
+  width:100%;
+  height:32px;
+  opacity:0.95;
+  color:black;
+  text-align:left;
+  border:0;
+  padding:5px 5px 0px 3px;
+}
+
+select {
+  width: 100%;
+  height: 42px;
+  border-radius: 50px;
+  border: 1px solid #eee;
+  padding: 0px 15px;
+  color:black;
+  text-align-last:center;
+}
+
+#search::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;
+  opacity: 0.7; /* Firefox */
+}
+
+#search:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: white;
+  opacity: 0.7;
+}
+
+#search::-ms-input-placeholder { /* Microsoft Edge */
+  color: white;
+  opacity: 0.7;
+}
+
+label.cameraButton {
+  display: inline-block;
+  /* Styles to make it look like a button */
+  padding: 10px;
+  border: 1.5px solid #666;
+  border-color: #EEE #CCC #CCC #EEE;
+  border-radius:50px;
+  font-size:14px;
+  color:white;
+  font-weight:300;
+  width:auto;
+  height:auto;
+  text-align:center;
+  background-color: green;
+}
+
+/* Look like a clicked/depressed button */
+label.cameraButton:active {
+  border-color: #CCC #EEE #EEE #CCC;
+}
+
+/* This is the part that actually hides the 'Choose file' text box for camera inputs */
+label.cameraButton input[accept*="image"] {
+  display: none;
+}
+
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 100000; /* Sit on top */
+  padding-top: 150px; /* Location of the box
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 400px;
+}
+
+/* Add Animation */
+.modal-content {
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+  from {-webkit-transform:scale(0)}
+  to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+  from {transform:scale(0)}
+  to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  color: gray;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 500px){
+  .modal-content {
+    width: 100%;
+  }
+}
+
+.profile_image {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.profile_image:hover {opacity: 0.7;}
+
+
+</style>
+
+<script>
+	history.pushState(null, null, location.href);
+    history.back();
+    history.forward();
+    window.onpopstate = function () { history.go(1); };
+</script>
+
+<meta charset="UTF-8">
+<link rel="stesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<div id="no_result">
+    No users found ...
+</div>
+
+
+<div id="title">Rig Schedule Users</div>
+
+{% if users %}
+<div style="width:100%; height:auto;">
+    {% csrf_token %}
+    <div id="title0">Rig Schedule Users<br>
+    </div>
+    <br>
+    <div style="width:100%; text-align:center; display:inline-block;">
+        <div style="width:400px; display:inline-block;">
+            <div style="width:100%;">
+                <i class="fa fa-search" style="font-size:20px; float:left; color:white; margin-top:3px;"></i>
+                <input type="text" placeholder="Search..." autocomplete="off" id="search" onkeyup="filter()" onchange="clear()">
+            </div><br>
+            <div style="background:white; width:400px; height:2px; margin-top:10px;"></div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container-fluid">
+        <div class="row" id="list">
+            {% for user in users %}
+            <div class="col-sm-3" id="{{user.id}}">
+                <div style="width:100%;">
+                    <div class="userform" style="margin-top:30px; position:relative;">
+                        <div class="contentform">
+                            <div style="width:100%;" class="parent">
+                                <div class="form-group">
+                                    <center>
+                                        <div style="width:auto; display:inline-block;">
+                                            <div style="cursor:pointer;" onclick="openProfile(this)" id="{{user.pk}}">
+                                                <img src="/static/images/rs/profile.png"
+                                                    style="width:180px; height:180px; object-fit:cover; border-radius:50%;" class="profile_image">
+                                                <input hidden id="uname" value="{{user.name}}">
+                                                <input hidden id="uemail" value="{{user.email}}">
+                                            </div>
+                                            <label class="username">{{user.name}}</label>
+                                            <br>
+                                        </div>
+                                    </center>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="action-menu">
+                            <div class="form-group" style="margin-top:15px; color:#008CBA;">
+                                <label style="cursor:pointer; margin-top:10px;">{{user.name}}</label><br>
+                                <div style="cursor:pointer; margin-top:10px;">{{user.email}}</div>
+                                <div style="cursor:pointer; margin-top:10px;">Last update: {{user.registered_time}}</div>
+                            </div>
+                            <div class="form-group" style="display:flex; margin-top:15px;">
+                                <div style="flex-grow:1;">
+                                    <button class="bouton-update" style="width:60px; height:60px; text-align:center;"
+                                        onclick="javascript:window.location.href='mailto:{{user.email}}';">
+                                        <i class="fa fa-envelope" style="color:white; font-size:22px;"></i>
+                                    </button>
+                                </div>
+                                <div style="flex-grow:1;">
+                                    <button class="bouton-update" style="width:60px; height:60px; text-align:center;"
+                                        onclick="javascript: if(confirmDeletion('user')) window.location.href='/rigschedule/adeluser?u_id={{user.pk}}';">
+                                        <i class="fa fa-trash" style="color:white; font-size:22px;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <br>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+{%else %}
+    <script>
+        document.getElementById("no_result").style.display = "block";
+    </script>
+{% endif %}
+
+<script>
+    var list = document.getElementById("list");
+    var lis = list.querySelectorAll( "#list > div" );
+    var prods = [];
+    var prods2 = [];
+    for(var i=0; i<lis.length; i++){
+       prods.push(lis[i]);
+       prods2.push(lis[i]);
+    }
+    function filter(){
+        document.getElementById("no_result").style.display = "none";
+        var keyword = document.getElementById("search").value;
+        if(keyword.length > 0){
+            list.innerHTML = "";
+            for(var i=0; i<prods.length; i++){
+                var member_name = prods[i].querySelector("input[id='uname']");
+                if(member_name.value.toLowerCase().includes(keyword.toLowerCase())){
+                    list.appendChild(prods[i]);
+                }
+                else {
+                    var member_email = prods[i].querySelector("input[id='uemail']");
+                    if(member_email.value.toLowerCase().includes(keyword.toLowerCase())){
+                        list.appendChild(prods[i]);
+                    }
+                }
+            }
+            if(list.innerHTML == "") {
+                document.getElementById("no_result").style.display = "block";
+            }
+        }else{
+            list.innerHTML = "";
+            for(var i=0; i<prods2.length; i++){
+                list.appendChild(prods2[i]);
+            }
+            if(list.innerHTML != "") {
+                document.getElementById("no_result").style.display = "none";
+            }
+        }
+    }
+
+    function clear(){
+        var keyword = document.getElementById("search").value;
+        if(keyword.length == 0){
+            // alert('clear?');
+            list.innerHTML = "";
+            for(var i=0; i<prods2.length; i++){
+                list.appendChild(prods2[i]);
+            }
+        }
+    }
+</script>
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+<button onclick="topFunction()" id="upBtn" title="Go to top"><i class="glyphicon glyphicon-menu-up" style="color:white; font-size:14px;"></i></button>
+
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+        document.getElementById("upBtn").style.display = "block";
+        document.getElementById("title").style.display = "block";
+    } else {
+        document.getElementById("upBtn").style.display = "none";
+        document.getElementById("title").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+function isValidEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
+function collectionHas(a, b) { //helper function (see below)
+    for(var i = 0, len = a.length; i < len; i ++) {
+        if(a[i] == b) return true;
+    }
+    return false;
+}
+
+function findParentBySelector(elm, selector) {
+    var all = document.querySelectorAll(selector);
+    var cur = elm.parentNode;
+    while(cur && !collectionHas(all, cur)) { //keep going up until you find a match
+        cur = cur.parentNode; //go up
+    }
+    return cur; //will return null if not found
+}
+
+function confirmDeletion(objstr) {
+    swal({
+        title: "Are you sure you want to delete this " + objstr + "?",
+        text: "Once deleted, you will not be able to recover this " + objstr + "!",
+        icon: "warning",
+        buttons: ["Cancel","Sure"],
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            return true;
+        }
+    });
+    return false;
+}
+
+
+function dismissLayouts(){
+
+}
+
+
+{% if user %}
+    ScrollTo({{user.id}});
+{% endif %}
+
+function ScrollTo(name) {
+  //init thread
+  ScrollToResolver(document.getElementById(name));
+}
+
+function ScrollToResolver(elem) {
+  var jump = parseInt(elem.getBoundingClientRect().top * .2);
+  document.body.scrollTop += jump - 50;
+  document.documentElement.scrollTop += jump - 50;
+  //lastjump detects anchor unreachable, also manual scrolling to cancel animation if scroll > jump
+  if (!elem.lastjump || elem.lastjump > Math.abs(jump)) {
+    elem.lastjump = Math.abs(jump);
+    setTimeout(function() {
+      ScrollToResolver(elem);
+    }, "50");
+  } else {
+    elem.lastjump = null;
+  }
+}
+
+</script>
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
